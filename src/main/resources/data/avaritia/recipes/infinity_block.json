@@ -1,0 +1,22 @@
+{
+  "type": "avaritia:shaped",
+  "key": {
+    "#": {
+      "item": "avaritia:infinity_ingot"
+    }
+  },
+  "pattern": [
+    "#########",
+    "#       #",
+    "#       #",
+    "#       #",
+    "#       #",
+    "#       #",
+    "#       #",
+    "#       #",
+    "#########"
+  ],
+  "result": {
+    "item": "avaritia:infinity_block"
+  }
+}

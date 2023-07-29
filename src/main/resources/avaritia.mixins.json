@@ -1,0 +1,11 @@
+{
+	"required": true,
+	"package": "net.laith.avaritia.mixin",
+	"compatibilityLevel": "JAVA_17",
+	"mixins": [
+		"AvaritiaMixin"
+	],
+	"injectors": {
+		"defaultRequire": 1
+	}
+}

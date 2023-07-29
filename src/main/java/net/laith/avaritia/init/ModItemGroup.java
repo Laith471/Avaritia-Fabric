@@ -1,0 +1,52 @@
+package net.laith.avaritia.init;
+
+import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
+import net.minecraft.item.ItemGroup;
+import net.minecraft.item.ItemStack;
+import net.minecraft.registry.Registries;
+import net.minecraft.registry.Registry;
+import net.minecraft.text.Text;
+import net.minecraft.util.Identifier;
+
+
+public class ModItemGroup {
+    public static ItemGroup AVARITIA;
+
+
+    public static void registerGroupItem() {
+        AVARITIA = FabricItemGroup.builder()
+                .displayName(Text.literal("Avaritia"))
+                .icon(() -> new ItemStack(ModItems.INFINITY_CATALYST))
+                .entries(((displayContext, entries) -> {
+                    entries.add(ModItems.INFINITY_CATALYST);
+                    entries.add(ModItems.INFINITY_INGOT);
+                    entries.add(ModItems.CRYSTAL_MATRIX_INGOT);
+                    entries.add(ModItems.NEUTRONIUM_INGOT);
+                    entries.add(ModItems.NEUTRONIUM_NUGGET);
+                    entries.add(ModItems.PILE_OF_NEUTRONS);
+                    entries.add(ModItems.RECORD_FRAGMENT);
+                    entries.add(ModItems.DIAMOND_LATTICE);
+                    entries.add(ModItems.ENDEST_PEARL);
+                    entries.add(ModItems.COSMIC_MEATBALLS);
+                    entries.add(ModItems.ULTIMATE_STEW);
+                    //singularities
+                    entries.add(ModItems.IRON_SINGULARITY);
+                    entries.add(ModItems.GOLD_SINGULARITY);
+                    entries.add(ModItems.LAPIS_SINGULARITY);
+                    entries.add(ModItems.REDSTONE_SINGULARITY);
+                    entries.add(ModItems.COPPER_SINGULARITY);
+                    entries.add(ModItems.QUARTZ_SINGULARITY);
+                    // Blocks
+                    entries.add(ModBlocks.CRYSTAL_MATRIX_BLOCK);
+                    entries.add(ModBlocks.INFINITY_BLOCK);
+                    entries.add(ModBlocks.COMPRESSED_CRAFTING_TABLE);
+                    entries.add(ModBlocks.NEUTRONIUM_BLOCK);
+                    entries.add(ModBlocks.DOUBLE_COMPRESSED_CRAFTING_TABLE);
+                    entries.add(ModBlocks.EXTREME_CRAFTING_TABLE);
+                }))
+                .build();
+
+        Registry.register(Registries.ITEM_GROUP, new Identifier(
+                "avaritia", "infinity_catalyst"), AVARITIA);
+    }
+}
