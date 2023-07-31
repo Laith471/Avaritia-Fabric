@@ -23,7 +23,10 @@
 		],
 		"fabric-datagen": [
 			"net.laith.avaritia.AvaritiaModDataGenerator"
-		]
+		],
+		"rei_client": ["net.laith.avaritia.compat.rei.ClientREIPlugin"],
+
+		"rei_common": ["net.laith.avaritia.compat.rei.ServerREIPlugin"]
 	},
 	"mixins": [
 		"avaritia.mixins.json"

@@ -12,6 +12,7 @@ import net.minecraft.util.Identifier;
 
 public class ExtremeCraftingTableScreen extends HandledScreen<ExtremeCraftingTableScreenHandler> {
     private static final Identifier TEXTURE = new Identifier(AvaritiaMod.MOD_ID, "textures/gui/extreme_crafting.png");
+    public static final Identifier REI_TEXTURE = new Identifier(AvaritiaMod.MOD_ID, "textures/gui/rei_result_slot.png");
 
 
     protected boolean isClickOutsideBounds(double mouseX, double mouseY, int left, int top, int button) {

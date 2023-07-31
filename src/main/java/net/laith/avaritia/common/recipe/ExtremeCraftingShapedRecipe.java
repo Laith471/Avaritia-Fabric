@@ -69,6 +69,7 @@ public class ExtremeCraftingShapedRecipe
         return this.output;
     }
 
+
     @Override
     public boolean matches(CraftingInventory craftingInventory, World world) {
         for (int i = 0; i <= craftingInventory.getWidth() - this.width; ++i) {
