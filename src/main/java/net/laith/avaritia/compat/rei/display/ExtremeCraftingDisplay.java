@@ -8,10 +8,14 @@ import me.shedaniel.rei.api.common.display.basic.BasicDisplay;
 import me.shedaniel.rei.api.common.entry.EntryIngredient;
 import me.shedaniel.rei.api.common.entry.EntryStack;
 import me.shedaniel.rei.api.common.entry.InputIngredient;
+import me.shedaniel.rei.api.common.entry.type.VanillaEntryTypes;
 import me.shedaniel.rei.api.common.transfer.info.MenuInfo;
 import me.shedaniel.rei.api.common.transfer.info.MenuSerializationContext;
 import me.shedaniel.rei.api.common.transfer.info.simple.SimpleGridMenuInfo;
+import me.shedaniel.rei.api.common.util.CollectionUtils;
+import me.shedaniel.rei.plugin.common.displays.crafting.DefaultCraftingDisplay;
 import net.laith.avaritia.compat.rei.ServerREIPlugin;
+import net.minecraft.item.ItemStack;
 import net.minecraft.recipe.Recipe;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.util.Identifier;
@@ -75,11 +79,6 @@ public abstract class ExtremeCraftingDisplay<C extends Recipe<?>> extends BasicD
     }
 
     @Override
-    public Optional<Identifier> getDisplayLocation() {
-        return this.getOptionalRecipe().map(Recipe::getId);
-    }
-
-    @Override
     public CategoryIdentifier<?> getCategoryIdentifier() {
         return ServerREIPlugin.EXTREME_CRAFTING;
     }
@@ -116,5 +115,15 @@ public abstract class ExtremeCraftingDisplay<C extends Recipe<?>> extends BasicD
         }
 
         return list;
+    }
+    @Override
+    public Optional<Identifier> getDisplayLocation() {
+        return getOptionalRecipe().map(Recipe::getId);
+    }
+
+    public <T extends ScreenHandler> List<List<ItemStack>> getOrganisedInputEntries(SimpleGridMenuInfo<T, DefaultCraftingDisplay<?>> menuInfo, T container) {
+        return CollectionUtils.map(getOrganisedInputEntries(menuInfo.getCraftingWidth(container), menuInfo.getCraftingHeight(container)), ingredient ->
+                CollectionUtils.<EntryStack<?>, ItemStack>filterAndMap(ingredient, stack -> stack.getType() == VanillaEntryTypes.ITEM,
+                        EntryStack::castValue));
     }
 }

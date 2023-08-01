@@ -27,7 +27,7 @@ public class ExtremeCategory implements DisplayCategory<ExtremeCraftingDisplay<?
 
     @Override
     public CategoryIdentifier<? extends ExtremeCraftingDisplay<?>> getCategoryIdentifier() {
-        return ServerREIPlugin.EXTREME_CRAFTING.cast();
+        return ServerREIPlugin.EXTREME_CRAFTING;
     }
 
     @Override
@@ -41,7 +41,7 @@ public class ExtremeCategory implements DisplayCategory<ExtremeCraftingDisplay<?
     }
 
     @Override
-    public List<Widget> setupDisplay(ExtremeCraftingDisplay display, Rectangle bounds) {
+    public List<Widget> setupDisplay(ExtremeCraftingDisplay<?> display, Rectangle bounds) {
         Point startPoint = new Point(bounds.getCenterX() - 81, bounds.getCenterY() - 35);
         List<Widget> widgets = Lists.newArrayList();
         widgets.add(Widgets.createRecipeBase(bounds));
@@ -49,7 +49,7 @@ public class ExtremeCategory implements DisplayCategory<ExtremeCraftingDisplay<?
         List<Slot> slots = Lists.newArrayList();
         for (int y = 0; y < 9; y++)
             for (int x = 0; x < 9; x++)
-                slots.add(Widgets.createSlot(new Point(startPoint.x + 1 + x * 18, startPoint.y - 65 + y * 18)).markInput());
+                slots.add(Widgets.createSlot(new Point(startPoint.x + 1 + x * 18, startPoint.y - 64 + y * 18)).markInput());
         for (InputIngredient<EntryStack<?>> ingredient : input) {
             slots.get(ingredient.getIndex()).entries(ingredient.get());
         }
@@ -59,7 +59,7 @@ public class ExtremeCategory implements DisplayCategory<ExtremeCraftingDisplay<?
         widgets.addAll(slots);
         widgets.add(Widgets.createSlot(new Point(startPoint.x + 73, startPoint.y + 109)).entries(display.getOutputEntries().get(0)).disableBackground().markOutput());
         if (display.isShapeless()) {
-            widgets.add(Widgets.createShapelessIcon(new Point(startPoint.x + 173, startPoint.y - 67)));
+            widgets.add(Widgets.createShapelessIcon(new Point(startPoint.x + 8, startPoint.y + 127)));
         }
         return widgets;
     }
@@ -67,5 +67,15 @@ public class ExtremeCategory implements DisplayCategory<ExtremeCraftingDisplay<?
     @Override
     public int getMaximumDisplaysPerPage() {
         return 1;
+    }
+
+    @Override
+    public int getDisplayHeight() {
+        return 210;
+    }
+
+    @Override
+    public int getDisplayWidth(ExtremeCraftingDisplay<?> display) {
+        return 172;
     }
 }
