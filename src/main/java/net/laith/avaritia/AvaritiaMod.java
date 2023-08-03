@@ -2,12 +2,7 @@ package net.laith.avaritia;
 
 import net.fabricmc.api.ModInitializer;
 
-import net.laith.avaritia.init.ModBlocks;
-import net.laith.avaritia.init.ModBlockEntities;
-import net.laith.avaritia.init.ModItemGroup;
-import net.laith.avaritia.init.ModItems;
-import net.laith.avaritia.init.ModRecipes;
-import net.laith.avaritia.init.ModScreenHandlers;
+import net.laith.avaritia.init.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

@@ -43,6 +43,7 @@ public class ModItemGroup {
                     entries.add(ModBlocks.NEUTRONIUM_BLOCK);
                     entries.add(ModBlocks.DOUBLE_COMPRESSED_CRAFTING_TABLE);
                     entries.add(ModBlocks.EXTREME_CRAFTING_TABLE);
+                    entries.add(ModBlocks.NEUTRON_COLLECTOR);
                 }))
                 .build();
 
