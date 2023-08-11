@@ -1,0 +1,11 @@
+{
+  "type": "avaritia:compressor",
+  "input": {
+    "item": "minecraft:emerald_block"
+  },
+  "cost": 200,
+  "output": {
+    "item": "avaritia:emerald_singularity",
+    "count": 1
+  }
+}

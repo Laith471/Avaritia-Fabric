@@ -22,9 +22,22 @@
   "item.avaritia.gold_singularity": "Gold Singularity",
   "item.avaritia.lapis_singularity": "Lapis Singularity",
   "item.avaritia.redstone_singularity": "Redstone Singularity",
-  "item.avaritia.copper_singularity": "Copper Singularity",
+  "item.avaritia.diamond_singularity": "Diamond Singularity",
   "item.avaritia.quartz_singularity": "Quartz Singularity",
-  "category.rei.extreme_crafting": "Extreme Crafting",
+  "item.avaritia.copper_singularity": "Copper Singularity",
+  "item.avaritia.emerald_singularity": "Emerald Singularity",
+  "item.avaritia.netherite_singularity": "Netherite Singularity",
+  "item.avaritia.amethyst_singularity": "Amethyst Singularity",
+
+  "item.avaritia.infinity_sword": "§cInfinity Sword",
+
+  "item.avaritia.infinity_helmet": "§cInfinity Helmet",
+  "item.avaritia.infinity_chestplate": "§cInfinity Chestplate",
+  "item.avaritia.infinity_leggings": "§cInfinity Leggings",
+  "item.avaritia.infinity_boots": "§cInfinity Boots",
+
+  "avaritia.category.rei.extreme_crafting": "Extreme Crafting",
+  "avaritia.category.rei.neutronium_compressor": "Neutronium Compressor",
 
   "block.avaritia.crystal_matrix_block": "Crystal Matrix Block",
   "block.avaritia.infinity_block": "Infinity Block",
@@ -32,5 +45,6 @@
   "block.avaritia.double_compressed_crafting_table": "Double Compressed Crafting Table",
   "block.avaritia.compressed_crafting_table": "Compressed Crafting Table",
   "block.avaritia.extreme_crafting_table": "Extreme Crafting Table",
-  "block.avaritia.neutron_collector": "Neutron Collector"
+  "block.avaritia.neutron_collector": "Neutron Collector",
+  "block.avaritia.neutronium_compressor": "Neutronium Compressor"
 }

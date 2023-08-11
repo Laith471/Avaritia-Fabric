@@ -22,7 +22,6 @@ import net.minecraft.util.Identifier;
 
 import java.util.*;
 
-import static me.shedaniel.rei.plugin.common.displays.crafting.DefaultCraftingDisplay.getSlotWithSize;
 
 
 public abstract class ExtremeCraftingDisplay<C extends Recipe<?>> extends BasicDisplay implements SimpleGridMenuDisplay {
@@ -74,9 +73,6 @@ public abstract class ExtremeCraftingDisplay<C extends Recipe<?>> extends BasicD
                 inputProvider(display -> display.getOrganisedInputEntries(9, 9));
     }
 
-    public Optional<C> getOptionalRecipe() {
-        return this.recipe;
-    }
 
     @Override
     public CategoryIdentifier<?> getCategoryIdentifier() {
@@ -115,15 +111,5 @@ public abstract class ExtremeCraftingDisplay<C extends Recipe<?>> extends BasicD
         }
 
         return list;
-    }
-    @Override
-    public Optional<Identifier> getDisplayLocation() {
-        return getOptionalRecipe().map(Recipe::getId);
-    }
-
-    public <T extends ScreenHandler> List<List<ItemStack>> getOrganisedInputEntries(SimpleGridMenuInfo<T, DefaultCraftingDisplay<?>> menuInfo, T container) {
-        return CollectionUtils.map(getOrganisedInputEntries(menuInfo.getCraftingWidth(container), menuInfo.getCraftingHeight(container)), ingredient ->
-                CollectionUtils.<EntryStack<?>, ItemStack>filterAndMap(ingredient, stack -> stack.getType() == VanillaEntryTypes.ITEM,
-                        EntryStack::castValue));
     }
 }

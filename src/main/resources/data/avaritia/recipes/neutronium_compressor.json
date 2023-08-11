@@ -1,0 +1,37 @@
+{
+  "type": "avaritia:shaped",
+  "key": {
+    "N": {
+      "item": "avaritia:neutronium_ingot"
+    },
+    "H": {
+      "item": "minecraft:hopper"
+    },
+    "I": {
+      "item": "minecraft:iron_block"
+    },
+    "O": {
+      "item": "avaritia:neutronium_block"
+    },
+    "X": {
+      "item": "avaritia:crystal_matrix_ingot"
+    },
+    "R": {
+      "item": "minecraft:redstone_block"
+    }
+  },
+  "pattern": [
+    "IIIHHHIII",
+    "X N   N X",
+    "I N   N I",
+    "X N   N X",
+    "RNN O NNR",
+    "X N   N X",
+    "I N   N I",
+    "X N   N X",
+    "IIIXIXIII"
+  ],
+  "result": {
+    "item": "avaritia:neutronium_compressor"
+  }
+}

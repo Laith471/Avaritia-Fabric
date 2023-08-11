@@ -1,0 +1,11 @@
+{
+  "type": "avaritia:compressor",
+  "input": {
+    "item": "minecraft:redstone_block"
+  },
+  "cost": 300,
+  "output": {
+    "item": "avaritia:redstone_singularity",
+    "count": 1
+  }
+}

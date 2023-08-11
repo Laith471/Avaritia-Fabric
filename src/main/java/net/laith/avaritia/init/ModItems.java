@@ -3,6 +3,9 @@ package net.laith.avaritia.init;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.laith.avaritia.AvaritiaMod;
 import net.laith.avaritia.common.item.*;
+import net.laith.avaritia.common.item.armor.InfinityArmorItem;
+import net.laith.avaritia.common.item.tools.InfinitySwordItem;
+import net.minecraft.item.ArmorItem;
 import net.minecraft.item.Item;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
@@ -61,6 +64,33 @@ public class ModItems {
 
     public static final Item QUARTZ_SINGULARITY = registerItem("quartz_singularity",
             new Item(new FabricItemSettings()));
+
+    public static final Item DIAMOND_SINGULARITY = registerItem("diamond_singularity",
+            new Item(new FabricItemSettings()));
+
+    public static final Item NETHERITE_SINGULARITY = registerItem("netherite_singularity",
+            new Item(new FabricItemSettings()));
+
+    public static final Item EMERALD_SINGULARITY = registerItem("emerald_singularity",
+            new Item(new FabricItemSettings()));
+
+    public static final Item AMETHYST_SINGULARITY = registerItem("amethyst_singularity",
+            new Item(new FabricItemSettings()));
+
+    public static final Item INFINITY_SWORD = registerItem("infinity_sword",
+            new InfinitySwordItem(ModToolMaterials.INFINITY, -189, -2.0F,new FabricItemSettings()));
+
+    public static final Item INFINITY_HELMET = registerItem("infinity_helmet",
+            new InfinityArmorItem(ModArmorMaterials.INFINITY, ArmorItem.Type.HELMET, new FabricItemSettings()));
+
+    public static final Item INFINITY_CHESTPLATE = registerItem("infinity_chestplate",
+            new InfinityArmorItem(ModArmorMaterials.INFINITY, ArmorItem.Type.CHESTPLATE, new FabricItemSettings()));
+
+    public static final Item INFINITY_LEGGINGS = registerItem("infinity_leggings",
+            new InfinityArmorItem(ModArmorMaterials.INFINITY, ArmorItem.Type.LEGGINGS,new FabricItemSettings()));
+
+    public static final Item INFINITY_BOOTS = registerItem("infinity_boots",
+            new InfinityArmorItem(ModArmorMaterials.INFINITY, ArmorItem.Type.BOOTS,new FabricItemSettings()));
 
     private static Item registerItem(String name, Item item) {
         return Registry.register(Registries.ITEM,

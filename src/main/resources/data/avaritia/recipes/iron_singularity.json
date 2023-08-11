@@ -1,0 +1,11 @@
+{
+  "type": "avaritia:compressor",
+  "input": {
+    "item": "minecraft:iron_block"
+  },
+  "cost": 400,
+  "output": {
+    "item": "avaritia:iron_singularity",
+    "count": 1
+  }
+}

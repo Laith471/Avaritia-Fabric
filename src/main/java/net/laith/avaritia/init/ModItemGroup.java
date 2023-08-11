@@ -36,6 +36,10 @@ public class ModItemGroup {
                     entries.add(ModItems.REDSTONE_SINGULARITY);
                     entries.add(ModItems.COPPER_SINGULARITY);
                     entries.add(ModItems.QUARTZ_SINGULARITY);
+                    entries.add(ModItems.DIAMOND_SINGULARITY);
+                    entries.add(ModItems.EMERALD_SINGULARITY);
+                    entries.add(ModItems.NETHERITE_SINGULARITY);
+                    entries.add(ModItems.AMETHYST_SINGULARITY);
                     // Blocks
                     entries.add(ModBlocks.CRYSTAL_MATRIX_BLOCK);
                     entries.add(ModBlocks.INFINITY_BLOCK);
@@ -44,6 +48,15 @@ public class ModItemGroup {
                     entries.add(ModBlocks.DOUBLE_COMPRESSED_CRAFTING_TABLE);
                     entries.add(ModBlocks.EXTREME_CRAFTING_TABLE);
                     entries.add(ModBlocks.NEUTRON_COLLECTOR);
+                    entries.add(ModBlocks.NEUTRONIUM_COMPRESSOR);
+                    //tools
+                    entries.add(ModItems.INFINITY_SWORD);
+
+                    //armor
+                    entries.add(ModItems.INFINITY_HELMET);
+                    entries.add(ModItems.INFINITY_CHESTPLATE);
+                    entries.add(ModItems.INFINITY_LEGGINGS);
+                    entries.add(ModItems.INFINITY_BOOTS);
                 }))
                 .build();
 

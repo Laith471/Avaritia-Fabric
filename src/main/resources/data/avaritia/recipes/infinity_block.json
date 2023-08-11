@@ -1,22 +1,16 @@
 {
-  "type": "avaritia:shaped",
-  "key": {
-    "#": {
-      "item": "avaritia:infinity_ingot"
-    }
-  },
-  "pattern": [
-    "#########",
-    "#       #",
-    "#       #",
-    "#       #",
-    "#       #",
-    "#       #",
-    "#       #",
-    "#       #",
-    "#########"
-  ],
+  "type": "minecraft:crafting_shaped",
   "result": {
     "item": "avaritia:infinity_block"
+  },
+  "pattern": [
+    "III",
+    "III",
+    "III"
+  ],
+  "key": {
+    "I": {
+      "item": "avaritia:infinity_ingot"
+    }
   }
 }

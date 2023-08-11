@@ -37,7 +37,7 @@ public class ExtremeCategory implements DisplayCategory<ExtremeCraftingDisplay<?
 
     @Override
     public Text getTitle() {
-        return Text.translatable("category.rei.extreme_crafting");
+        return Text.translatable("avaritia.category.rei.extreme_crafting");
     }
 
     @Override

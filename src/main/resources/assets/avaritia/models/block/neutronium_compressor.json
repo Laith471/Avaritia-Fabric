@@ -1,0 +1,12 @@
+{
+  "parent": "minecraft:block/cube",
+  "textures": {
+    "down": "avaritia:block/neutronium_compressor_side",
+    "up": "avaritia:block/neutronium_compressor_top",
+    "north": "avaritia:block/neutronium_compressor_active",
+    "south": "avaritia:block/neutronium_compressor_side",
+    "east": "avaritia:block/neutronium_compressor_side",
+    "west": "avaritia:block/neutronium_compressor_side",
+    "particle": "avaritia:block/neutronium_compressor_active"
+  }
+}
