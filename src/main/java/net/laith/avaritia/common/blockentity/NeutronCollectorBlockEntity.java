@@ -60,14 +60,16 @@ public class NeutronCollectorBlockEntity extends BlockEntity implements NamedScr
         if (world.isClient()) {
             return;
         }
+        if(entity.inventory.get(0).getCount() < 64) {
             entity.propertyDelegate.set(0, entity.propertyDelegate.get(0)+1);
-                if(entity.progress == TIMER) {
-                    craftItem(entity);
-                    entity.resetProgress();
-                    markDirty(world, blockPos, state);
-                } else {
-                    markDirty(world, blockPos, state);
-                }
+            if(entity.progress == TIMER) {
+                craftItem(entity);
+                entity.resetProgress();
+                markDirty(world, blockPos, state);
+            } else {
+                markDirty(world, blockPos, state);
+            }
+        }
     }
 
     @Override
