@@ -138,57 +138,7 @@ public class ExtremeCraftingShapedRecipe
         return defaultedList;
     }
 
-    /**
-     * Removes empty space from around the recipe pattern.
-     *
-     * <p>Turns patterns such as:</p>
-     * <pre>
-     * {@code
-     * "   o"
-     * "   a"
-     * "    "
-     * }
-     * </pre>
-     * Into:
-     * <pre>
-     * {@code
-     * "o"
-     * "a"
-     * }
-     * </pre>
-     *
-     * @return a new recipe pattern with all leading and trailing empty rows/columns removed
-     */
-    @VisibleForTesting
-    static String[] removePadding(String ... pattern) {
-        int i = Integer.MAX_VALUE;
-        int j = 0;
-        int k = 0;
-        int l = 0;
-        for (int m = 0; m < pattern.length; ++m) {
-            String string = pattern[m];
-            i = Math.min(i, ExtremeCraftingShapedRecipe.findFirstSymbol(string));
-            int n = ExtremeCraftingShapedRecipe.findLastSymbol(string);
-            j = Math.max(j, n);
-            if (n < 0) {
-                if (k == m) {
-                    ++k;
-                }
-                ++l;
-                continue;
-            }
-            l = 0;
-        }
-        if (pattern.length == l) {
-            return new String[0];
-        }
-        String[] strings = new String[pattern.length - l - k];
-        for (int o = 0; o < strings.length; ++o) {
-            strings[o] = pattern[o + k].substring(i, j + 1);
-        }
-        return strings;
-    }
-
+ 
     @Override
     public boolean isEmpty() {
         DefaultedList<Ingredient> defaultedList = this.getIngredients();
@@ -280,7 +230,7 @@ public class ExtremeCraftingShapedRecipe
         public ExtremeCraftingShapedRecipe read(Identifier identifier, JsonObject jsonObject) {
             String string = JsonHelper.getString(jsonObject, "group", "");
             Map<String, Ingredient> map = ExtremeCraftingShapedRecipe.readSymbols(JsonHelper.getObject(jsonObject, "key"));
-            String[] strings = ExtremeCraftingShapedRecipe.removePadding(ExtremeCraftingShapedRecipe.getPattern(JsonHelper.getArray(jsonObject, "pattern")));
+            String[] strings = (ExtremeCraftingShapedRecipe.getPattern(JsonHelper.getArray(jsonObject, "pattern")));
             int i = strings[0].length();
             int j = strings.length;
             DefaultedList<Ingredient> defaultedList = ExtremeCraftingShapedRecipe.createPatternMatrix(strings, map, i, j);
