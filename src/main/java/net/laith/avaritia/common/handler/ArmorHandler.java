@@ -27,32 +27,48 @@ public class ArmorHandler implements ServerTickEvents.StartTick, ServerLivingEnt
             // Enable flying
             player.getAbilities().allowFlying = true;
             player.sendAbilitiesUpdate();
-            if (player.getAbilities().flying) {
-                player.sendAbilitiesUpdate();
-            }
+        } else if(!player.isCreative() && !player.isSpectator()){
+            player.getAbilities().allowFlying = false;
+            player.getAbilities().flying = false;
+            player.sendAbilitiesUpdate();
         }
-
-        if(isWearingBoots(player)) {
+/*
+        if (isWearingBoots(player)) {
             boolean flying = player.getAbilities().flying;
             boolean swimming = player.isSwimming();
-            if (player.isOnGround() || flying || swimming) {
-                boolean sneaking = player.isSneaking();
+            boolean sneaking = player.isSneaking();
 
-                float speed = 0.15f * (flying ? 1.1f : 1.0f)
-                        * (swimming ? 1.2f : 1.0f)
-                        * (sneaking ? 0.1f : 1.0f);
 
-                if (player.getMovementSpeed() > 0f) {
-                    player.updateVelocity(speed, new Vec3d(0, 0, 1));
-                } else if (player.getMovementSpeed() < 0f) {
-                    player.updateVelocity(-speed * 0.3f, new Vec3d(0, 0, 1));
-                }
 
-                if (player.sidewaysSpeed != 0f) {
-                    player.updateVelocity(speed * 0.5f * Math.signum(player.sidewaysSpeed), new Vec3d(1, 0, 0));
+                if (flying || swimming || sneaking) {
+                    float speedMultiplier = 0.15f; // Adjust this value as needed
+                    speedMultiplier *= flying ? 1.1f : 1.0f;
+                    speedMultiplier *= swimming ? 1.2f : 1.0f;
+                    speedMultiplier *= sneaking ? 0.1f : 1.0f;
+
+                    Vec3d motion = player.getVelocity();
+
+                    float moveForward = player.forwardSpeed;
+                    float moveStrafing = player.sidewaysSpeed;
+
+
+                    // Modify the player's velocity based on movement inputs and speed multiplier
+                    if (moveForward > 0f) {
+                        motion = motion.add(0, motion.y, speedMultiplier);
+                    } else if (moveForward < 0f) {
+                        motion = motion.add(0, motion.y, -speedMultiplier * 0.3f);
+                    }
+
+                    if (moveStrafing != 0f) {
+                        motion = motion.add(speedMultiplier * Math.signum(moveStrafing), motion.y, 0);
+                    }
+
+                    player.setVelocity(motion);
                 }
             }
         }
+
+*/
     }
 
     private boolean isWearingTheFullArmor(PlayerEntity player) {

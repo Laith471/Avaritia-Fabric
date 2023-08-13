@@ -51,6 +51,7 @@ public class ModItemGroup {
                     entries.add(ModBlocks.NEUTRONIUM_COMPRESSOR);
                     //tools
                     entries.add(ModItems.INFINITY_SWORD);
+                    entries.add(ModItems.NATURE_RUIN);
 
                     //armor
                     entries.add(ModItems.INFINITY_HELMET);

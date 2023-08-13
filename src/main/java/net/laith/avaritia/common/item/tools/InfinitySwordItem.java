@@ -43,7 +43,7 @@ public class InfinitySwordItem extends SwordItem {
 
     @Override
     public boolean hasGlint(ItemStack stack) {
-        return true;
+        return false;
     }
 }
 

@@ -4,6 +4,7 @@ import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.laith.avaritia.AvaritiaMod;
 import net.laith.avaritia.common.item.*;
 import net.laith.avaritia.common.item.armor.InfinityArmorItem;
+import net.laith.avaritia.common.item.tools.InfinityAxeItem;
 import net.laith.avaritia.common.item.tools.InfinitySwordItem;
 import net.minecraft.item.ArmorItem;
 import net.minecraft.item.Item;
@@ -79,6 +80,9 @@ public class ModItems {
 
     public static final Item INFINITY_SWORD = registerItem("infinity_sword",
             new InfinitySwordItem(ModToolMaterials.INFINITY, -189, -2.0F,new FabricItemSettings()));
+
+    public static final Item NATURE_RUIN = registerItem("infinity_axe",
+            new InfinityAxeItem(ModToolMaterials.INFINITY, -172, -2.0F,new FabricItemSettings()));
 
     public static final Item INFINITY_HELMET = registerItem("infinity_helmet",
             new InfinityArmorItem(ModArmorMaterials.INFINITY, ArmorItem.Type.HELMET, new FabricItemSettings()));

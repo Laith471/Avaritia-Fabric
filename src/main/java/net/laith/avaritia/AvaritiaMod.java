@@ -25,6 +25,7 @@ public class AvaritiaMod implements ModInitializer {
 		ServerTickEvents.START_SERVER_TICK.register(new ArmorHandler());
 		ServerLivingEntityEvents.ALLOW_DAMAGE.register(new ArmorHandler());
 
+
 		LOGGER.info("Hello Fabric world!");
 	}
 }
