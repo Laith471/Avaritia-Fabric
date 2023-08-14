@@ -54,30 +54,47 @@ public class NeutronCollectorScreenHandler extends ScreenHandler {
         return this.inventory.canPlayerUse(player);
     }
 
-    // Shift + Player Inv Slot
     @Override
     public ItemStack quickMove(PlayerEntity player, int invSlot) {
-        ItemStack newStack = ItemStack.EMPTY;
+        ItemStack itemstack = ItemStack.EMPTY;
         Slot slot = this.slots.get(invSlot);
-        if (slot != null && slot.hasStack()) {
-            ItemStack originalStack = slot.getStack();
-            newStack = originalStack.copy();
-            if (invSlot < this.inventory.size()) {
-                if (!this.insertItem(originalStack, this.inventory.size(), this.slots.size(), true)) {
+
+        if (slot.hasStack()) {
+            ItemStack itemstack1 = slot.getStack();
+            itemstack = itemstack1.copy();
+
+            if (invSlot < 1) {
+                if (!this.insertItem(itemstack1, 1, 37, true)) {
                     return ItemStack.EMPTY;
                 }
-            } else if (!this.insertItem(originalStack, 0, this.inventory.size(), false)) {
-                return ItemStack.EMPTY;
+
+                slot.onQuickTransfer(itemstack1, itemstack);
+            } else {
+                if (invSlot < 28) {
+                    if (!this.insertItem(itemstack1, 28, 37, false)) {
+                        return ItemStack.EMPTY;
+                    }
+                } else if (invSlot < 37) {
+                    if (!this.insertItem(itemstack1, 1, 28, false)) {
+                        return ItemStack.EMPTY;
+                    }
+                }
             }
 
-            if (originalStack.isEmpty()) {
+            if (itemstack1.getCount() == 0) {
                 slot.setStack(ItemStack.EMPTY);
             } else {
                 slot.markDirty();
             }
+
+            if (itemstack1.getCount() == itemstack.getCount()) {
+                return ItemStack.EMPTY;
+            }
+
+            slot.onTakeItem(player, itemstack1);
         }
 
-        return newStack;
+        return itemstack;
     }
    public int getProgress() {
         return propertyDelegate.get(0);
