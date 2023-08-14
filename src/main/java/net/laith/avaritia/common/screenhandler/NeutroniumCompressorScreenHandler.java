@@ -57,28 +57,49 @@ public class NeutroniumCompressorScreenHandler extends ScreenHandler {
     // Shift + Player Inv Slot
     @Override
     public ItemStack quickMove(PlayerEntity player, int invSlot) {
-        ItemStack newStack = ItemStack.EMPTY;
-        Slot slot = this.slots.get(invSlot);
-        if (slot != null && slot.hasStack()) {
-            ItemStack originalStack = slot.getStack();
-            newStack = originalStack.copy();
-            if (invSlot < this.inventory.size()) {
-                if (!this.insertItem(originalStack, this.inventory.size(), this.slots.size(), true)) {
+        var itemstack = ItemStack.EMPTY;
+        var slot = this.slots.get(invSlot);
+
+        if (slot.hasStack()) {
+            var itemstack1 = slot.getStack();
+            itemstack = itemstack1.copy();
+            if (invSlot == 0) {
+                if (!this.insertItem(itemstack1, 2, 38, true)) {
                     return ItemStack.EMPTY;
                 }
-            } else if (!this.insertItem(originalStack, 0, this.inventory.size(), false)) {
+                slot.onQuickTransfer(itemstack1, itemstack);
+
+            } else if (invSlot >= 2 && invSlot < 38) {
+                if (!this.insertItem(itemstack1, 1, 2, false)) {
+                    if (invSlot < 29) {
+                        if (!this.insertItem(itemstack1, 29, 38, false)) {
+                            return ItemStack.EMPTY;
+                        }
+                    } else if (!this.insertItem(itemstack1, 10, 29, false)) {
+                        return ItemStack.EMPTY;
+                    }
+                }
+            } else if (!this.insertItem(itemstack1, 2, 38, false)) {
                 return ItemStack.EMPTY;
             }
 
-            if (originalStack.isEmpty()) {
+            if (itemstack1.getCount() == 0) {
                 slot.setStack(ItemStack.EMPTY);
             } else {
                 slot.markDirty();
             }
+
+            if (itemstack1.getCount() == itemstack.getCount()) {
+                return ItemStack.EMPTY;
+            }
+
+            slot.onTakeItem(player, itemstack1);
         }
 
-        return newStack;
+        return itemstack;
     }
+
+
     public boolean isCrafting() {
         return propertyDelegate.get(0) > 0;
     }
