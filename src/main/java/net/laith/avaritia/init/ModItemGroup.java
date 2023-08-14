@@ -52,6 +52,7 @@ public class ModItemGroup {
                     //tools
                     entries.add(ModItems.INFINITY_SWORD);
                     entries.add(ModItems.NATURE_RUIN);
+                    entries.add(ModItems.INFINITY_PICKAXE);
 
                     //armor
                     entries.add(ModItems.INFINITY_HELMET);

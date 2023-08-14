@@ -11,7 +11,11 @@ import java.util.function.Supplier;
 
 public enum ModToolMaterials implements ToolMaterial {
 
-    INFINITY(32, 0, 8.0F, 200.0F, 15, () -> {
+    INFINITY_SWORD(32, 0, 8.0F, 200.0F, 15, () -> {
+        return Ingredient.ofItems(new ItemConvertible[]{ModItems.INFINITY_INGOT});
+    }),
+
+    INFINITY_AXE(32, 0, 9999.0F, 200.0F, 15, () -> {
         return Ingredient.ofItems(new ItemConvertible[]{ModItems.INFINITY_INGOT});
     });
 
