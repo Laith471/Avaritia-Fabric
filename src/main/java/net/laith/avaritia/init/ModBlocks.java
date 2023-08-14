@@ -14,21 +14,21 @@ import net.minecraft.util.Identifier;
 
 public class ModBlocks {
 
-    public static final Block CRYSTAL_MATRIX_BLOCK = registerBlock("crystal_matrix_block", new Block(FabricBlockSettings.of().hardness(4.0f).requiresTool()));
+    public static final Block CRYSTAL_MATRIX_BLOCK = registerBlock("crystal_matrix_block", new Block(FabricBlockSettings.of().strength(50.0F, 2000.0F).requiresTool()));
 
-    public static final Block NEUTRONIUM_BLOCK = registerBlock("neutronium_block", new Block(FabricBlockSettings.of().hardness(4.0f).requiresTool()));
+    public static final Block NEUTRONIUM_BLOCK = registerBlock("neutronium_block", new Block(FabricBlockSettings.of().strength(50.0F, 2000.0F).requiresTool()));
 
-    public static final Block INFINITY_BLOCK = registerBlock("infinity_block", new Block(FabricBlockSettings.of().hardness(4.0f).requiresTool()));
+    public static final Block INFINITY_BLOCK = registerBlock("infinity_block", new Block(FabricBlockSettings.of().strength(50.0F, 2000.0F).requiresTool()));
 
     public static final Block COMPRESSED_CRAFTING_TABLE = registerBlock("compressed_crafting_table", new Block(FabricBlockSettings.of().hardness(4.0f).requiresTool()));
 
-    public static final Block DOUBLE_COMPRESSED_CRAFTING_TABLE = registerBlock("double_compressed_crafting_table", new Block(FabricBlockSettings.of().hardness(4.0f).requiresTool()));
+    public static final Block DOUBLE_COMPRESSED_CRAFTING_TABLE = registerBlock("double_compressed_crafting_table", new Block(FabricBlockSettings.of().hardness(20.0F).requiresTool()));
 
-    public static final Block EXTREME_CRAFTING_TABLE = registerBlock("extreme_crafting_table", new ExtremeCraftingTableBlock(FabricBlockSettings.of().hardness(4.0f).requiresTool()));
+    public static final Block EXTREME_CRAFTING_TABLE = registerBlock("extreme_crafting_table", new ExtremeCraftingTableBlock(FabricBlockSettings.of().strength(20.0F, 2000.0F).requiresTool()));
 
-    public static final Block NEUTRON_COLLECTOR = registerBlock("neutron_collector", new NeutronCollectorBlock(FabricBlockSettings.of().hardness(4.0f).requiresTool()));
+    public static final Block NEUTRON_COLLECTOR = registerBlock("neutron_collector", new NeutronCollectorBlock(FabricBlockSettings.of().hardness(20.0F).requiresTool()));
 
-    public static final Block NEUTRONIUM_COMPRESSOR = registerBlock("neutronium_compressor", new NeutroniumCompressorBlock(FabricBlockSettings.of().hardness(4.0f).requiresTool()));
+    public static final Block NEUTRONIUM_COMPRESSOR = registerBlock("neutronium_compressor", new NeutroniumCompressorBlock(FabricBlockSettings.of().hardness(20.0F).requiresTool()));
 
     public static Block registerBlock(String name, Block block) {
         registerBlockItem(name, block);
