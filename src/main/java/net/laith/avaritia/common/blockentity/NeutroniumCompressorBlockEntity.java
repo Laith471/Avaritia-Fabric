@@ -99,47 +99,48 @@ public class NeutroniumCompressorBlockEntity extends BlockEntity implements Name
         for (int i = 0; i < entity.size(); i++) {
             simpleInventory.setStack(i, entity.getStack(i));
         }
+        if(entity.inventory.get(1).getCount() < 64) {
+            if (entity.cachedInput != null && entity.cachedId != null && entity.cachedOutput.getItem() != Items.AIR && entity.cachedCost != 0) {
+                // if is true we set the match and the recipe to the cached value
+                entity.recipe = new NeutroniumCompressorRecipe(entity.cachedId, entity.cachedInput, entity.cachedCost, entity.cachedOutput);
+                entity.match = Optional.of(new NeutroniumCompressorRecipe(entity.cachedId, entity.cachedInput, entity.cachedCost, entity.cachedOutput));
+            }
 
-        if (entity.cachedInput != null && entity.cachedId != null && entity.cachedOutput.getItem() != Items.AIR && entity.cachedCost != 0) {
-            // if is true we set the match and the recipe to the cached value
-            entity.recipe = new NeutroniumCompressorRecipe(entity.cachedId, entity.cachedInput, entity.cachedCost, entity.cachedOutput);
-            entity.match = Optional.of(new NeutroniumCompressorRecipe(entity.cachedId, entity.cachedInput, entity.cachedCost, entity.cachedOutput));
-        }
+            ItemStack outputStack = entity.getStack(1);
+            if (outputStack.isEmpty() && entity.progress == 0) {
+                entity.recipe = null; // Reset the current recipe if the output slot is empty
+            }
 
-        ItemStack outputStack = entity.getStack(1);
-        if (outputStack.isEmpty() && entity.progress == 0) {
-            entity.recipe = null; // Reset the current recipe if the output slot is empty
-        }
+            if (entity.recipe == null) {
+                // we check if the recipe is null and if we get a match
+                entity.match = world.getRecipeManager().getFirstMatch(NeutroniumCompressorRecipe.Type.INSTANCE, simpleInventory, entity.getWorld());
+            }
 
-        if (entity.recipe == null) {
-            // we check if the recipe is null and if we get a match
-            entity.match = world.getRecipeManager().getFirstMatch(NeutroniumCompressorRecipe.Type.INSTANCE, simpleInventory, entity.getWorld());
-        }
+            if (entity.progress > 0) {
+                world.setBlockState(blockPos, state.with(NeutroniumCompressorBlock.ACTIVE, true));
+            }
+            if (entity.progress == 0) {
+                world.setBlockState(blockPos, state.with(NeutroniumCompressorBlock.ACTIVE, false));
+            }
 
-        if(entity.progress > 0) {
-            world.setBlockState(blockPos, state.with(NeutroniumCompressorBlock.ACTIVE, true));
-        }
-        if(entity.progress == 0) {
-            world.setBlockState(blockPos, state.with(NeutroniumCompressorBlock.ACTIVE, false));
-        }
+            // if there is a match and its present it will be true. we take the match from either the cachedRecipe or the new recipe.
+            if (entity.match != null && entity.match.isPresent()) {
+                //this field will be functional only if we get a match from the new recipe
+                entity.recipe = (NeutroniumCompressorRecipe) entity.match.get();
+                // here we set the cached value from any recipe
+                NeutroniumHelper.setCachedValues(entity, world);
+                //and here the same from any recipe
+                entity.cost = entity.recipe.getCost();
 
-        // if there is a match and its present it will be true. we take the match from either the cachedRecipe or the new recipe.
-        if (entity.match != null && entity.match.isPresent()) {
-            //this field will be functional only if we get a match from the new recipe
-            entity.recipe = (NeutroniumCompressorRecipe) entity.match.get();
-            // here we set the cached value from any recipe
-            NeutroniumHelper.setCachedValues(entity, world);
-            //and here the same from any recipe
-            entity.cost = entity.recipe.getCost();
-
-            if (NeutroniumHelper.checker(simpleInventory, entity, world)) {
-                NeutroniumHelper.shrink(simpleInventory, entity);
-                //we have to save lol :)
-                markDirty(world, blockPos, state);
-                if (entity.progress >= entity.cost) {
-                    NeutroniumHelper.craftItem(entity, world);
-                    // and here :-)
+                if (NeutroniumHelper.checker(simpleInventory, entity, world)) {
+                    NeutroniumHelper.shrink(simpleInventory, entity);
+                    //we have to save lol :)
                     markDirty(world, blockPos, state);
+                    if (entity.progress >= entity.cost) {
+                        NeutroniumHelper.craftItem(entity, world);
+                        // and here :-)
+                        markDirty(world, blockPos, state);
+                    }
                 }
             }
         }
