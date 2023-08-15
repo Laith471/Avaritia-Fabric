@@ -34,7 +34,7 @@ public class ArmorHandler implements ServerTickEvents.StartTick, ServerLivingEnt
         }
 
         if (isWearingBoots(player)) {
-            player.getAbilities().setFlySpeed(0.1f);
+            player.getAbilities().setFlySpeed(0.2f);
             player.sendAbilitiesUpdate();
         }
         if (!isWearingBoots(player)) {

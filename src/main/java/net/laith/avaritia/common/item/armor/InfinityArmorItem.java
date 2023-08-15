@@ -1,6 +1,7 @@
 package net.laith.avaritia.common.item.armor;
 
 import com.google.common.collect.*;
+import net.laith.avaritia.init.ModItems;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.attribute.EntityAttribute;
@@ -19,19 +20,13 @@ import net.minecraft.item.ArmorMaterial;
 import net.minecraft.item.ItemStack;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.util.Util;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
 import javax.management.Attribute;
 import java.util.*;
 
 public class InfinityArmorItem extends ArmorItem {
-    Multimap<EntityAttribute, EntityAttributeModifier> map;
-    public static final EntityAttributeModifier SPEED_MODIFIER = new EntityAttributeModifier(
-            "Walk Speed Modifier",
-            0.2, // Change this value to adjust the walk speed
-            EntityAttributeModifier.Operation.MULTIPLY_TOTAL
-    );
-
 
     public InfinityArmorItem(ArmorMaterial material, Type type, Settings settings) {
         super(material, type, settings);
@@ -42,7 +37,7 @@ public class InfinityArmorItem extends ArmorItem {
     public void inventoryTick(ItemStack stack, World world, Entity entity, int slot, boolean selected) {
         if (!world.isClient) {
             PlayerEntity player = (PlayerEntity) entity;
-            if (entity instanceof PlayerEntity && slot == EquipmentSlot.HEAD.getEntitySlotId()) {
+            if (entity instanceof PlayerEntity && player.getEquippedStack(EquipmentSlot.HEAD).getItem() == ModItems.INFINITY_HELMET) {
                 player.setAir(300);
                 player.getHungerManager().add(20, 20.0F);
                 StatusEffectInstance nightVisionEffect = player.getStatusEffect(StatusEffects.NIGHT_VISION);
@@ -52,15 +47,17 @@ public class InfinityArmorItem extends ArmorItem {
                 } else {
                     player.addStatusEffect(new StatusEffectInstance(StatusEffects.NIGHT_VISION, 300, 0, false, false));
                 }
-            } else if (slot == EquipmentSlot.CHEST.getEntitySlotId()) {
+            } else if (player.getEquippedStack(EquipmentSlot.CHEST).getItem() == ModItems.INFINITY_CHESTPLATE) {
                 List<StatusEffectInstance> effects = Lists.newArrayList(player.getStatusEffects());
                 Iterator<StatusEffectInstance> iterator = Collections2.filter(effects, (effectInstance) -> effectInstance.getEffectType().getCategory() == StatusEffectCategory.HARMFUL).iterator();
                 while (iterator.hasNext()) {
                     StatusEffectInstance effectInstance = iterator.next();
                     player.removeStatusEffect(effectInstance.getEffectType());
                 }
-            } else if (slot == EquipmentSlot.LEGS.getEntitySlotId() && player.isOnFire()) {
+            } else if (player.getEquippedStack(EquipmentSlot.LEGS).getItem() == ModItems.INFINITY_LEGGINGS) {
                 player.extinguish();
+            } else if (player.getEquippedStack(EquipmentSlot.FEET).getItem() == ModItems.INFINITY_BOOTS) {
+                player.setMovementSpeed(2);
             }
         }
     }
@@ -81,13 +78,4 @@ public class InfinityArmorItem extends ArmorItem {
         return true;
     }
 
-    @Override
-    public Multimap<EntityAttribute, EntityAttributeModifier> getAttributeModifiers(EquipmentSlot slot) {
-        final Multimap<EntityAttribute, EntityAttributeModifier> multimap = ArrayListMultimap.create(super.getAttributeModifiers(slot));
-
-        if (slot == EquipmentSlot.FEET) {
-            multimap.put(EntityAttributes.GENERIC_MOVEMENT_SPEED, new EntityAttributeModifier("V1 SPEED", 0.5, EntityAttributeModifier.Operation.MULTIPLY_BASE));
-        }
-        return multimap;
-    }
 }
