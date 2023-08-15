@@ -37,13 +37,13 @@ public class ModItems {
             new PileOfNeutrons(new FabricItemSettings()));
 
     public static final Item ULTIMATE_STEW = registerItem("ultimate_stew",
-            new Item(new FabricItemSettings()));
+            new Item(new FabricItemSettings().food(ModFoodComponents.ULTIMATE_STEW)));
 
     public static final Item DIAMOND_LATTICE = registerItem("diamond_lattice",
             new Item(new FabricItemSettings()));
 
     public static final Item COSMIC_MEATBALLS = registerItem("cosmic_meatballs",
-            new Item(new FabricItemSettings()));
+            new Item(new FabricItemSettings().food(ModFoodComponents.COSMIC_MEATBALLS)));
 
     public static final Item ENDEST_PEARL = registerItem("endest_pearl",
             new Item(new FabricItemSettings()));
