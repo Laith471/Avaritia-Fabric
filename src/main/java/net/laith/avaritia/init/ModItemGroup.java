@@ -50,6 +50,7 @@ public class ModItemGroup {
                     entries.add(ModBlocks.NEUTRON_COLLECTOR);
                     entries.add(ModBlocks.NEUTRONIUM_COMPRESSOR);
                     //tools
+                    entries.add(ModItems.SKULLFIRE_SWORD);
                     entries.add(ModItems.INFINITY_SWORD);
                     entries.add(ModItems.NATURE_RUIN);
                     entries.add(ModItems.INFINITY_PICKAXE);

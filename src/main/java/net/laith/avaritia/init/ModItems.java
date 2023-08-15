@@ -4,12 +4,10 @@ import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.laith.avaritia.AvaritiaMod;
 import net.laith.avaritia.common.item.*;
 import net.laith.avaritia.common.item.armor.InfinityArmorItem;
-import net.laith.avaritia.common.item.tools.InfinityAxeItem;
-import net.laith.avaritia.common.item.tools.InfinityPickaxe;
-import net.laith.avaritia.common.item.tools.InfinityShovelItem;
-import net.laith.avaritia.common.item.tools.InfinitySwordItem;
+import net.laith.avaritia.common.item.tools.*;
 import net.minecraft.item.ArmorItem;
 import net.minecraft.item.Item;
+import net.minecraft.item.ToolMaterials;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.util.Identifier;
@@ -91,6 +89,9 @@ public class ModItems {
 
     public static final Item INFINITY_SHOVEL = registerItem("infinity_shovel",
             new InfinityShovelItem(ModToolMaterials.INFINITY_SHOVEL, -172, -3.0F,new FabricItemSettings()));
+
+    public static final Item SKULLFIRE_SWORD = registerItem("skullfire_sword",
+            new SkullFireSwordItem(ToolMaterials.DIAMOND, 7, 1.0F,new FabricItemSettings()));
 
     public static final Item INFINITY_HELMET = registerItem("infinity_helmet",
             new InfinityArmorItem(ModArmorMaterials.INFINITY, ArmorItem.Type.HELMET, new FabricItemSettings()));
