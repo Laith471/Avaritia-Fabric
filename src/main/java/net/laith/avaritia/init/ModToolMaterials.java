@@ -17,7 +17,13 @@ public enum ModToolMaterials implements ToolMaterial {
 
     INFINITY_AXE(32, 0, 9999.0F, 200.0F, 15, () -> {
         return Ingredient.ofItems(new ItemConvertible[]{ModItems.INFINITY_INGOT});
+    }),
+
+    INFINITY_SHOVEL(32, 0, 9999F, 200.0F, 0, () -> {
+        return Ingredient.ofItems(new ItemConvertible[]{ModItems.INFINITY_INGOT});
     });
+
+
 
     private final int miningLevel;
     private final int itemDurability;

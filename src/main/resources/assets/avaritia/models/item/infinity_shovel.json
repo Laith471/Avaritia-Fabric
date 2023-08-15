@@ -1,0 +1,14 @@
+{
+  "parent": "minecraft:item/handheld",
+  "textures": {
+    "layer0": "avaritia:item/tools/infinity_shovel"
+  },
+  "overrides": [
+    {
+      "predicate": {
+        "destroyer": 1
+      },
+      "model": "avaritia:item/infinity_destroyer"
+    }
+  ]
+}

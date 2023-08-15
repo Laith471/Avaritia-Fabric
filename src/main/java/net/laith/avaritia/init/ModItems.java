@@ -6,6 +6,7 @@ import net.laith.avaritia.common.item.*;
 import net.laith.avaritia.common.item.armor.InfinityArmorItem;
 import net.laith.avaritia.common.item.tools.InfinityAxeItem;
 import net.laith.avaritia.common.item.tools.InfinityPickaxe;
+import net.laith.avaritia.common.item.tools.InfinityShovelItem;
 import net.laith.avaritia.common.item.tools.InfinitySwordItem;
 import net.minecraft.item.ArmorItem;
 import net.minecraft.item.Item;
@@ -87,6 +88,9 @@ public class ModItems {
 
     public static final Item INFINITY_PICKAXE = registerItem("infinity_pickaxe",
             new InfinityPickaxe(ModToolMaterials.INFINITY_AXE, -172, -3.0F,new FabricItemSettings()));
+
+    public static final Item INFINITY_SHOVEL = registerItem("infinity_shovel",
+            new InfinityShovelItem(ModToolMaterials.INFINITY_SHOVEL, -172, -3.0F,new FabricItemSettings()));
 
     public static final Item INFINITY_HELMET = registerItem("infinity_helmet",
             new InfinityArmorItem(ModArmorMaterials.INFINITY, ArmorItem.Type.HELMET, new FabricItemSettings()));

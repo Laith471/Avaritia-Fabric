@@ -20,5 +20,6 @@ public class AvaritiaModClient implements ClientModInitializer {
         HandledScreens.register(ModScreenHandlers.NEUTRONIUM_COMPRESSOR_SCREEN_HANDLER, NeutroniumCompressorScreen::new);
 
         ModelPredicateProviderRegistry.register(ModItems.INFINITY_PICKAXE, new Identifier("hammer"), (stack, world, entity, seed) -> stack.hasNbt() && stack.getNbt().getBoolean("hammer") ? 1 : 0);
+        ModelPredicateProviderRegistry.register(ModItems.INFINITY_SHOVEL, new Identifier("destroyer"), (stack, world, entity, seed) -> stack.hasNbt() && stack.getNbt().getBoolean("destroyer") ? 1 : 0);
     }
 }

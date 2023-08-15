@@ -27,49 +27,23 @@ public class ArmorHandler implements ServerTickEvents.StartTick, ServerLivingEnt
             // Enable flying
             player.getAbilities().allowFlying = true;
             player.sendAbilitiesUpdate();
-        } else if(!player.isCreative() && !player.isSpectator()){
+        } else if (!player.isCreative() && !player.isSpectator()) {
             player.getAbilities().allowFlying = false;
             player.getAbilities().flying = false;
             player.sendAbilitiesUpdate();
         }
-/*
+
         if (isWearingBoots(player)) {
-            boolean flying = player.getAbilities().flying;
-            boolean swimming = player.isSwimming();
-            boolean sneaking = player.isSneaking();
-
-
-
-                if (flying || swimming || sneaking) {
-                    float speedMultiplier = 0.15f; // Adjust this value as needed
-                    speedMultiplier *= flying ? 1.1f : 1.0f;
-                    speedMultiplier *= swimming ? 1.2f : 1.0f;
-                    speedMultiplier *= sneaking ? 0.1f : 1.0f;
-
-                    Vec3d motion = player.getVelocity();
-
-                    float moveForward = player.forwardSpeed;
-                    float moveStrafing = player.sidewaysSpeed;
-
-
-                    // Modify the player's velocity based on movement inputs and speed multiplier
-                    if (moveForward > 0f) {
-                        motion = motion.add(0, motion.y, speedMultiplier);
-                    } else if (moveForward < 0f) {
-                        motion = motion.add(0, motion.y, -speedMultiplier * 0.3f);
-                    }
-
-                    if (moveStrafing != 0f) {
-                        motion = motion.add(speedMultiplier * Math.signum(moveStrafing), motion.y, 0);
-                    }
-
-                    player.setVelocity(motion);
-                }
-            }
+            player.getAbilities().setFlySpeed(0.1f);
+            player.sendAbilitiesUpdate();
         }
-
-*/
+        if (!isWearingBoots(player)) {
+            player.getAbilities().setFlySpeed(0.05f);
+            player.sendAbilitiesUpdate();
+        }
     }
+
+
 
     private boolean isWearingTheFullArmor(PlayerEntity player) {
         // Implement your logic to check if the player is wearing the specific armor set
