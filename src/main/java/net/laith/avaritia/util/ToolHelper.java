@@ -1,5 +1,6 @@
 package net.laith.avaritia.util;
 
+import net.laith.avaritia.init.ModTags;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -94,7 +95,7 @@ public class ToolHelper {
                         BlockPos targetPos = new BlockPos((startX + xOffset) + xRearranger, (startY + yOffset) - heightRearranger, (startZ + zOffset) - widthRearranger + zRearranger);
                         BlockState targetState = world.getBlockState(targetPos);
 
-                        if (targetState.isIn(BlockTags.PICKAXE_MINEABLE)) {
+                        if (targetState.isIn(ModTags.Blocks.INFINITY_PICKAXE)) {
                             world.breakBlock(targetPos, true, player);
                         }
                     }

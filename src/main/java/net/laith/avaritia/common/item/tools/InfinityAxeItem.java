@@ -1,5 +1,6 @@
 package net.laith.avaritia.common.item.tools;
 
+import net.laith.avaritia.init.ModTags;
 import net.laith.avaritia.util.ToolHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -20,10 +21,10 @@ import net.minecraft.world.World;
 
 import java.util.List;
 
-public class InfinityAxeItem extends AxeItem {
+public class InfinityAxeItem extends MiningToolItem {
 
     public InfinityAxeItem(ToolMaterial material, float attackDamage, float attackSpeed, Settings settings) {
-        super(material, attackDamage, attackSpeed, settings);
+        super(attackDamage, attackSpeed, material, ModTags.Blocks.INFINITY_AXE, settings);
     }
 
     @Override
@@ -59,7 +60,7 @@ public class InfinityAxeItem extends AxeItem {
                             BlockPos offsetPos = targetPos.add(xOffset, yOffset, zOffset);
                             BlockState offsetState = world.getBlockState(offsetPos);
 
-                            if (isLeafOrLog(offsetState) || offsetState.isIn(BlockTags.AXE_MINEABLE)) {
+                            if (offsetState.isIn(ModTags.Blocks.INFINITY_AXE)) {
                                 ToolHelper.dropItems(offsetPos, serverWorld, world, user, stack, offsetState);
                             }
                         }

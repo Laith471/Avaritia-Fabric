@@ -1,5 +1,6 @@
 package net.laith.avaritia.common.item.tools;
 
+import net.laith.avaritia.init.ModTags;
 import net.laith.avaritia.util.ToolHelper;
 import net.minecraft.block.BlockState;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -7,6 +8,7 @@ import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.MiningToolItem;
 import net.minecraft.item.PickaxeItem;
 import net.minecraft.item.ToolMaterial;
 import net.minecraft.nbt.NbtCompound;
@@ -22,10 +24,10 @@ import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 
-public class InfinityPickaxe extends PickaxeItem {
+public class InfinityPickaxe extends MiningToolItem {
 
     public InfinityPickaxe(ToolMaterial material, int attackDamage, float attackSpeed, Settings settings) {
-        super(material, attackDamage, attackSpeed, settings);
+        super(attackDamage, attackSpeed, material, ModTags.Blocks.INFINITY_PICKAXE, settings);
     }
 
 
@@ -62,7 +64,7 @@ public class InfinityPickaxe extends PickaxeItem {
 
     public boolean postMine(ItemStack stack, World world, BlockState state, BlockPos pos, LivingEntity miner) {
         if (stack.getOrCreateNbt().getBoolean("hammer")) {
-            if (state.isIn(BlockTags.PICKAXE_MINEABLE)) {
+            if (state.isIn(ModTags.Blocks.INFINITY_PICKAXE)) {
                 ToolHelper.mineCubeHammer((PlayerEntity) miner, world);
             }
         }

@@ -52,7 +52,7 @@ public class ModItemGroup {
                     //tools
                     entries.add(ModItems.SKULLFIRE_SWORD);
                     entries.add(ModItems.INFINITY_SWORD);
-                    entries.add(ModItems.NATURE_RUIN);
+                    entries.add(ModItems.INFINITY_AXE);
                     entries.add(ModItems.INFINITY_PICKAXE);
                     entries.add(ModItems.INFINITY_SHOVEL);
 
