@@ -22,10 +22,11 @@ import org.jetbrains.annotations.Nullable;
 
 public class NeutronCollectorBlock extends BlockWithEntity {
     private static final DirectionProperty FACING = HorizontalFacingBlock.FACING;
+    public static final BooleanProperty ACTIVE = BooleanProperty.of("active");
 
     public NeutronCollectorBlock(Settings settings) {
         super(settings);
-        this.setDefaultState((BlockState)((BlockState)((BlockState)this.stateManager.getDefaultState()).with(FACING, Direction.NORTH)));
+        this.setDefaultState((BlockState)((BlockState)((BlockState)this.stateManager.getDefaultState()).with(FACING, Direction.NORTH).with(ACTIVE, false)));
     }
 
     public BlockState rotate(BlockState state, BlockRotation rotation) {
@@ -37,7 +38,7 @@ public class NeutronCollectorBlock extends BlockWithEntity {
     }
 
     protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
-        builder.add(new Property[]{FACING});
+        builder.add(new Property[]{FACING, ACTIVE});
     }
 
     public BlockState getPlacementState(ItemPlacementContext ctx) {

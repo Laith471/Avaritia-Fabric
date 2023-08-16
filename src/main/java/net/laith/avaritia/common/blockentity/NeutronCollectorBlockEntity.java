@@ -1,5 +1,7 @@
 package net.laith.avaritia.common.blockentity;
 
+import net.laith.avaritia.common.block.NeutronCollectorBlock;
+import net.laith.avaritia.common.block.NeutroniumCompressorBlock;
 import net.laith.avaritia.common.screenhandler.NeutronCollectorScreenHandler;
 import net.laith.avaritia.init.ModBlockEntities;
 import net.laith.avaritia.init.ModItems;
@@ -61,6 +63,7 @@ public class NeutronCollectorBlockEntity extends BlockEntity implements NamedScr
             return;
         }
         if(entity.inventory.get(0).getCount() < 64) {
+            world.setBlockState(blockPos, state.with(NeutronCollectorBlock.ACTIVE, true));
             entity.propertyDelegate.set(0, entity.propertyDelegate.get(0)+1);
             if(entity.progress == TIMER) {
                 craftItem(entity);
@@ -69,6 +72,8 @@ public class NeutronCollectorBlockEntity extends BlockEntity implements NamedScr
             } else {
                 markDirty(world, blockPos, state);
             }
+        } else {
+            world.setBlockState(blockPos, state.with(NeutronCollectorBlock.ACTIVE, false));
         }
     }
 
