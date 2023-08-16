@@ -1,22 +1,16 @@
 package net.laith.avaritia.common.handler;
 
-
-import dev.architectury.event.EventResult;
-import dev.architectury.event.events.common.EntityEvent;
 import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.laith.avaritia.init.ModArmorMaterials;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.MovementType;
 import net.minecraft.entity.damage.DamageSource;
-import net.minecraft.entity.damage.DamageTypes;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ArmorItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.util.math.Vec3d;
 
 public class ArmorHandler implements ServerTickEvents.StartTick, ServerLivingEntityEvents.AllowDamage {
 
@@ -37,9 +31,10 @@ public class ArmorHandler implements ServerTickEvents.StartTick, ServerLivingEnt
             player.getAbilities().setFlySpeed(0.2f);
             player.sendAbilitiesUpdate();
         }
+
         if (!isWearingBoots(player)) {
-            player.getAbilities().setFlySpeed(0.05f);
-            player.sendAbilitiesUpdate();
+           player.getAbilities().setFlySpeed(0.05f);
+          player.sendAbilitiesUpdate();
         }
     }
 
@@ -83,6 +78,7 @@ public class ArmorHandler implements ServerTickEvents.StartTick, ServerLivingEnt
         ItemStack bootsSlot = player.getEquippedStack(EquipmentSlot.FEET);
         return bootsSlot.getItem() instanceof ArmorItem && ((ArmorItem) bootsSlot.getItem()).getMaterial() == ModArmorMaterials.INFINITY;
     }
+
 
 
     @Override

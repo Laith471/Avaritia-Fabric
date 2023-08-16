@@ -4,12 +4,10 @@ import net.fabricmc.api.ClientModInitializer;
 import net.laith.avaritia.client.screen.ExtremeCraftingTableScreen;
 import net.laith.avaritia.client.screen.NeutronCollectorScreen;
 import net.laith.avaritia.client.screen.NeutroniumCompressorScreen;
-import net.laith.avaritia.common.item.tools.InfinityPickaxe;
 import net.laith.avaritia.init.ModItems;
 import net.laith.avaritia.init.ModScreenHandlers;
 import net.minecraft.client.gui.screen.ingame.HandledScreens;
 import net.minecraft.client.item.ModelPredicateProviderRegistry;
-import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.Identifier;
 
 public class AvaritiaModClient implements ClientModInitializer {
