@@ -20,8 +20,5 @@ public class NeutroniumIngot extends Item {
         super.appendTooltip(stack, world, tooltip, context);
         tooltip.add(Text.translatable("item.avaritia.neutronium_ingot.tooltip"));
     }
-    @Override
-    public boolean damage(DamageSource source) {
-        return false;
-    }
+
 }
