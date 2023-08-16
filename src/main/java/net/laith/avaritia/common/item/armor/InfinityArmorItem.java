@@ -44,18 +44,25 @@ public class InfinityArmorItem extends ArmorItem {
                 if (nightVisionEffect == null) {
                     nightVisionEffect = new StatusEffectInstance(StatusEffects.NIGHT_VISION, 300, 0, false, false);
                     player.addStatusEffect(nightVisionEffect);
+
                 } else {
                     player.addStatusEffect(new StatusEffectInstance(StatusEffects.NIGHT_VISION, 300, 0, false, false));
                 }
-            } else if (player.getEquippedStack(EquipmentSlot.CHEST).getItem() == ModItems.INFINITY_CHESTPLATE) {
+            } if (player.getEquippedStack(EquipmentSlot.CHEST).getItem() == ModItems.INFINITY_CHESTPLATE) {
                 List<StatusEffectInstance> effects = Lists.newArrayList(player.getStatusEffects());
                 Iterator<StatusEffectInstance> iterator = Collections2.filter(effects, (effectInstance) -> effectInstance.getEffectType().getCategory() == StatusEffectCategory.HARMFUL).iterator();
                 while (iterator.hasNext()) {
                     StatusEffectInstance effectInstance = iterator.next();
                     player.removeStatusEffect(effectInstance.getEffectType());
                 }
-            } else if (player.getEquippedStack(EquipmentSlot.LEGS).getItem() == ModItems.INFINITY_LEGGINGS) {
+            } if (player.getEquippedStack(EquipmentSlot.LEGS).getItem() == ModItems.INFINITY_LEGGINGS) {
                 player.extinguish();
+            } if (player.getEquippedStack(EquipmentSlot.FEET).getItem() == ModItems.INFINITY_BOOTS) {
+                StatusEffectInstance speedEffect = player.getStatusEffect(StatusEffects.SPEED);
+                if (speedEffect == null) {
+                    speedEffect = new StatusEffectInstance(StatusEffects.SPEED, 300, 2, false, false);
+                    player.addStatusEffect(speedEffect);
+                }
             }
         }
     }
@@ -73,7 +80,7 @@ public class InfinityArmorItem extends ArmorItem {
 
     @Override
     public boolean isEnchantable(ItemStack stack) {
-        return true;
+        return false;
     }
 
 }

@@ -11,15 +11,15 @@ import java.util.function.Supplier;
 
 public enum ModToolMaterials implements ToolMaterial {
 
-    INFINITY_SWORD(32, 0, 8.0F, 12.0F, 15, () -> {
+    INFINITY_SWORD(32, 0, 8.0F, 12.0F, 0, () -> {
         return Ingredient.ofItems(new ItemConvertible[]{ModItems.INFINITY_INGOT});
     }),
 
-    INFINITY_AXE(32, 0, 9999.0F, 29.0F, 15, () -> {
+    INFINITY_AXE(32, 0, 9999.0F, 29.0F, 0, () -> {
         return Ingredient.ofItems(new ItemConvertible[]{ModItems.INFINITY_INGOT});
     }),
 
-    INFINITY_PICKAXE(32, 0, 9999.0F, 15.0F, 15, () -> {
+    INFINITY_PICKAXE(32, 0, 9999.0F, 15.0F, 0, () -> {
         return Ingredient.ofItems(new ItemConvertible[]{ModItems.INFINITY_INGOT});
     }),
 

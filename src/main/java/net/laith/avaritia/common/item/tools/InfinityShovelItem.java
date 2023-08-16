@@ -5,6 +5,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ShovelItem;
@@ -49,5 +50,13 @@ public class InfinityShovelItem extends ShovelItem {
             }
         }
         return super.postMine(stack, world, state, pos, miner);
+    }
+    @Override
+    public boolean isEnchantable(ItemStack stack) {
+        return false;
+    }
+    @Override
+    public boolean damage(DamageSource source) {
+        return false;
     }
 }

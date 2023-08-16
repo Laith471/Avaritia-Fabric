@@ -1,6 +1,7 @@
 package net.laith.avaritia.common.item;
 
 import net.minecraft.client.item.TooltipContext;
+import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
@@ -18,5 +19,9 @@ public class NeutroniumIngot extends Item {
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
         super.appendTooltip(stack, world, tooltip, context);
         tooltip.add(Text.translatable("item.avaritia.neutronium_ingot.tooltip"));
+    }
+    @Override
+    public boolean damage(DamageSource source) {
+        return false;
     }
 }

@@ -3,6 +3,7 @@ package net.laith.avaritia.common.item.tools;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.boss.dragon.EnderDragonEntity;
+import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.SwordItem;
 import net.minecraft.item.ToolMaterial;
@@ -43,6 +44,16 @@ public class InfinitySwordItem extends SwordItem {
 
     @Override
     public boolean hasGlint(ItemStack stack) {
+        return false;
+    }
+
+    @Override
+    public boolean isEnchantable(ItemStack stack) {
+        return false;
+    }
+
+    @Override
+    public boolean damage(DamageSource source) {
         return false;
     }
 }
