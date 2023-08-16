@@ -15,6 +15,8 @@
   "item.avaritia.neutronium_nugget.tooltip": "§8§oAbout 35.6 million metric tons.",
   "item.avaritia.pile_of_neutrons": "§ePile Of Neutrons",
   "item.avaritia.pile_of_neutrons.tooltip": "§8§oTry to not think about it.",
+  "item.avaritia.pile_of_neutrons_source.tooltip": "§8§oYou can get it from the Neutron Collector.",
+  "item.avaritia.pile_of_neutrons_see_source.tooltip": "Press §eSHIFT§r for more Information.",
   "item.avaritia.record_fragment": "§cRecord Fragment",
   "item.avaritia.record_fragment.tooltip": "§8§oOne likes to believe in the freedom of music.",
 
