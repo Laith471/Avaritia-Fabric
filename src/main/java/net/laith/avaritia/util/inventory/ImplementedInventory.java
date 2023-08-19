@@ -1,4 +1,4 @@
-package net.laith.avaritia.util;
+package net.laith.avaritia.util.inventory;
 
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventories;

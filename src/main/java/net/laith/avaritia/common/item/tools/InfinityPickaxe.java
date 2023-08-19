@@ -8,17 +8,16 @@ import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.inventory.StackReference;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.MiningToolItem;
 import net.minecraft.item.PickaxeItem;
 import net.minecraft.item.ToolMaterial;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.registry.tag.BlockTags;
+import net.minecraft.screen.slot.Slot;
 import net.minecraft.server.world.ServerWorld;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.Arm;
-import net.minecraft.util.Hand;
-import net.minecraft.util.TypedActionResult;
+import net.minecraft.util.*;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
@@ -66,17 +65,20 @@ public class InfinityPickaxe extends MiningToolItem {
     public boolean postMine(ItemStack stack, World world, BlockState state, BlockPos pos, LivingEntity miner) {
         if (stack.getOrCreateNbt().getBoolean("hammer")) {
             if (state.isIn(ModTags.Blocks.INFINITY_PICKAXE)) {
-                ToolHelper.mineCubeHammer((PlayerEntity) miner, world);
+                ToolHelper.mineCube((PlayerEntity) miner, world, ModTags.Blocks.INFINITY_PICKAXE);
             }
         }
         return super.postMine(stack, world, state, pos, miner);
     }
+
     @Override
     public boolean isEnchantable(ItemStack stack) {
         return false;
     }
+
     @Override
     public boolean damage(DamageSource source) {
         return false;
     }
+
 }

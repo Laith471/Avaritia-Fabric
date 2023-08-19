@@ -12,6 +12,7 @@ import net.minecraft.item.ShovelItem;
 import net.minecraft.item.ToolMaterial;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.registry.tag.BlockTags;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Arm;
 import net.minecraft.util.Hand;
@@ -46,7 +47,7 @@ public class InfinityShovelItem extends ShovelItem {
     public boolean postMine(ItemStack stack, World world, BlockState state, BlockPos pos, LivingEntity miner) {
         if (stack.getOrCreateNbt().getBoolean("destroyer")) {
             if (state.isIn(BlockTags.SHOVEL_MINEABLE)) {
-                ToolHelper.mineCubeShovel((PlayerEntity) miner, world);
+                    ToolHelper.mineCube((PlayerEntity) miner, world, BlockTags.SHOVEL_MINEABLE);
             }
         }
         return super.postMine(stack, world, state, pos, miner);

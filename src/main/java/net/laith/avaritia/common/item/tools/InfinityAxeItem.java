@@ -1,5 +1,7 @@
 package net.laith.avaritia.common.item.tools;
 
+import net.laith.avaritia.common.blockentity.MatterClusterBlockEntity;
+import net.laith.avaritia.init.ModBlocks;
 import net.laith.avaritia.init.ModTags;
 import net.laith.avaritia.util.ToolHelper;
 import net.minecraft.block.Block;
@@ -35,10 +37,8 @@ public class InfinityAxeItem extends MiningToolItem {
 
     @Override
     public boolean postMine(ItemStack stack, World world, BlockState state, BlockPos pos, LivingEntity miner) {
-        if(isLeafOrLog(state)) {
-            mineTree(pos, world, state, (PlayerEntity) miner);
-        } else {
-
+        if(ToolHelper.isLeafOrLog(state)) {
+            ToolHelper.mineTree(pos, world, state, (PlayerEntity) miner);
         }
         return super.postMine(stack, world, state, pos, miner);
     }
@@ -62,7 +62,8 @@ public class InfinityAxeItem extends MiningToolItem {
                             BlockState offsetState = world.getBlockState(offsetPos);
 
                             if (offsetState.isIn(ModTags.Blocks.INFINITY_AXE)) {
-                                ToolHelper.dropItems(offsetPos, serverWorld, world, user, stack, offsetState);
+                                List<ItemStack> drops = Block.getDroppedStacks(offsetState, serverWorld, offsetPos, null, user, stack);
+                                ToolHelper.setItemsInMatterCluster(offsetPos, serverWorld, drops, user, true);
                             }
                         }
                     }
@@ -72,36 +73,7 @@ public class InfinityAxeItem extends MiningToolItem {
         return new TypedActionResult<>(ActionResult.SUCCESS,  stack);
     }
 
-    public boolean isLeafOrLog(BlockState state) {
 
-        if(state.isIn(BlockTags.LOGS) || state.isIn(BlockTags.LEAVES)) {
-            return true;
-        }
-        else {
-            return false;
-        }
-    }
-
-    public void mineTree(BlockPos pos, World world, BlockState state, PlayerEntity player) {
-        if (isLeafOrLog(state)) {
-            // Break the current block
-            world.breakBlock(pos, true, player);
-
-            // Break neighboring blocks recursively
-            for (int xOffset = -1; xOffset <= 1; xOffset++) {
-                for (int yOffset = -1; yOffset <= 1; yOffset++) {
-                    for (int zOffset = -1; zOffset <= 1; zOffset++) {
-                        BlockPos neighborPos = pos.add(xOffset, yOffset, zOffset);
-                        BlockState neighborState = world.getBlockState(neighborPos);
-
-                        if (isLeafOrLog(neighborState)) {
-                            mineTree(neighborPos, world, neighborState, player);
-                        }
-                    }
-                }
-            }
-        }
-    }
 
     @Override
     public boolean isEnchantable(ItemStack stack) {

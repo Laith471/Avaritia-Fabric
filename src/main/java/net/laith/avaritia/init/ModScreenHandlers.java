@@ -1,8 +1,11 @@
 package net.laith.avaritia.init;
 
+import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
+import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerType;
 import net.fabricmc.fabric.api.screenhandler.v1.ScreenHandlerRegistry;
 import net.laith.avaritia.AvaritiaMod;
 import net.laith.avaritia.common.screenhandler.ExtremeCraftingTableScreenHandler;
+import net.laith.avaritia.common.screenhandler.MatterClusterScreenHandler;
 import net.laith.avaritia.common.screenhandler.NeutronCollectorScreenHandler;
 import net.laith.avaritia.common.screenhandler.NeutroniumCompressorScreenHandler;
 import net.minecraft.screen.ScreenHandlerType;
@@ -12,6 +15,7 @@ public class ModScreenHandlers {
     public static ScreenHandlerType<ExtremeCraftingTableScreenHandler> EXTREME_CRAFTING_TABLE_SCREEN_HANDLER;
     public static ScreenHandlerType<NeutronCollectorScreenHandler> NEUTRON_COLLECTOR_SCREEN_HANDLER;
     public static ScreenHandlerType<NeutroniumCompressorScreenHandler> NEUTRONIUM_COMPRESSOR_SCREEN_HANDLER;
+    public static ScreenHandlerType<MatterClusterScreenHandler> MATTER_CLUSTER_SCREEN_HANDLER;
 
     public static void registerAllScreenHandlers() {
         EXTREME_CRAFTING_TABLE_SCREEN_HANDLER = ScreenHandlerRegistry.registerSimple
@@ -22,5 +26,9 @@ public class ModScreenHandlers {
 
         NEUTRONIUM_COMPRESSOR_SCREEN_HANDLER = ScreenHandlerRegistry.registerSimple
                 (new Identifier(AvaritiaMod.MOD_ID, "neutronium_compressor_screen_handler"), (syncId, inventory) -> new NeutroniumCompressorScreenHandler(syncId, inventory));
+
+
+        MATTER_CLUSTER_SCREEN_HANDLER = ScreenHandlerRegistry.registerSimple
+                (new Identifier(AvaritiaMod.MOD_ID, "matter_cluster_screen_handler"), (syncId, inventory) -> new MatterClusterScreenHandler(syncId, inventory));
     }
 }

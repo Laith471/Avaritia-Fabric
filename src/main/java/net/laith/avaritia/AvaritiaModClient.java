@@ -2,6 +2,7 @@ package net.laith.avaritia;
 
 import net.fabricmc.api.ClientModInitializer;
 import net.laith.avaritia.client.screen.ExtremeCraftingTableScreen;
+import net.laith.avaritia.client.screen.MatterClusterScreen;
 import net.laith.avaritia.client.screen.NeutronCollectorScreen;
 import net.laith.avaritia.client.screen.NeutroniumCompressorScreen;
 import net.laith.avaritia.init.ModItems;
@@ -16,6 +17,7 @@ public class AvaritiaModClient implements ClientModInitializer {
         HandledScreens.register(ModScreenHandlers.EXTREME_CRAFTING_TABLE_SCREEN_HANDLER, ExtremeCraftingTableScreen::new);
         HandledScreens.register(ModScreenHandlers.NEUTRON_COLLECTOR_SCREEN_HANDLER, NeutronCollectorScreen::new);
         HandledScreens.register(ModScreenHandlers.NEUTRONIUM_COMPRESSOR_SCREEN_HANDLER, NeutroniumCompressorScreen::new);
+        HandledScreens.register(ModScreenHandlers.MATTER_CLUSTER_SCREEN_HANDLER, MatterClusterScreen::new);
 
         ModelPredicateProviderRegistry.register(ModItems.INFINITY_PICKAXE, new Identifier("hammer"), (stack, world, entity, seed) -> stack.hasNbt() && stack.getNbt().getBoolean("hammer") ? 1 : 0);
         ModelPredicateProviderRegistry.register(ModItems.INFINITY_SHOVEL, new Identifier("destroyer"), (stack, world, entity, seed) -> stack.hasNbt() && stack.getNbt().getBoolean("destroyer") ? 1 : 0);

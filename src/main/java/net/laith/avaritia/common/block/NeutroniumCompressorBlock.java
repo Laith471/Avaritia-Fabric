@@ -24,7 +24,7 @@ import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
 public class NeutroniumCompressorBlock extends BlockWithEntity {
-    private static final DirectionProperty FACING = HorizontalFacingBlock.FACING;
+    public static final DirectionProperty FACING = HorizontalFacingBlock.FACING;
     public static final BooleanProperty ACTIVE = BooleanProperty.of("active");
 
     public NeutroniumCompressorBlock(Settings settings) {

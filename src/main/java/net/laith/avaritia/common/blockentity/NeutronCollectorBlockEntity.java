@@ -5,13 +5,13 @@ import net.laith.avaritia.common.block.NeutroniumCompressorBlock;
 import net.laith.avaritia.common.screenhandler.NeutronCollectorScreenHandler;
 import net.laith.avaritia.init.ModBlockEntities;
 import net.laith.avaritia.init.ModItems;
-import net.laith.avaritia.util.ImplementedInventory;
+import net.laith.avaritia.util.inventory.ImplementedInventory;
+import net.laith.avaritia.util.inventory.ImplementedSidedInventory;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventories;
-import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.screen.NamedScreenHandlerFactory;
@@ -20,9 +20,11 @@ import net.minecraft.screen.ScreenHandler;
 import net.minecraft.text.Text;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
+import org.jetbrains.annotations.Nullable;
 
-public class NeutronCollectorBlockEntity extends BlockEntity implements NamedScreenHandlerFactory, ImplementedInventory {
+public class NeutronCollectorBlockEntity extends BlockEntity implements NamedScreenHandlerFactory, ImplementedSidedInventory {
     public static final int TIMER = 7111;
     private final DefaultedList<ItemStack> inventory;
     private int progress = 0;
@@ -108,5 +110,43 @@ public class NeutronCollectorBlockEntity extends BlockEntity implements NamedScr
 
     public void resetProgress() {
         this.progress = 0;
+    }
+
+    @Override
+    public boolean canInsert(int slot, ItemStack stack, @Nullable Direction side) {
+        return false;
+    }
+
+    @Override
+    public boolean canExtract(int slot, ItemStack stack, @Nullable Direction side) {
+        Direction localDir = this.getWorld().getBlockState(this.pos).get(NeutroniumCompressorBlock.FACING);
+
+
+        if(side == Direction.UP || side == Direction.DOWN) {
+            return slot == 0;
+        }
+
+        return switch (localDir) {
+            default ->
+                    side.getOpposite() == Direction.NORTH && slot == 0 ||
+                            side.getOpposite() == Direction.EAST && slot == 0 ||
+                            side.getOpposite() == Direction.WEST && slot == 0 ||
+                            side.getOpposite() == Direction.SOUTH && slot == 0;
+            case EAST ->
+                    side.rotateYClockwise() == Direction.NORTH && slot == 0 ||
+                            side.rotateYClockwise() == Direction.EAST && slot == 0 ||
+                            side.rotateYClockwise() == Direction.WEST && slot == 0 ||
+                            side.rotateYClockwise() == Direction.SOUTH && slot == 0;
+            case SOUTH ->
+                    side == Direction.NORTH && slot == 0 ||
+                            side == Direction.EAST && slot == 0 ||
+                            side == Direction.WEST && slot == 0 ||
+                            side == Direction.SOUTH && slot == 0;
+            case WEST ->
+                    side.rotateYCounterclockwise() == Direction.NORTH && slot == 0 ||
+                            side.rotateYCounterclockwise() == Direction.EAST && slot == 0 ||
+                            side.rotateYCounterclockwise() == Direction.WEST && slot == 0 ||
+                            side.rotateYCounterclockwise() == Direction.SOUTH && slot == 0;
+        };
     }
 }

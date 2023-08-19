@@ -4,6 +4,7 @@ import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.laith.avaritia.AvaritiaMod;
 import net.laith.avaritia.common.block.ExtremeCraftingTableBlock;
+import net.laith.avaritia.common.block.MatterClusterBlock;
 import net.laith.avaritia.common.block.NeutronCollectorBlock;
 import net.laith.avaritia.common.block.NeutroniumCompressorBlock;
 import net.minecraft.block.Block;
@@ -29,6 +30,8 @@ public class ModBlocks {
     public static final Block NEUTRON_COLLECTOR = registerBlock("neutron_collector", new NeutronCollectorBlock(FabricBlockSettings.of().hardness(20.0F).requiresTool()));
 
     public static final Block NEUTRONIUM_COMPRESSOR = registerBlock("neutronium_compressor", new NeutroniumCompressorBlock(FabricBlockSettings.of().hardness(20.0F).requiresTool()));
+
+    public static final Block MATTER_CLUSTER = registerBlock("matter_cluster", new MatterClusterBlock(FabricBlockSettings.of().hardness(20.0F).requiresTool()));
 
     public static Block registerBlock(String name, Block block) {
         registerBlockItem(name, block);
