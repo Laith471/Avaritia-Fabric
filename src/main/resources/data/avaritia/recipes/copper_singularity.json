@@ -1,7 +1,7 @@
 {
   "type": "avaritia:compressor",
   "input": {
-    "item": "minecraft:copper_block"
+    "tag": "c:copper_blocks"
   },
   "cost": 400,
   "output": {

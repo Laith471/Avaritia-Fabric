@@ -10,7 +10,7 @@
   ],
   "key": {
     "D": {
-      "item": "minecraft:diamond"
+      "tag": "c:diamonds"
     }
   }
 }

@@ -1,7 +1,7 @@
 {
   "type": "avaritia:compressor",
   "input": {
-    "item": "minecraft:emerald_block"
+    "tag": "c:emerald_blocks"
   },
   "cost": 200,
   "output": {

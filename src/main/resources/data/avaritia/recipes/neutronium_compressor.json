@@ -5,10 +5,10 @@
       "item": "avaritia:neutronium_ingot"
     },
     "H": {
-      "item": "minecraft:hopper"
+      "tag": "c:hoppers"
     },
     "I": {
-      "item": "minecraft:iron_block"
+      "tag": "c:iron_blocks"
     },
     "O": {
       "item": "avaritia:neutronium_block"
@@ -17,7 +17,7 @@
       "item": "avaritia:crystal_matrix_ingot"
     },
     "R": {
-      "item": "minecraft:redstone_block"
+      "tag": "c:redstone_blocks"
     }
   },
   "pattern": [

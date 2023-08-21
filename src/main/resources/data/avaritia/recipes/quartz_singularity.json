@@ -1,7 +1,7 @@
 {
   "type": "avaritia:compressor",
   "input": {
-    "item": "minecraft:quartz_block"
+    "tag": "c:quartz_blocks"
   },
   "cost": 200,
   "output": {

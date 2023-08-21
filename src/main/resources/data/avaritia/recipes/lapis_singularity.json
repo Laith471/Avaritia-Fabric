@@ -1,7 +1,7 @@
 {
   "type": "avaritia:compressor",
   "input": {
-    "item": "minecraft:lapis_block"
+    "tag": "c:lapis_blocks"
   },
   "cost": 200,
   "output": {

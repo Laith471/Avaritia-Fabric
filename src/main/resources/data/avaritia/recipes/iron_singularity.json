@@ -1,7 +1,7 @@
 {
   "type": "avaritia:compressor",
   "input": {
-    "item": "minecraft:iron_block"
+    "tag": "c:iron_blocks"
   },
   "cost": 400,
   "output": {

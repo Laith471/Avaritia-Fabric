@@ -47,6 +47,7 @@ public class MatterClusterScreen extends HandledScreen<MatterClusterScreenHandle
     }
 
     protected void drawForeground(DrawContext context, int mouseX, int mouseY) {
-        //super.drawForeground(context, mouseX, mouseY);
+        context.drawText(this.textRenderer, this.title, this.titleX, this.titleY, 4210752, false);
+        context.drawText(this.textRenderer, this.playerInventoryTitle, 12, 110, 4210752, false);
     }
 }

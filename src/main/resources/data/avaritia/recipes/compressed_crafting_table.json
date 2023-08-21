@@ -10,7 +10,7 @@
   ],
   "key": {
     "C": {
-      "item": "minecraft:crafting_table"
+      "tag": "c:crafting_tables"
     }
   }
 }

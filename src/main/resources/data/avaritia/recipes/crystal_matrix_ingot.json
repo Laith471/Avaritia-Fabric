@@ -12,7 +12,7 @@
       "item": "avaritia:diamond_lattice"
     },
     "S": {
-      "item": "minecraft:nether_star"
+      "tag": "c:nether_stars"
     }
   }
 }

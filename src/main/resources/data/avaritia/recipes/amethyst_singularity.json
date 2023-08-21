@@ -1,7 +1,7 @@
 {
   "type": "avaritia:compressor",
   "input": {
-    "item": "minecraft:amethyst_block"
+    "tag": "c:amethyst_blocks"
   },
   "cost": 500,
   "output": {

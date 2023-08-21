@@ -2,10 +2,10 @@
   "type": "avaritia:shaped",
   "key": {
     "B": {
-      "item": "minecraft:bone"
+      "tag": "c:bones"
     },
     "D": {
-      "item": "minecraft:nether_star"
+      "tag": "c:nether_stars"
     },
     "I": {
       "item": "avaritia:crystal_matrix_ingot"
