@@ -40,5 +40,8 @@ public class AbstractBlockMixin {
 		if (state.getBlock() == Blocks.BEDROCK && (stack.getItem() == ModItems.INFINITY_PICKAXE)) {
 			cir.setReturnValue(player.getBlockBreakingSpeed(state) / effectiveHardness);
 		}
+		if (state.getBlock() == Blocks.END_PORTAL_FRAME && (stack.getItem() == ModItems.INFINITY_PICKAXE)) {
+			cir.setReturnValue(player.getBlockBreakingSpeed(state) / effectiveHardness);
+		}
 	}
 }

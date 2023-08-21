@@ -8,7 +8,7 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.Slice;
 
 @Mixin(Blocks.class)
-public class BlocksMixin {
+public class BlocksMixinEndPortalFrame {
 
     /**
      * @author LlamaLad7
@@ -16,10 +16,10 @@ public class BlocksMixin {
 
     @Redirect(
             method = "<clinit>",
-            slice = @Slice(from = @At(value = "CONSTANT", args = "stringValue=bedrock")),
+            slice = @Slice(from = @At(value = "CONSTANT", args = "stringValue=end_portal_frame")),
             at = @At(value = "INVOKE", target = "Lnet/minecraft/block/AbstractBlock$Settings;dropsNothing()Lnet/minecraft/block/AbstractBlock$Settings;", ordinal = 0)
     )
-    private static AbstractBlock.Settings bedrockDropsItself(AbstractBlock.Settings instance) {
+    private static AbstractBlock.Settings endDropsItself(AbstractBlock.Settings instance) {
         return instance;
     }
 }
