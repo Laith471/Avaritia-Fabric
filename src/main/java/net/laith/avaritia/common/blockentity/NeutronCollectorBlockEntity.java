@@ -99,7 +99,9 @@ public class NeutronCollectorBlockEntity extends BlockEntity implements NamedScr
     @Override
     public void writeNbt(NbtCompound nbt) {
         super.writeNbt(nbt);
-        nbt.putInt("progress", this.progress);
+        if(this.inventory.get(0).getCount() < 64) {
+            nbt.putInt("progress", this.progress);
+        }
         Inventories.writeNbt(nbt, this.inventory);
     }
 
