@@ -1,13 +1,11 @@
 package net.laith.avaritia.compat.rei;
 
 import me.shedaniel.rei.api.client.plugins.REIClientPlugin;
-import me.shedaniel.rei.api.client.registry.category.ButtonArea;
 import me.shedaniel.rei.api.client.registry.category.CategoryRegistry;
 import me.shedaniel.rei.api.client.registry.display.DisplayRegistry;
 import me.shedaniel.rei.api.common.util.EntryStacks;
 import net.laith.avaritia.common.recipe.ExtremeCraftingShapedRecipe;
 import net.laith.avaritia.common.recipe.ExtremeCraftingShapelessRecipe;
-import net.laith.avaritia.common.recipe.ExtremeRecipe;
 import net.laith.avaritia.common.recipe.NeutroniumCompressorRecipe;
 import net.laith.avaritia.compat.rei.category.ExtremeCategory;
 import net.laith.avaritia.compat.rei.category.IButtonArea;
