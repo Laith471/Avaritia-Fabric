@@ -2,20 +2,14 @@ package net.laith.avaritia.common.item.tools;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.ImmutableMap;
-import net.laith.avaritia.common.blockentity.MatterClusterBlockEntity;
-import net.laith.avaritia.init.ModBlocks;
 import net.laith.avaritia.init.ModTags;
-import net.laith.avaritia.util.ToolHelper;
+import net.laith.avaritia.util.helpers.ToolHelper;
 import net.minecraft.advancement.criterion.Criteria;
 import net.minecraft.block.*;
-import net.minecraft.entity.EquipmentSlot;
-import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.*;
-import net.minecraft.registry.tag.BlockTags;
-import net.minecraft.registry.tag.ItemTags;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
@@ -82,13 +76,6 @@ public class InfinityAxeItem extends MiningToolItem {
         return new TypedActionResult<>(ActionResult.SUCCESS,  stack);
     }
 
-
-
-    @Override
-    public boolean isEnchantable(ItemStack stack) {
-        return false;
-    }
-    @Override
     public boolean damage(DamageSource source) {
         return false;
     }

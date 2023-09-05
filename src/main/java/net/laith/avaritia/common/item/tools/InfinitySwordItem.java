@@ -31,24 +31,17 @@ public class InfinitySwordItem extends SwordItem {
             }
         }
 
-        // For other entities, set their health to zero
-        target.setHealth(0.0F);
+        if(target.isAlive()) {
+            for(int h = 0; h < 100; h++) {
+                target.setHealth(0);
+            }
+        }
 
         return true;
     }
 
     @Override
     public boolean isDamageable() {
-        return false;
-    }
-
-    @Override
-    public boolean hasGlint(ItemStack stack) {
-        return false;
-    }
-
-    @Override
-    public boolean isEnchantable(ItemStack stack) {
         return false;
     }
 

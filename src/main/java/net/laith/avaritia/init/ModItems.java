@@ -84,6 +84,9 @@ public class ModItems {
     public static final Item INFINITY_AXE = registerItem("infinity_axe",
             new InfinityAxeItem(ModToolMaterials.INFINITY_AXE, -1, -3.0F,new FabricItemSettings()));
 
+    public static final Item INFINITY_BOW = registerItem("infinity_bow",
+            new InfinityBow(new FabricItemSettings().maxCount(1)));
+
     public static final Item INFINITY_PICKAXE = registerItem("infinity_pickaxe",
             new InfinityPickaxe(ModToolMaterials.INFINITY_PICKAXE, -1, -2.8F,new FabricItemSettings()));
 

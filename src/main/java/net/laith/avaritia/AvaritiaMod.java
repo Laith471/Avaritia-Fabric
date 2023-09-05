@@ -15,6 +15,7 @@ public class AvaritiaMod implements ModInitializer {
 
 	@Override
 	public void onInitialize() {
+		ModProjectiles.registerProjectiles();
 		ModItemGroup.registerGroupItem();
 		ModItems.registerModItems();
 		ModBlocks.registerModBlocks();

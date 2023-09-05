@@ -55,7 +55,7 @@ public class ModItemGroup {
                     entries.add(ModItems.INFINITY_AXE);
                     entries.add(ModItems.INFINITY_PICKAXE);
                     entries.add(ModItems.INFINITY_SHOVEL);
-
+                    entries.add(ModItems.INFINITY_BOW);
                     //armor
                     entries.add(ModItems.INFINITY_HELMET);
                     entries.add(ModItems.INFINITY_CHESTPLATE);

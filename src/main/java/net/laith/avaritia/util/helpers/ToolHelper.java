@@ -1,4 +1,4 @@
-package net.laith.avaritia.util;
+package net.laith.avaritia.util.helpers;
 
 import net.laith.avaritia.common.blockentity.MatterClusterBlockEntity;
 import net.laith.avaritia.init.ModBlocks;
