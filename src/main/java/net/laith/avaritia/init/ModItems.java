@@ -16,22 +16,22 @@ import net.minecraft.util.Identifier;
 public class ModItems {
 
     public static final Item INFINITY_CATALYST = registerItem("infinity_catalyst",
-            new InfinityCatalyst(new FabricItemSettings()));
-
-    public static final Item CRYSTAL_MATRIX_INGOT = registerItem("crystal_matrix_ingot",
-            new CrystalMatrixIngot(new FabricItemSettings()));
+            new UnDamageableItem(new FabricItemSettings(), "item.avaritia.infinity_catalyst.tooltip"));
 
     public static final Item INFINITY_INGOT = registerItem("infinity_ingot",
-            new InfinityIngot(new FabricItemSettings()));
+            new UnDamageableItem(new FabricItemSettings(), "item.avaritia.infinity_ingot.tooltip"));
+
+    public static final Item CRYSTAL_MATRIX_INGOT = registerItem("crystal_matrix_ingot",
+            new DamageableItem(new FabricItemSettings(), "item.avaritia.crystal_matrix_ingot.tooltip"));
 
     public static final Item RECORD_FRAGMENT = registerItem("record_fragment",
-            new RecordFragment(new FabricItemSettings()));
+            new DamageableItem(new FabricItemSettings(), "item.avaritia.record_fragment.tooltip"));
 
     public static final Item NEUTRONIUM_INGOT = registerItem("neutronium_ingot",
-            new NeutroniumIngot(new FabricItemSettings()));
+            new DamageableItem(new FabricItemSettings(), "item.avaritia.neutronium_ingot.tooltip"));
 
     public static final Item NEUTRONIUM_NUGGET = registerItem("neutronium_nugget",
-            new NeutroniumNugget(new FabricItemSettings()));
+            new DamageableItem(new FabricItemSettings(), "item.avaritia.neutronium_nugget.tooltip"));
 
     public static final Item PILE_OF_NEUTRONS = registerItem("pile_of_neutrons",
             new PileOfNeutrons(new FabricItemSettings()));
