@@ -1,7 +1,6 @@
 package net.laith.avaritia.common.blockentity;
 
 import com.google.gson.JsonParser;
-import net.fabricmc.fabric.api.util.NbtType;
 import net.laith.avaritia.common.block.NeutroniumCompressorBlock;
 import net.laith.avaritia.common.recipe.NeutroniumCompressorRecipe;
 import net.laith.avaritia.common.screenhandler.NeutroniumCompressorScreenHandler;
@@ -17,6 +16,7 @@ import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtElement;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.screen.NamedScreenHandlerFactory;
 import net.minecraft.screen.PropertyDelegate;
@@ -159,14 +159,14 @@ public class NeutroniumCompressorBlockEntity extends BlockEntity implements Name
         this.cost = nbt.getInt("cost");
         this.cachedId = new Identifier(nbt.getString("cachedId"));
         this.cachedCost = nbt.getInt("cachedCost");
-        if (nbt.contains("cachedInput", NbtType.COMPOUND)) {
+        if (nbt.contains("cachedInput", NbtElement.COMPOUND_TYPE)) {
             NbtCompound cachedInputNbt = nbt.getCompound("cachedInput");
-            if (cachedInputNbt.contains("cachedInputJson", NbtType.STRING)) {
+            if (cachedInputNbt.contains("cachedInputJson", NbtElement.STRING_TYPE)) {
                 String cachedInputJson = cachedInputNbt.getString("cachedInputJson");
                 cachedInput = Ingredient.fromJson(new JsonParser().parse(cachedInputJson));
             }
         }
-        if (nbt.contains("cachedOutput", NbtType.COMPOUND)) {
+        if (nbt.contains("cachedOutput", NbtElement.COMPOUND_TYPE)) {
             this.cachedOutput = ItemStack.fromNbt(nbt.getCompound("cachedOutput"));
         }
         // obvious

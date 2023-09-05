@@ -1,18 +1,14 @@
 package net.laith.avaritia;
 
 import net.fabricmc.api.ClientModInitializer;
-import net.fabricmc.fabric.api.client.rendering.v1.BuiltinItemRendererRegistry;
 import net.laith.avaritia.client.screen.ExtremeCraftingTableScreen;
 import net.laith.avaritia.client.screen.MatterClusterScreen;
 import net.laith.avaritia.client.screen.NeutronCollectorScreen;
 import net.laith.avaritia.client.screen.NeutroniumCompressorScreen;
-import net.laith.avaritia.init.ModItems;
 import net.laith.avaritia.init.ModModelsPredicateProviders;
 import net.laith.avaritia.init.ModProjectiles;
 import net.laith.avaritia.init.ModScreenHandlers;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.ingame.HandledScreens;
-import net.minecraft.client.render.item.ItemRenderer;
 
 public class AvaritiaModClient implements ClientModInitializer {
     @Override
