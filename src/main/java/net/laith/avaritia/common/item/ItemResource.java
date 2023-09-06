@@ -28,7 +28,7 @@ public class ItemResource extends Item {
 
     @Override
     public boolean damage(DamageSource source) {
-        if(isDamageable == false) {
+        if(!isDamageable) {
             return false;
         } else {
             return super.damage(source);
