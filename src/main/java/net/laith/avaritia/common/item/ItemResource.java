@@ -1,6 +1,7 @@
 package net.laith.avaritia.common.item;
 
 import net.minecraft.client.item.TooltipContext;
+import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
@@ -9,12 +10,14 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class DamageableItem extends Item {
+public class ItemResource extends Item {
     public String translatable;
+    public boolean isDamageable;
 
-    public DamageableItem(Settings settings, String translatable) {
+    public ItemResource(Settings settings, String translatable, boolean isDamageable) {
         super(settings);
         this.translatable = translatable;
+        this.isDamageable = isDamageable;
     }
 
         @Override
@@ -22,4 +25,13 @@ public class DamageableItem extends Item {
             super.appendTooltip(stack, world, tooltip, context);
             tooltip.add(Text.translatable(translatable));
         }
+
+    @Override
+    public boolean damage(DamageSource source) {
+        if(isDamageable == false) {
+            return false;
+        } else {
+            return super.damage(source);
+        }
+    }
 }
