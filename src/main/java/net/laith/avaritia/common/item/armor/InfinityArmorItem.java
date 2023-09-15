@@ -57,12 +57,6 @@ public class InfinityArmorItem extends ArmorItem {
                 }
             } if (player.getEquippedStack(EquipmentSlot.LEGS).getItem() == ModItems.INFINITY_LEGGINGS) {
                 player.extinguish();
-            } if (player.getEquippedStack(EquipmentSlot.FEET).getItem() == ModItems.INFINITY_BOOTS) {
-                StatusEffectInstance speedEffect = player.getStatusEffect(StatusEffects.SPEED);
-                if (speedEffect == null) {
-                    speedEffect = new StatusEffectInstance(StatusEffects.SPEED, 300, 2, false, false);
-                    player.addStatusEffect(speedEffect);
-                }
             }
         }
     }

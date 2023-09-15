@@ -1,6 +1,7 @@
 package net.laith.avaritia;
 
 import net.fabricmc.api.ClientModInitializer;
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.LivingEntityFeatureRendererRegistrationCallback;
 import net.laith.avaritia.client.model.WingModel;
@@ -10,6 +11,7 @@ import net.laith.avaritia.client.screen.ExtremeCraftingTableScreen;
 import net.laith.avaritia.client.screen.MatterClusterScreen;
 import net.laith.avaritia.client.screen.NeutronCollectorScreen;
 import net.laith.avaritia.client.screen.NeutroniumCompressorScreen;
+import net.laith.avaritia.common.handler.ArmorHandler;
 import net.laith.avaritia.init.ModModelsPredicateProviders;
 import net.laith.avaritia.init.ModProjectiles;
 import net.laith.avaritia.init.ModScreenHandlers;
@@ -24,6 +26,7 @@ public class AvaritiaModClient implements ClientModInitializer {
         HandledScreens.register(ModScreenHandlers.NEUTRONIUM_COMPRESSOR_SCREEN_HANDLER, NeutroniumCompressorScreen::new);
         HandledScreens.register(ModScreenHandlers.MATTER_CLUSTER_SCREEN_HANDLER, MatterClusterScreen::new);
         ModProjectiles.registerRenderers();
+        ClientTickEvents.START_CLIENT_TICK.register(new ArmorHandler());
         ModModelsPredicateProviders.registerProviders();
         EntityModelLayerRegistry.registerModelLayer(WingModel.LAYER_LOCATION, WingModel::createBodyLayer);
         LivingEntityFeatureRendererRegistrationCallback.EVENT.register((entityType, entityRenderer, registrationHelper, context) -> {

@@ -4,6 +4,7 @@ import net.laith.avaritia.AvaritiaMod;
 import net.laith.avaritia.client.model.WingModel;
 import net.laith.avaritia.common.handler.ArmorHandler;
 import net.laith.avaritia.init.ModItems;
+import net.minecraft.client.model.Model;
 import net.minecraft.client.render.OverlayTexture;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.VertexConsumer;
@@ -21,6 +22,13 @@ public class EyeRenderer<T extends PlayerEntity> extends EyesFeatureRenderer<T, 
     private static final RenderLayer SKIN = RenderLayer.getEyes(new Identifier(AvaritiaMod.MOD_ID, "textures/models/armor/infinity_armor_eyes.png"));
 
     public EyeRenderer(FeatureRendererContext<T, EntityModel<T>> featureRendererContext) {super(featureRendererContext);}
+
+    @Override
+    public void render(MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, T entity, float limbAngle, float limbDistance, float tickDelta, float animationProgress, float headYaw, float headPitch) {
+        if(ArmorHandler.isWearingHelmet(entity)) {
+          super.render(matrices, vertexConsumers, light, entity, limbAngle,limbDistance,tickDelta, animationProgress, headYaw, headPitch);
+        }
+    }
 
     @Override
     public RenderLayer getEyesTexture() {
