@@ -59,7 +59,7 @@ public class ArmorHandler implements ServerTickEvents.StartTick, ServerLivingEnt
                 ((ArmorItem) feetSlot.getItem()).getMaterial() == ModArmorMaterials.INFINITY;
     }
 
-   private boolean isWearingHelmet(PlayerEntity player) {
+   public static boolean isWearingHelmet(PlayerEntity player) {
        ItemStack headSlot = player.getEquippedStack(EquipmentSlot.HEAD);
        return headSlot.getItem() instanceof ArmorItem && ((ArmorItem) headSlot.getItem()).getMaterial() == ModArmorMaterials.INFINITY;
    }
