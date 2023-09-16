@@ -1,17 +1,17 @@
 {
-	"required": true,
-	"minVersion": "0.8",
-	"package": "net.laith.avaritia.mixin",
-	"compatibilityLevel": "JAVA_17",
-	"mixins": [
-		"AbstractBlockMixin",
-		"BlocksMixinBedrock",
-		"BlocksMixinEndPortalFrame"
-	],
-	"injectors": {
-		"defaultRequire": 1
-	},
-	"client": [
-		"ItemRendererMixin"
-	]
+  "required": true,
+  "minVersion": "0.8",
+  "package": "net.laith.avaritia.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "mixins": [
+    "AbstractBlockMixin",
+    "BlocksMixinBedrock",
+    "BlocksMixinEndPortalFrame"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "client": [
+    "ItemRendererMixin"
+  ]
 }
