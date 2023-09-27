@@ -20,7 +20,6 @@ public class InfinityHandler {
             // Check if the player is wearing the specific armor set
             boolean toggle = false;
             if (BooleanHelper.isWearingChestplate(player)) {
-                // Enable flying
                 player.getAbilities().allowFlying = true;
                 player.sendAbilitiesUpdate();
                 toggle = true;
