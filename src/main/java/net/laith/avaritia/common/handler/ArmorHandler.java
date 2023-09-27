@@ -1,8 +1,12 @@
 package net.laith.avaritia.common.handler;
 
+import io.github.ladysnake.pal.AbilitySource;
+import io.github.ladysnake.pal.Pal;
+import io.github.ladysnake.pal.VanillaAbilities;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
+import net.laith.avaritia.AvaritiaMod;
 import net.laith.avaritia.util.helpers.BooleanHelper;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
@@ -14,18 +18,16 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.math.Vec3d;
 
 public class ArmorHandler implements ServerTickEvents.StartTick, ServerLivingEntityEvents.AllowDamage, ClientTickEvents.StartTick {
+    public static final AbilitySource avaritiaFlight = Pal.getAbilitySource(AvaritiaMod.MOD_ID, "flight");
 
     public void onServerTick(ServerPlayerEntity player) {
         // Check if the player is wearing the specific armor set
 
         if (BooleanHelper.isWearingChestplate(player)) {
             // Enable flying
-            player.getAbilities().allowFlying = true;
-            player.sendAbilitiesUpdate();
-        } else if (!player.isCreative() && !player.isSpectator()) {
-            player.getAbilities().allowFlying = false;
-            player.getAbilities().flying = false;
-            player.sendAbilitiesUpdate();
+            avaritiaFlight.grantTo(player, VanillaAbilities.ALLOW_FLYING);
+        } else {
+            avaritiaFlight.revokeFrom(player, VanillaAbilities.ALLOW_FLYING);
         }
 
         if(BooleanHelper.isWearingBoots(player)) {
