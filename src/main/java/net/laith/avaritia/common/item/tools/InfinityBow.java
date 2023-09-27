@@ -1,6 +1,7 @@
 package net.laith.avaritia.common.item.tools;
 
 import net.laith.avaritia.common.entity.InfinityArrowEntity;
+import net.minecraft.client.item.TooltipContext;
 import net.minecraft.enchantment.*;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
@@ -10,11 +11,14 @@ import net.minecraft.item.*;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.stat.Stats;
+import net.minecraft.text.Text;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.UseAction;
 import net.minecraft.world.World;
+import org.jetbrains.annotations.Nullable;
 
+import java.util.List;
 import java.util.Map;
 import java.util.function.Predicate;
 
@@ -93,6 +97,12 @@ public class InfinityBow extends RangedWeaponItem implements Vanishable {
     @Override
     public boolean damage(DamageSource source) {
         return false;
+    }
+
+    @Override
+    public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
+        stack.addHideFlag(ItemStack.TooltipSection.MODIFIERS);
+        super.appendTooltip(stack, world, tooltip, context);
     }
 
     @Override

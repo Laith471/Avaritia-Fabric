@@ -1,22 +1,14 @@
 package net.laith.avaritia.client.render;
 
 import net.laith.avaritia.AvaritiaMod;
-import net.laith.avaritia.client.model.WingModel;
-import net.laith.avaritia.common.handler.ArmorHandler;
-import net.laith.avaritia.init.ModItems;
 import net.laith.avaritia.util.helpers.BooleanHelper;
-import net.minecraft.client.model.Model;
-import net.minecraft.client.render.OverlayTexture;
 import net.minecraft.client.render.RenderLayer;
-import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.entity.feature.EyesFeatureRenderer;
 import net.minecraft.client.render.entity.feature.FeatureRendererContext;
 import net.minecraft.client.render.entity.model.EntityModel;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.Identifier;
 
 public class EyeRenderer<T extends PlayerEntity> extends EyesFeatureRenderer<T, EntityModel<T>> {

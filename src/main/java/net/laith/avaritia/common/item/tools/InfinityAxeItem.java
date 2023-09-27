@@ -6,6 +6,7 @@ import net.laith.avaritia.init.ModTags;
 import net.laith.avaritia.util.helpers.ToolHelper;
 import net.minecraft.advancement.criterion.Criteria;
 import net.minecraft.block.*;
+import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
@@ -14,6 +15,9 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
+import net.minecraft.text.Style;
+import net.minecraft.text.Text;
+import net.minecraft.text.TextColor;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
@@ -21,6 +25,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
 import net.minecraft.world.event.GameEvent;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.Map;
@@ -36,6 +41,12 @@ public class InfinityAxeItem extends MiningToolItem {
     @Override
     public boolean isDamageable() {
         return false;
+    }
+
+    @Override
+    public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
+        stack.addHideFlag(ItemStack.TooltipSection.MODIFIERS);
+        super.appendTooltip(stack, world, tooltip, context);
     }
 
     @Override
@@ -75,6 +86,7 @@ public class InfinityAxeItem extends MiningToolItem {
         }
         return new TypedActionResult<>(ActionResult.SUCCESS,  stack);
     }
+
 
     public boolean damage(DamageSource source) {
         return false;

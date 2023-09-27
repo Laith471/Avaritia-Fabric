@@ -1,6 +1,7 @@
 package net.laith.avaritia.init;
 
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
+import net.laith.avaritia.AvaritiaMod;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.registry.Registries;
@@ -65,6 +66,6 @@ public class ModItemGroup {
                 .build();
 
         Registry.register(Registries.ITEM_GROUP, new Identifier(
-                "avaritia", "infinity_catalyst"), AVARITIA);
+                AvaritiaMod.MOD_ID, "infinity_catalyst"), AVARITIA);
     }
 }

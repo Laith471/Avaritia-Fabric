@@ -3,10 +3,7 @@ package net.laith.avaritia.init;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.laith.avaritia.AvaritiaMod;
-import net.laith.avaritia.common.block.ExtremeCraftingTableBlock;
-import net.laith.avaritia.common.block.MatterClusterBlock;
-import net.laith.avaritia.common.block.NeutronCollectorBlock;
-import net.laith.avaritia.common.block.NeutroniumCompressorBlock;
+import net.laith.avaritia.common.block.*;
 import net.minecraft.block.Block;
 import net.minecraft.item.BlockItem;
 import net.minecraft.registry.Registries;
@@ -39,7 +36,7 @@ public class ModBlocks {
     }
 
     public static void registerBlockItem(String name, Block block) {
-        Registry.register(Registries.ITEM, new Identifier(AvaritiaMod.MOD_ID, name), new BlockItem(block, new FabricItemSettings()));
+        Registry.register(Registries.ITEM, new Identifier(AvaritiaMod.MOD_ID, name), new IItemBlock(block, new FabricItemSettings()));
     }
 
     public static void registerModBlocks() {

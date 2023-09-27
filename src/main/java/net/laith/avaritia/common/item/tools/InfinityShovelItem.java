@@ -2,6 +2,7 @@ package net.laith.avaritia.common.item.tools;
 
 import net.laith.avaritia.util.helpers.ToolHelper;
 import net.minecraft.block.BlockState;
+import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
@@ -10,12 +11,16 @@ import net.minecraft.item.ShovelItem;
 import net.minecraft.item.ToolMaterial;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.registry.tag.BlockTags;
+import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Arm;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
 
 public class InfinityShovelItem extends ShovelItem {
 
@@ -53,5 +58,11 @@ public class InfinityShovelItem extends ShovelItem {
     @Override
     public boolean damage(DamageSource source) {
         return false;
+    }
+
+    @Override
+    public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
+        stack.addHideFlag(ItemStack.TooltipSection.MODIFIERS);
+        super.appendTooltip(stack, world, tooltip, context);
     }
 }

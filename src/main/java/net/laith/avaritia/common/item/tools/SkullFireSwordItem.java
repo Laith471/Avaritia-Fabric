@@ -30,7 +30,8 @@ public class SkullFireSwordItem extends SwordItem {
 
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
-        super.appendTooltip(stack, world, tooltip, context);
+        stack.addHideFlag(ItemStack.TooltipSection.MODIFIERS);
         tooltip.add(Text.translatable("item.avaritia.skullfire_sword.tooltip"));
+        super.appendTooltip(stack, world, tooltip, context);
     }
 }

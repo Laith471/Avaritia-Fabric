@@ -6,7 +6,8 @@
   "mixins": [
     "AbstractBlockMixin",
     "BlocksMixinBedrock",
-    "BlocksMixinEndPortalFrame"
+    "BlocksMixinEndPortalFrame",
+    "LivingEntityMixin"
   ],
   "injectors": {
     "defaultRequire": 1

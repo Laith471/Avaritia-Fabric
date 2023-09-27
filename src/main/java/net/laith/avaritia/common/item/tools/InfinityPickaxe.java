@@ -3,6 +3,7 @@ package net.laith.avaritia.common.item.tools;
 import net.laith.avaritia.init.ModTags;
 import net.laith.avaritia.util.helpers.ToolHelper;
 import net.minecraft.block.BlockState;
+import net.minecraft.client.item.TooltipContext;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.LivingEntity;
@@ -12,10 +13,14 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.MiningToolItem;
 import net.minecraft.item.ToolMaterial;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.text.Text;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
 
 public class InfinityPickaxe extends MiningToolItem {
 
@@ -67,6 +72,12 @@ public class InfinityPickaxe extends MiningToolItem {
     @Override
     public boolean damage(DamageSource source) {
         return false;
+    }
+
+    @Override
+    public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
+        stack.addHideFlag(ItemStack.TooltipSection.MODIFIERS);
+        super.appendTooltip(stack, world, tooltip, context);
     }
 
 }

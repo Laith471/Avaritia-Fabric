@@ -10,7 +10,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class ItemResource extends Item {
+public class ItemResource extends IItem {
     public String translatable;
     public boolean isDamageable;
 
@@ -22,8 +22,8 @@ public class ItemResource extends Item {
 
         @Override
         public void appendTooltip(ItemStack stack, @Nullable World world, List< Text > tooltip, TooltipContext context) {
-            super.appendTooltip(stack, world, tooltip, context);
             tooltip.add(Text.translatable(translatable));
+            super.appendTooltip(stack, world, tooltip, context);
         }
 
     @Override
