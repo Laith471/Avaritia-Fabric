@@ -38,8 +38,8 @@ public class NeutroniumCompressorDisplay extends BasicDisplay {
         this.cost = cost;
     }
 
-     BasicDisplay.Serializer<NeutroniumCompressorDisplay> serializer() {
-         return BasicDisplay.Serializer.ofRecipeLess(NeutroniumCompressorDisplay::new, (display, tag) -> {
+     Serializer<NeutroniumCompressorDisplay> serializer() {
+         return Serializer.ofRecipeLess(NeutroniumCompressorDisplay::new, (display, tag) -> {
              tag.putInt("cost", display.getCost());
          });
     }

@@ -3,6 +3,7 @@ package net.laith.avaritia.common.item.tools;
 import net.laith.avaritia.init.ModTags;
 import net.laith.avaritia.util.helpers.ToolHelper;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
@@ -75,9 +76,12 @@ public class InfinityPickaxe extends MiningToolItem {
     }
 
     @Override
-    public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
-        stack.addHideFlag(ItemStack.TooltipSection.MODIFIERS);
-        super.appendTooltip(stack, world, tooltip, context);
+    public float getMiningSpeedMultiplier(ItemStack stack, BlockState state) {
+        if (stack.getOrCreateNbt().getBoolean("hammer")) {
+            return 5.0F;
+        } if(!state.isIn(ModTags.Blocks.INFINITY_PICKAXE)) {
+            return 275.0F;
+        }
+        return super.miningSpeed;
     }
-
 }

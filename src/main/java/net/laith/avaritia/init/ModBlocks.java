@@ -36,7 +36,7 @@ public class ModBlocks {
     }
 
     public static void registerBlockItem(String name, Block block) {
-        Registry.register(Registries.ITEM, new Identifier(AvaritiaMod.MOD_ID, name), new IItemBlock(block, new FabricItemSettings()));
+        Registry.register(Registries.ITEM, new Identifier(AvaritiaMod.MOD_ID, name), new BlockItem(block, new FabricItemSettings()));
     }
 
     public static void registerModBlocks() {

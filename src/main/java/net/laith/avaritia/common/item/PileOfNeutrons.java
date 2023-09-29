@@ -17,7 +17,6 @@ public class PileOfNeutrons extends Item {
 
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
-        stack.addHideFlag(ItemStack.TooltipSection.MODIFIERS);
         if(Screen.hasShiftDown()) {
             tooltip.add(Text.translatable("item.avaritia.pile_of_neutrons_source.tooltip"));
         } else {

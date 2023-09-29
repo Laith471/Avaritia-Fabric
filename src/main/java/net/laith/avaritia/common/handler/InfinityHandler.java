@@ -16,9 +16,10 @@ import net.minecraft.util.math.Vec3d;
 public class InfinityHandler {
 
     public static class Server implements ServerTickEvents.StartTick, ServerLivingEntityEvents.AllowDamage{
+        private boolean toggle = false;
+
         public void onServerTick(ServerPlayerEntity player) {
             // Check if the player is wearing the specific armor set
-            boolean toggle = false;
             if (BooleanHelper.isWearingChestplate(player)) {
                 player.getAbilities().allowFlying = true;
                 player.sendAbilitiesUpdate();
@@ -42,9 +43,7 @@ public class InfinityHandler {
         @Override
         public boolean allowDamage(LivingEntity entity, DamageSource source, float amount) {
             if(entity instanceof PlayerEntity player) {
-                if(BooleanHelper.isWearingTheFullArmor(player)) {
-                    return false;
-                }
+                return !BooleanHelper.isWearingTheFullArmor(player);
             }
             return true;
         }

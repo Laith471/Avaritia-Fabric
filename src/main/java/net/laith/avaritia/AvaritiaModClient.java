@@ -13,6 +13,7 @@ import net.minecraft.client.gui.screen.ingame.HandledScreens;
 public class AvaritiaModClient implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
+        ModEvents.Client.register();
         HandledScreens.register(ModScreenHandlers.EXTREME_CRAFTING_TABLE_SCREEN_HANDLER, ExtremeCraftingTableScreen::new);
         HandledScreens.register(ModScreenHandlers.NEUTRON_COLLECTOR_SCREEN_HANDLER, NeutronCollectorScreen::new);
         HandledScreens.register(ModScreenHandlers.NEUTRONIUM_COMPRESSOR_SCREEN_HANDLER, NeutroniumCompressorScreen::new);
@@ -20,6 +21,5 @@ public class AvaritiaModClient implements ClientModInitializer {
         EntityModelLayerRegistry.registerModelLayer(WingModel.LAYER_LOCATION, WingModel::createBodyLayer);
         ModModelsPredicateProviders.registerProviders();
         ModProjectiles.registerRenderers();
-        ModEvents.Client.registerEvents();
     }
 }

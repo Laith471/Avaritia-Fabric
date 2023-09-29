@@ -9,17 +9,14 @@ import me.shedaniel.rei.api.client.gui.widgets.Widget;
 import me.shedaniel.rei.api.client.gui.widgets.Widgets;
 import me.shedaniel.rei.api.client.registry.display.DisplayCategory;
 import me.shedaniel.rei.api.common.category.CategoryIdentifier;
-import me.shedaniel.rei.api.common.display.DisplayMerger;
 import me.shedaniel.rei.api.common.entry.EntryStack;
 import me.shedaniel.rei.api.common.entry.InputIngredient;
 import me.shedaniel.rei.api.common.util.EntryStacks;
 import net.laith.avaritia.client.screen.ExtremeCraftingTableScreen;
-import net.laith.avaritia.common.recipe.ExtremeCraftingShapelessRecipe;
-import net.laith.avaritia.compat.rei.display.ExtremeCraftingDisplay;
+import net.laith.avaritia.compat.rei.display.extreme.ExtremeCraftingDisplay;
 import net.laith.avaritia.compat.rei.ServerREIPlugin;
 import net.laith.avaritia.init.ModBlocks;
 import net.minecraft.text.Text;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 

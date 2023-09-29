@@ -100,12 +100,6 @@ public class InfinityBow extends RangedWeaponItem implements Vanishable {
     }
 
     @Override
-    public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
-        stack.addHideFlag(ItemStack.TooltipSection.MODIFIERS);
-        super.appendTooltip(stack, world, tooltip, context);
-    }
-
-    @Override
     public boolean isDamageable() {
         return false;
     }

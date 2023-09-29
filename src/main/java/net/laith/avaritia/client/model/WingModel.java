@@ -23,10 +23,10 @@ public class WingModel extends AnimalModel<PlayerEntity> {
         ModelPartData ModelPartData = ModelData.getRoot();
 
         ModelPartData bone = ModelPartData.addChild("bone", ModelPartBuilder.create(), ModelTransform.pivot(0.0F, 24.0F, 0.0F));
-        ModelPartData right_r1 = bone.addChild("right_r1", ModelPartBuilder.create().uv(0, 8).cuboid(-8.0F,  -13.0F, 0.0F, 8.0F, 8.0F, 0.0F,
+        bone.addChild("right_r1", ModelPartBuilder.create().uv(0, 8).cuboid(-8.0F,  -13.0F, 0.0F, 8.0F, 8.0F, 0.0F,
                 new Dilation(0.0F)), ModelTransform.of(0.0F, 0.0F, 0.0F, 0.0F, 2.9671F, 0.0F));
 
-        ModelPartData left_r1 = bone.addChild("left_r1", ModelPartBuilder.create().uv(0, 8).mirrored().cuboid(0.0F, -13.0F, 0.0F, 8.0F, 8.0F, 0.0F,
+        bone.addChild("left_r1", ModelPartBuilder.create().uv(0, 8).mirrored().cuboid(0.0F, -13.0F, 0.0F, 8.0F, 8.0F, 0.0F,
                 new Dilation(0.0F)).mirrored(false), ModelTransform.of(0.0F, 0.0F, 0.0F, 0.0F, -2.9671F, 0.0F));
 
         return TexturedModelData.of(ModelData, 16, 16);

@@ -1,8 +1,7 @@
-package net.laith.avaritia.compat.rei.display;
+package net.laith.avaritia.compat.rei.display.extreme;
 
 import me.shedaniel.rei.api.common.entry.EntryIngredient;
 import me.shedaniel.rei.api.common.registry.RecipeManagerContext;
-import me.shedaniel.rei.plugin.common.displays.crafting.DefaultCustomDisplay;
 import net.minecraft.recipe.Recipe;
 import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.Nullable;

@@ -3,6 +3,7 @@
   "values": [
     "#minecraft:mineable/shovel",
     "#minecraft:mineable/pickaxe",
-    "minecraft:bedrock"
+    "minecraft:bedrock",
+    "minecraft:end_portal_frame"
   ]
 }

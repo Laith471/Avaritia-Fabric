@@ -12,14 +12,15 @@ public class AvaritiaMod implements ModInitializer {
 
 	@Override
 	public void onInitialize() {
+		ModEvents.Server.register();
+		ModItems.registerModItems();
 		ModProjectiles.registerProjectiles();
 		ModItemGroup.registerGroupItem();
-		ModItems.registerModItems();
 		ModBlocks.registerModBlocks();
 		ModBlockEntities.registerBlockEntities();
 		ModScreenHandlers.registerAllScreenHandlers();
 		ModRecipes.registerRecipes();
-		ModEvents.Server.registerServer();
+
 
 		LOGGER.info("Hello Fabric world!");
 	}

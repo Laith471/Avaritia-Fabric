@@ -37,46 +37,46 @@ public class ModItems {
             new PileOfNeutrons(new FabricItemSettings()));
 
     public static final Item ULTIMATE_STEW = registerItem("ultimate_stew",
-            new IItem(new FabricItemSettings().food(ModFoodComponents.ULTIMATE_STEW)));
+            new Item(new FabricItemSettings().food(ModFoodComponents.ULTIMATE_STEW)));
 
     public static final Item DIAMOND_LATTICE = registerItem("diamond_lattice",
-            new IItem(new FabricItemSettings()));
+            new Item(new FabricItemSettings()));
 
     public static final Item COSMIC_MEATBALLS = registerItem("cosmic_meatballs",
-            new IItem(new FabricItemSettings().food(ModFoodComponents.COSMIC_MEATBALLS)));
+            new Item(new FabricItemSettings().food(ModFoodComponents.COSMIC_MEATBALLS)));
 
     public static final Item ENDEST_PEARL = registerItem("endest_pearl",
-            new IItem(new FabricItemSettings()));
+            new Item(new FabricItemSettings()));
 
     public static final Item IRON_SINGULARITY = registerItem("iron_singularity",
-            new IItem(new FabricItemSettings()));
+            new Item(new FabricItemSettings()));
 
     public static final Item GOLD_SINGULARITY = registerItem("gold_singularity",
-            new IItem(new FabricItemSettings()));
+            new Item(new FabricItemSettings()));
 
     public static final Item LAPIS_SINGULARITY = registerItem("lapis_singularity",
-            new IItem(new FabricItemSettings()));
+            new Item(new FabricItemSettings()));
 
     public static final Item REDSTONE_SINGULARITY = registerItem("redstone_singularity",
-            new IItem(new FabricItemSettings()));
+            new Item(new FabricItemSettings()));
 
     public static final Item COPPER_SINGULARITY = registerItem("copper_singularity",
-            new IItem(new FabricItemSettings()));
+            new Item(new FabricItemSettings()));
 
     public static final Item QUARTZ_SINGULARITY = registerItem("quartz_singularity",
-            new IItem(new FabricItemSettings()));
+            new Item(new FabricItemSettings()));
 
     public static final Item DIAMOND_SINGULARITY = registerItem("diamond_singularity",
-            new IItem(new FabricItemSettings()));
+            new Item(new FabricItemSettings()));
 
     public static final Item NETHERITE_SINGULARITY = registerItem("netherite_singularity",
-            new IItem(new FabricItemSettings()));
+            new Item(new FabricItemSettings()));
 
     public static final Item EMERALD_SINGULARITY = registerItem("emerald_singularity",
-            new IItem(new FabricItemSettings()));
+            new Item(new FabricItemSettings()));
 
     public static final Item AMETHYST_SINGULARITY = registerItem("amethyst_singularity",
-            new IItem(new FabricItemSettings()));
+            new Item(new FabricItemSettings()));
 
     public static final Item INFINITY_SWORD = registerItem("infinity_sword",
             new InfinitySwordItem(ModToolMaterials.INFINITY_SWORD, -1, -3.0F,new FabricItemSettings()));

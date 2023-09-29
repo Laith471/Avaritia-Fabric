@@ -17,7 +17,7 @@ public class NeutronCollectorScreen extends HandledScreen<NeutronCollectorScreen
 
     public NeutronCollectorScreen(NeutronCollectorScreenHandler handler, PlayerInventory inventory, Text title) {
         super(handler, inventory, Text.of("Neutron Collector"));
-        screenHandler = (NeutronCollectorScreenHandler) handler;
+        screenHandler = handler;
     }
 
     @Override

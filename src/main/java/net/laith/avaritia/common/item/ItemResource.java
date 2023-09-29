@@ -10,11 +10,11 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class ItemResource extends IItem {
+public class ItemResource extends Item {
     public String translatable;
     public boolean isDamageable;
 
-    public ItemResource(Settings settings, String translatable, boolean isDamageable) {
+    public ItemResource(Item.Settings settings, String translatable, boolean isDamageable) {
         super(settings);
         this.translatable = translatable;
         this.isDamageable = isDamageable;

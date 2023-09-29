@@ -2,19 +2,15 @@ package net.laith.avaritia.util.helpers;
 
 import net.laith.avaritia.common.blockentity.MatterClusterBlockEntity;
 import net.laith.avaritia.init.ModBlocks;
-import net.laith.avaritia.init.ModTags;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.registry.tag.BlockTags;
 import net.minecraft.registry.tag.TagKey;
 import net.minecraft.server.world.ServerWorld;
-import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
@@ -54,7 +50,7 @@ public class ToolHelper {
                 }
             }
         }
-        if (inUseMethod == true) {
+        if (inUseMethod) {
             serverWorld.setBlockState(offsetPos, Blocks.AIR.getDefaultState(), 3); // Clear the block
         }
     }

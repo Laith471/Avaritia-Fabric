@@ -7,12 +7,14 @@
     "AbstractBlockMixin",
     "BlocksMixinBedrock",
     "BlocksMixinEndPortalFrame",
-    "LivingEntityMixin"
+    "EndermanEntityMixin",
+    "events.LivingEntityMixin"
   ],
   "injectors": {
     "defaultRequire": 1
   },
   "client": [
-    "ItemRendererMixin"
+    "ItemRendererMixin",
+    "events.ItemStackMixin"
   ]
 }

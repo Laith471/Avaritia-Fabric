@@ -44,12 +44,6 @@ public class InfinityAxeItem extends MiningToolItem {
     }
 
     @Override
-    public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
-        stack.addHideFlag(ItemStack.TooltipSection.MODIFIERS);
-        super.appendTooltip(stack, world, tooltip, context);
-    }
-
-    @Override
     public boolean postMine(ItemStack stack, World world, BlockState state, BlockPos pos, LivingEntity miner) {
         if(ToolHelper.isLeafOrLog(state)) {
             ToolHelper.mineTree(pos, world, state, (PlayerEntity) miner);
@@ -66,9 +60,7 @@ public class InfinityAxeItem extends MiningToolItem {
         if (user.isSneaking()) {
             user.swingHand(hand);
 
-           if (world instanceof ServerWorld) {
-                ServerWorld serverWorld = (ServerWorld) world;
-
+           if (world instanceof ServerWorld serverWorld) {
                 for (int xOffset = -13; xOffset <= 12; xOffset++) {
                     for (int yOffset = 0; yOffset <= 25; yOffset++) {
                         for (int zOffset = -13; zOffset <= 12; zOffset++) {

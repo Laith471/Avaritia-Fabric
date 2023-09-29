@@ -6,7 +6,6 @@ import net.laith.avaritia.common.blockentity.ExtremeCraftingTableBlockEntity;
 import net.laith.avaritia.common.blockentity.MatterClusterBlockEntity;
 import net.laith.avaritia.common.blockentity.NeutronCollectorBlockEntity;
 import net.laith.avaritia.common.blockentity.NeutroniumCompressorBlockEntity;
-import net.laith.avaritia.init.ModBlocks;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;

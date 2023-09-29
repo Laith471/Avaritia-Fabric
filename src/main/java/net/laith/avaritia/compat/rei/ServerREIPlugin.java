@@ -2,20 +2,16 @@ package net.laith.avaritia.compat.rei;
 
 import me.shedaniel.rei.api.common.category.CategoryIdentifier;
 import me.shedaniel.rei.api.common.display.DisplaySerializerRegistry;
-import me.shedaniel.rei.api.common.display.basic.BasicDisplay;
 import me.shedaniel.rei.api.common.plugins.REIServerPlugin;
 import me.shedaniel.rei.api.common.transfer.info.MenuInfoRegistry;
 import me.shedaniel.rei.api.common.transfer.info.simple.SimpleMenuInfoProvider;
 import net.laith.avaritia.AvaritiaMod;
-import net.laith.avaritia.common.recipe.ExtremeRecipe;
 import net.laith.avaritia.common.screenhandler.ExtremeCraftingTableScreenHandler;
 import net.laith.avaritia.common.screenhandler.NeutroniumCompressorScreenHandler;
-import net.laith.avaritia.compat.rei.display.ExtremeCraftingDisplay;
+import net.laith.avaritia.compat.rei.display.extreme.ExtremeCraftingDisplay;
 import net.laith.avaritia.compat.rei.display.NeutroniumCompressorDisplay;
 import net.laith.avaritia.compat.rei.menu.ExtremeMenuInfo;
 import net.laith.avaritia.compat.rei.menu.NeutroniumCompressorMenu;
-import net.minecraft.inventory.CraftingInventory;
-import net.minecraft.recipe.Recipe;
 
 public class ServerREIPlugin implements REIServerPlugin {
 

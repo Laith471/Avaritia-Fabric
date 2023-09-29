@@ -1,19 +1,14 @@
 package net.laith.avaritia.common.entity;
 
 import net.laith.avaritia.init.ModProjectiles;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.boss.dragon.EnderDragonEntity;
-import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.particle.ParticleTypes;
-import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.world.World;
-
-import java.lang.reflect.Field;
 
 public class InfinityArrowSubEntity extends PersistentProjectileEntity {
 
@@ -45,8 +40,7 @@ public class InfinityArrowSubEntity extends PersistentProjectileEntity {
             return;
         } else {
 
-            if (target instanceof EnderDragonEntity) {
-                EnderDragonEntity enderDragon = (EnderDragonEntity) target;
+            if (target instanceof EnderDragonEntity enderDragon) {
                 if (!enderDragon.isInvulnerable()) {
                     enderDragon.setHealth(0.0F);
                 }

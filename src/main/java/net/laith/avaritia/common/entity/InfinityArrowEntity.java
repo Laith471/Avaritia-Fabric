@@ -1,26 +1,14 @@
 package net.laith.avaritia.common.entity;
 
-import net.laith.avaritia.init.ModItems;
 import net.laith.avaritia.init.ModProjectiles;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.boss.dragon.EnderDragonEntity;
-import net.minecraft.entity.boss.dragon.EnderDragonPart;
-import net.minecraft.entity.effect.StatusEffectInstance;
-import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemConvertible;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.particle.ParticleTypes;
 import net.minecraft.util.hit.BlockHitResult;
-import net.minecraft.util.hit.EntityHitResult;
-import net.minecraft.util.hit.HitResult;
 import net.minecraft.world.World;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.Random;
 
@@ -55,8 +43,7 @@ public class InfinityArrowEntity extends PersistentProjectileEntity {
             return;
         } else {
 
-            if (target instanceof EnderDragonEntity) {
-                EnderDragonEntity enderDragon = (EnderDragonEntity) target;
+            if (target instanceof EnderDragonEntity enderDragon) {
                 if (!enderDragon.isInvulnerable()) {
                     enderDragon.setHealth(0.0F);
                 }

@@ -13,8 +13,8 @@ public record NeutroniumCompressorMenu(NeutroniumCompressorDisplay display) impl
     public Iterable<SlotAccessor> getInputSlots(MenuInfoContext<NeutroniumCompressorScreenHandler, ?, NeutroniumCompressorDisplay> context) {
         return List.of
 
-       (SlotAccessor.fromSlot(context.getMenu().getSlot(0)),
-        SlotAccessor.fromSlot(context.getMenu().getSlot(1)));
+       (SlotAccessor.fromSlot(context.getMenu().getSlot(1)),
+        SlotAccessor.fromSlot(context.getMenu().getSlot(0)));
 
 
     }

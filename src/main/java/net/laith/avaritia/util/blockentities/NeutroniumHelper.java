@@ -2,15 +2,12 @@ package net.laith.avaritia.util.blockentities;
 
 import net.laith.avaritia.common.blockentity.NeutroniumCompressorBlockEntity;
 import net.minecraft.inventory.SimpleInventory;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.world.World;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 
 public class NeutroniumHelper {
 

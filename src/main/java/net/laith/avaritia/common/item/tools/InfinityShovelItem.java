@@ -60,9 +60,4 @@ public class InfinityShovelItem extends ShovelItem {
         return false;
     }
 
-    @Override
-    public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
-        stack.addHideFlag(ItemStack.TooltipSection.MODIFIERS);
-        super.appendTooltip(stack, world, tooltip, context);
-    }
 }

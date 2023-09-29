@@ -1,20 +1,11 @@
 package net.laith.avaritia.util;
 
-import me.shedaniel.rei.impl.client.gui.widget.basewidgets.TextFieldWidget;
-import net.minecraft.client.font.TextRenderer;
-import net.minecraft.client.gui.tooltip.TooltipComponent;
-import net.minecraft.item.ItemGroup;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.text.Style;
 import net.minecraft.text.Text;
-import net.minecraft.text.TextColor;
 import net.minecraft.util.Formatting;
-import net.minecraft.util.StringIdentifiable;
 import net.minecraft.util.Util;
-import org.spongepowered.asm.mixin.Final;
 
-import java.lang.module.FindException;
-import java.text.Normalizer;
 import java.util.List;
 
 public class TextUtil {
@@ -29,26 +20,26 @@ public class TextUtil {
 
 
     public static String makeFabulous(String input) {
-        return ludicrousFormatting(input, fabulousness, 80.0, 1, 1);
+        return ludicrousFormatting(input, fabulousness, 80.0,  1);
     }
 
     public static String makeFairiec(String input) {
-        return ludicrousFormatting(input, fairiec, 80.0, 1, 1);
+        return ludicrousFormatting(input, fairiec, 80.0,  1);
     }
 
     public static String makeDemonic(String input) {
-        return ludicrousFormatting(input, demonic, 80, 1, 1);
+        return ludicrousFormatting(input, demonic, 80,  1);
     }
 
     public static String makeAngelic(String input) {
-        return ludicrousFormatting(input, angelic, 80, 1, 1);
+        return ludicrousFormatting(input, angelic, 80,  1);
     }
 
     public static String makeSANIC(String input) {
-        return ludicrousFormatting(input, sanic, 50.0, 2, 1);
+        return ludicrousFormatting(input, sanic, 50.0,  1);
     }
 
-    public static String ludicrousFormatting(String input, Formatting[] colours, double delay, int step, int posstep) {
+    public static String ludicrousFormatting(String input, Formatting[] colours, double delay, int posstep) {
         StringBuilder sb = new StringBuilder(input.length() * 3);
         if (delay <= 0) {
             delay = 0.001;
@@ -69,15 +60,15 @@ public class TextUtil {
     }
 
 
-    
-    public static void tooltipReplacer(ItemStack stack, List<Text> tooltip, String Slot, String SF, String SF1, int Armor) {
-        stack.addHideFlag(ItemStack.TooltipSection.MODIFIERS);
-        tooltip.add(Text.literal(" "));
-        tooltip.add(Text.translatable("item.modifiers." + Slot).formatted(Formatting.GRAY));
-        tooltip.add(Text.literal(SF + Formatting.BLUE + " " + SF1));
-        tooltip.add(Text.literal("+" + Armor + " ").append(Text.translatable("attribute.name.generic.armor")).formatted(Formatting.BLUE));
-        tooltip.add(Text.literal("+1 ").append(Text.translatable("attribute.name.generic.armor_toughness")).formatted(Formatting.BLUE));
-        tooltip.add(Text.literal("+1000 ").append(Text.translatable("attribute.name.generic.knockback_resistance")).formatted(Formatting.BLUE));
+    public static void armorTooltip(ItemStack stack, Item item, String SF, String SF1, List<Text> list) {
+        if (stack.getItem() == item) {
+            int s = 0;
+            if(stack.hasEnchantments()) {
+                List a = stack.getEnchantments().stream().toList();
+                s = a.size();
+            }
+            list.add(3 + s,  Text.of(SF + Formatting.BLUE + " " + SF1));
+            return;
+        }
     }
-
 }

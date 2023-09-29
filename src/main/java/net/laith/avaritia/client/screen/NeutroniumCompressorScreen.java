@@ -2,8 +2,6 @@ package net.laith.avaritia.client.screen;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.laith.avaritia.AvaritiaMod;
-import net.laith.avaritia.common.blockentity.NeutronCollectorBlockEntity;
-import net.laith.avaritia.common.screenhandler.NeutronCollectorScreenHandler;
 import net.laith.avaritia.common.screenhandler.NeutroniumCompressorScreenHandler;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
@@ -19,7 +17,7 @@ public class NeutroniumCompressorScreen extends HandledScreen<NeutroniumCompress
 
     public NeutroniumCompressorScreen(NeutroniumCompressorScreenHandler handler, PlayerInventory inventory, Text title) {
         super(handler, inventory, Text.of("Neutronium Compressor"));
-        screenHandler = (NeutroniumCompressorScreenHandler) handler;
+        screenHandler = handler;
     }
 
     @Override
@@ -29,10 +27,10 @@ public class NeutroniumCompressorScreen extends HandledScreen<NeutroniumCompress
         RenderSystem.setShaderTexture(0, TEXTURE);
         context.drawTexture(TEXTURE, x, y, 0, 0, 176, 166);
         context.drawTexture(TEXTURE, x+ 90, y + 35, 176, 16, 16, handler.getScaledProgress());
-        showText(context, delta, mouseX, mouseY);
+        showText(context);
     }
 
-    private void showText(DrawContext context, float delta, int mouseX, int mouseY) {
+    private void showText(DrawContext context) {
         if(handler.isCrafting()) {
             context.drawText(textRenderer, handler.getProgress() + " / " + handler.getCost(), x + 62, y + 60, 4210752, false);
         }
