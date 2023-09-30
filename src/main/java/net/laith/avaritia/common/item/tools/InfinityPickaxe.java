@@ -61,14 +61,6 @@ public class InfinityPickaxe extends MiningToolItem {
         return true;
     }
 
-    public boolean postMine(ItemStack stack, World world, BlockState state, BlockPos pos, LivingEntity miner) {
-        if (stack.getOrCreateNbt().getBoolean("hammer")) {
-            if (state.isIn(ModTags.Blocks.INFINITY_PICKAXE)) {
-                ToolHelper.mineCube((PlayerEntity) miner, world, ModTags.Blocks.INFINITY_PICKAXE);
-            }
-        }
-        return super.postMine(stack, world, state, pos, miner);
-    }
 
     @Override
     public boolean damage(DamageSource source) {

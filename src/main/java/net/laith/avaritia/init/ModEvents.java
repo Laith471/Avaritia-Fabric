@@ -6,6 +6,7 @@ import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.rendering.v1.LivingEntityFeatureRendererRegistrationCallback;
 import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
+import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
 import net.laith.avaritia.client.render.EyeRenderer;
 import net.laith.avaritia.client.render.WingRenderer;
 import net.laith.avaritia.common.handler.InfinityHandler;
@@ -13,9 +14,13 @@ import net.laith.avaritia.util.TextUtil;
 import net.laith.avaritia.util.events.JumpEvent;
 import net.laith.avaritia.util.events.TooltipEvent;
 import net.laith.avaritia.util.helpers.BooleanHelper;
+import net.laith.avaritia.util.helpers.ToolHelper;
 import net.minecraft.client.render.entity.PlayerEntityRenderer;
 import net.minecraft.client.resource.language.I18n;
+import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemStack;
+import net.minecraft.registry.tag.BlockTags;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 
@@ -28,7 +33,22 @@ public class ModEvents {
             ServerTickEvents.START_SERVER_TICK.register(new InfinityHandler.Server());
 
             ServerLivingEntityEvents.ALLOW_DAMAGE.register(new InfinityHandler.Server());
-
+            PlayerBlockBreakEvents.BEFORE.register((world, player, pos, state, blockEntity) -> {
+               ItemStack stack = player.getEquippedStack(EquipmentSlot.MAINHAND);
+               if(stack.isOf(ModItems.INFINITY_PICKAXE)) {
+                   if (stack.getOrCreateNbt().getBoolean("hammer")) {
+                       if (state.isIn(ModTags.Blocks.INFINITY_PICKAXE)) {
+                           ToolHelper.mineCube(player, world, ModTags.Blocks.INFINITY_PICKAXE);
+                       }
+                   }
+               }
+                   else if (stack.getOrCreateNbt().getBoolean("destroyer")) {
+                       if (state.isIn(BlockTags.SHOVEL_MINEABLE)) {
+                           ToolHelper.mineCube(player, world, BlockTags.SHOVEL_MINEABLE);
+                       }
+                   }
+               return true;
+            });
         }
     }
 

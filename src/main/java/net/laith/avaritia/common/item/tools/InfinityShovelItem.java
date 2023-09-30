@@ -45,19 +45,8 @@ public class InfinityShovelItem extends ShovelItem {
         return super.use(world, user, hand);
     }
 
-
-    public boolean postMine(ItemStack stack, World world, BlockState state, BlockPos pos, LivingEntity miner) {
-        if (stack.getOrCreateNbt().getBoolean("destroyer")) {
-            if (state.isIn(BlockTags.SHOVEL_MINEABLE)) {
-                ToolHelper.mineCube((PlayerEntity) miner, world, BlockTags.SHOVEL_MINEABLE);
-            }
-        }
-        return super.postMine(stack, world, state, pos, miner);
-    }
-
     @Override
     public boolean damage(DamageSource source) {
         return false;
     }
-
 }
