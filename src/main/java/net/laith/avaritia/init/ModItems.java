@@ -79,22 +79,22 @@ public class ModItems {
             new Item(new FabricItemSettings()));
 
     public static final Item INFINITY_SWORD = registerItem("infinity_sword",
-            new InfinitySwordItem(ModToolMaterials.INFINITY_SWORD, -1, -3.0F,new FabricItemSettings()));
+            new InfinitySwordItem(ModToolMaterials.INFINITY_SWORD, -1, -3.0F, new FabricItemSettings()));
 
     public static final Item INFINITY_AXE = registerItem("infinity_axe",
-            new InfinityAxeItem(ModToolMaterials.INFINITY_AXE, -1, -3.0F,new FabricItemSettings()));
+            new InfinityAxeItem(ModToolMaterials.INFINITY_AXE, -1, -3.0F, new FabricItemSettings()));
 
     public static final Item INFINITY_BOW = registerItem("infinity_bow",
             new InfinityBow(new FabricItemSettings().maxCount(1)));
 
     public static final Item INFINITY_PICKAXE = registerItem("infinity_pickaxe",
-            new InfinityPickaxe(ModToolMaterials.INFINITY_PICKAXE, -1, -2.8F,new FabricItemSettings()));
+            new InfinityPickaxe(ModToolMaterials.INFINITY_PICKAXE, -1, -2.8F, new FabricItemSettings()));
 
     public static final Item INFINITY_SHOVEL = registerItem("infinity_shovel",
-            new InfinityShovelItem(ModToolMaterials.INFINITY_SHOVEL, -1, -3.0F,new FabricItemSettings()));
+            new InfinityShovelItem(ModToolMaterials.INFINITY_SHOVEL, -1, -3.0F, new FabricItemSettings()));
 
     public static final Item SKULLFIRE_SWORD = registerItem("skullfire_sword",
-            new SkullFireSwordItem(ToolMaterials.DIAMOND, 3, -2.4F,new FabricItemSettings()));
+            new SkullFireSwordItem(ToolMaterials.DIAMOND, 3, -2.4F, new FabricItemSettings()));
 
     public static final Item INFINITY_HELMET = registerItem("infinity_helmet",
             new InfinityArmorItem(ModArmorMaterials.INFINITY, ArmorItem.Type.HELMET, new FabricItemSettings()));
@@ -103,10 +103,10 @@ public class ModItems {
             new InfinityArmorItem(ModArmorMaterials.INFINITY, ArmorItem.Type.CHESTPLATE, new FabricItemSettings()));
 
     public static final Item INFINITY_LEGGINGS = registerItem("infinity_leggings",
-            new InfinityArmorItem(ModArmorMaterials.INFINITY, ArmorItem.Type.LEGGINGS,new FabricItemSettings()));
+            new InfinityArmorItem(ModArmorMaterials.INFINITY, ArmorItem.Type.LEGGINGS, new FabricItemSettings()));
 
     public static final Item INFINITY_BOOTS = registerItem("infinity_boots",
-            new InfinityArmorItem(ModArmorMaterials.INFINITY, ArmorItem.Type.BOOTS,new FabricItemSettings()));
+            new InfinityArmorItem(ModArmorMaterials.INFINITY, ArmorItem.Type.BOOTS, new FabricItemSettings()));
 
     private static Item registerItem(String name, Item item) {
         return Registry.register(Registries.ITEM,
@@ -116,4 +116,3 @@ public class ModItems {
         AvaritiaMod.LOGGER.info("Registering Mod Items for " + AvaritiaMod.MOD_ID);
     }
 }
-

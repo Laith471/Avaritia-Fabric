@@ -8,7 +8,7 @@ import org.slf4j.LoggerFactory;
 
 public class AvaritiaMod implements ModInitializer {
 	public static final String MOD_ID = "avaritia";
-    public static final Logger LOGGER = LoggerFactory.getLogger("avaritia");
+	public static final Logger LOGGER = LoggerFactory.getLogger("avaritia");
 
 	@Override
 	public void onInitialize() {

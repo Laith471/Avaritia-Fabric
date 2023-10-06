@@ -3,6 +3,7 @@ package net.laith.avaritia.init;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
+import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
 import net.fabricmc.fabric.api.client.rendering.v1.LivingEntityFeatureRendererRegistrationCallback;
 import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
@@ -12,11 +13,9 @@ import net.laith.avaritia.client.render.WingRenderer;
 import net.laith.avaritia.common.handler.InfinityHandler;
 import net.laith.avaritia.util.TextUtil;
 import net.laith.avaritia.util.events.JumpEvent;
-import net.laith.avaritia.util.events.TooltipEvent;
 import net.laith.avaritia.util.helpers.BooleanHelper;
 import net.laith.avaritia.util.helpers.ToolHelper;
 import net.minecraft.client.render.entity.PlayerEntityRenderer;
-import net.minecraft.client.resource.language.I18n;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -30,9 +29,19 @@ public class ModEvents {
 
     public static class Server {
         public static void register() {
-            ServerTickEvents.START_SERVER_TICK.register(new InfinityHandler.Server());
+            ServerTickEvents.START_WORLD_TICK.register(world -> {
+                for(var player: world.getPlayers()) {
+                    InfinityHandler.serverAbilities(player);
+                }
+            });
 
-            ServerLivingEntityEvents.ALLOW_DAMAGE.register(new InfinityHandler.Server());
+            ServerLivingEntityEvents.ALLOW_DAMAGE.register(((entity, source, amount) -> {
+                if(entity instanceof PlayerEntity player) {
+                    return !BooleanHelper.isWearingTheFullArmor(player);
+                }
+                return true;
+            }));
+
             PlayerBlockBreakEvents.BEFORE.register((world, player, pos, state, blockEntity) -> {
                ItemStack stack = player.getEquippedStack(EquipmentSlot.MAINHAND);
                if(stack.isOf(ModItems.INFINITY_PICKAXE)) {
@@ -56,7 +65,12 @@ public class ModEvents {
     public static class Client {
         public static void register() {
 
-            ClientTickEvents.START_CLIENT_TICK.register(new InfinityHandler.Client());
+           ClientTickEvents.START_WORLD_TICK.register(world -> {
+                for (var player: world.getPlayers()) {
+                    InfinityHandler.clientAbilities(player);
+                }
+            });
+
 
             LivingEntityFeatureRendererRegistrationCallback.EVENT.register((entityType, entityRenderer, registrationHelper, context) -> {
                 if (entityRenderer instanceof PlayerEntityRenderer playerEntityRenderer) {
@@ -81,7 +95,7 @@ public class ModEvents {
                 }
             });
 
-            TooltipEvent.ON_EQUIPMENT_SLOT.register((stack, list) -> {
+            ItemTooltipCallback.EVENT.register((stack, context, list) -> {
                 if (stack.getItem() == ModItems.INFINITY_SWORD) {
                         int s = 0;
                         if (stack.hasEnchantments()) {
