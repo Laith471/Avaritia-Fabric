@@ -41,6 +41,11 @@ public class ModItemGroup {
                     entries.add(ModItems.EMERALD_SINGULARITY);
                     entries.add(ModItems.NETHERITE_SINGULARITY);
                     entries.add(ModItems.AMETHYST_SINGULARITY);
+                    entries.add(ModItems.LEAD_SINGULARITY);
+                    entries.add(ModItems.NICKEL_SINGULARITY);
+                    entries.add(ModItems.IRIDIUM_SINGULARITY);
+                    entries.add(ModItems.FLUXED_SINGULARITY);
+                    entries.add(ModItems.PLATINUM_SINGULARITY);
                     // Blocks
                     entries.add(ModBlocks.CRYSTAL_MATRIX_BLOCK);
                     entries.add(ModBlocks.INFINITY_BLOCK);
