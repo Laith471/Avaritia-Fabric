@@ -7,6 +7,7 @@ import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
 import net.fabricmc.fabric.api.client.rendering.v1.LivingEntityFeatureRendererRegistrationCallback;
 import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
+import net.fabricmc.fabric.api.event.player.AttackEntityCallback;
 import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
 import net.laith.avaritia.client.render.EyeRenderer;
 import net.laith.avaritia.client.render.WingRenderer;
@@ -21,6 +22,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.registry.tag.BlockTags;
 import net.minecraft.text.Text;
+import net.minecraft.util.ActionResult;
 import net.minecraft.util.Formatting;
 
 import java.util.List;
@@ -41,6 +43,20 @@ public class ModEvents {
                 }
                 return true;
             }));
+
+            AttackEntityCallback.EVENT.register((attacker, world, hand, entity, hitResult) -> {
+                if(attacker.getEquippedStack(EquipmentSlot.MAINHAND).isOf(ModItems.INFINITY_SWORD)) {
+                    if (!entity.getWorld().isClient && entity instanceof PlayerEntity victim) {
+                        if (victim.isCreative() && !victim.isDead() && victim.getHealth() > 0 && !BooleanHelper.isWearingTheFullArmor(victim)) {
+                            victim.getDamageTracker().onDamage(attacker.getDamageSources().create(ModDamageTypes.INFINITY, attacker, victim), victim.getHealth());
+                            victim.setHealth(0);
+                            victim.onDeath(attacker.getDamageSources().create(ModDamageTypes.INFINITY, attacker, victim));
+                            return ActionResult.SUCCESS;
+                        }
+                    }
+                }
+                return ActionResult.PASS;
+            });
 
             PlayerBlockBreakEvents.BEFORE.register((world, player, pos, state, blockEntity) -> {
                ItemStack stack = player.getEquippedStack(EquipmentSlot.MAINHAND);

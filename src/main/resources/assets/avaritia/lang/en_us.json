@@ -34,7 +34,8 @@
   "item.avaritia.platinum_singularity": "§ePlatinum Singularity",
   "item.avaritia.nickel_singularity": "§eNickel Singularity",
   "item.avaritia.iridium_singularity": "§eIridium Singularity",
-  "item.avaritia.fluxed_singularity": "§eRedstone Flux Singularity",
+  "item.avaritia.fluxed_singularity": "§eFluxed Singularity",
+  "item.avaritia.silver_singularity": "§eSilver Singularity",
 
   "death.attack.infinity": "%1$s was obliterated by %2$s",
   "death.attack.infinity.item": "%1$s was obliterated by %2$s",

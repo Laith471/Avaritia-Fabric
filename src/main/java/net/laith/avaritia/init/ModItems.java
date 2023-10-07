@@ -81,6 +81,9 @@ public class ModItems {
     public static final Item NICKEL_SINGULARITY = registerItem("nickel_singularity",
             new ItemSingularity(0xC4C698, 0xDEE187, new FabricItemSettings()));
 
+    public static final Item SILVER_SINGULARITY = registerItem("silver_singularity",
+            new ItemSingularity(0xD5D5D5, 0xC0C0C0, new FabricItemSettings()));
+
     public static final Item EMERALD_SINGULARITY = registerItem("emerald_singularity",
             new ItemSingularity(0x8CD170, 0x5CBE34, new FabricItemSettings()));
 

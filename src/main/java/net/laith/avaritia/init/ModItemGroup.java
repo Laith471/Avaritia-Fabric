@@ -46,6 +46,7 @@ public class ModItemGroup {
                     entries.add(ModItems.IRIDIUM_SINGULARITY);
                     entries.add(ModItems.FLUXED_SINGULARITY);
                     entries.add(ModItems.PLATINUM_SINGULARITY);
+                    entries.add(ModItems.SILVER_SINGULARITY);
                     // Blocks
                     entries.add(ModBlocks.CRYSTAL_MATRIX_BLOCK);
                     entries.add(ModBlocks.INFINITY_BLOCK);
