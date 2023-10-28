@@ -1,6 +1,6 @@
 package net.laith.avaritia.common.entity;
 
-import net.laith.avaritia.init.ModProjectiles;
+import net.laith.avaritia.init.ModEntities;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.boss.dragon.EnderDragonEntity;
@@ -21,12 +21,12 @@ public class InfinityArrowEntity extends PersistentProjectileEntity {
     }
 
     public InfinityArrowEntity(double x, double y, double z, World world) {
-        super(ModProjectiles.INFINITY_ARROW_ENTITY, x, y, z, world);
+        super(ModEntities.INFINITY_ARROW_ENTITY, x, y, z, world);
         this.setDamage(9999);
     }
 
     public InfinityArrowEntity(LivingEntity owner, World world) {
-        super(ModProjectiles.INFINITY_ARROW_ENTITY, owner, world);
+        super(ModEntities.INFINITY_ARROW_ENTITY, owner, world);
         this.setDamage(9999);
     }
 

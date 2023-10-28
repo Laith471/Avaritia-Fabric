@@ -36,6 +36,7 @@
   "item.avaritia.iridium_singularity": "§eIridium Singularity",
   "item.avaritia.fluxed_singularity": "§eFluxed Singularity",
   "item.avaritia.silver_singularity": "§eSilver Singularity",
+  "sounds.avaritia.gaping_void": "Gaping void",
 
   "death.attack.infinity": "%1$s was obliterated by %2$s",
   "death.attack.infinity.item": "%1$s was obliterated by %2$s",
@@ -59,6 +60,9 @@
 
   "avaritia.category.rei.extreme_crafting": "Extreme Crafting",
   "avaritia.category.rei.neutronium_compressor": "Neutronium Compressor",
+
+  "entity.avaritia.gaping_void": "Gaping Void",
+  "entity.avaritia.endest_pearl": "Flying Endest Pearl",
 
   "block.avaritia.crystal_matrix_block": "Crystal Matrix Block",
   "block.avaritia.matter_cluster": "Matter Cluster",

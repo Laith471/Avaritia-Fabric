@@ -2,7 +2,6 @@ package net.laith.avaritia.common.item;
 
 import net.minecraft.item.Item;
 
-import javax.swing.plaf.SplitPaneUI;
 import java.util.ArrayList;
 import java.util.List;
 

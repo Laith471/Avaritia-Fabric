@@ -46,7 +46,7 @@ public class ModItems {
             new Item(new FabricItemSettings().food(ModFoodComponents.COSMIC_MEATBALLS)));
 
     public static final Item ENDEST_PEARL = registerItem("endest_pearl",
-            new Item(new FabricItemSettings()));
+            new EndestPearlItem(new FabricItemSettings()));
 
     public static final Item LEAD_SINGULARITY = registerItem("lead_singularity",
             new ItemSingularity(0x3E3D4E, 0x444072, new FabricItemSettings()));

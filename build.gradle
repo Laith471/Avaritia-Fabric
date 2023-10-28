@@ -25,6 +25,15 @@ repositories {
 		credentials {
 			username System.getenv("MOREMCMETA_MAVEN_USER") ?: project.moremcmetaMavenUser
 			password System.getenv("MOREMCMETA_MAVEN_PASS") ?: project.moremcmetaMavenPass
+		}}
+
+	maven {
+		name = 'Ladysnake Mods'
+		url = 'https://maven.ladysnake.org/releases'
+		content {
+			includeGroup 'io.github.ladysnake'
+			includeGroup 'org.ladysnake'
+			includeGroupByRegex 'dev.onyxstudios.*'
 		}
 	}
 	// Add repositories to retrieve artifacts from in here.
@@ -32,6 +41,8 @@ repositories {
 	// Loom adds the essential maven repositories to download Minecraft and libraries from automatically.
 	// See https://docs.gradle.org/current/userguide/declaring_repositories.html
 	// for more information about repositories.
+			mavenCentral()
+			maven { url 'https://jitpack.io' }
 }
 
 loom {
@@ -70,6 +81,8 @@ dependencies {
 	modImplementation "io.github.moremcmeta:moremcmeta-fabric:${project.moremcmeta_version}"
 
 
+
+
 	modCompileOnly "me.shedaniel:RoughlyEnoughItems-api-fabric:${rei_version}"
 	modCompileOnly "me.shedaniel:RoughlyEnoughItems-default-plugin-fabric:${rei_version}"
 	modImplementation "me.shedaniel:RoughlyEnoughItems-fabric:${project.rei_version}"
@@ -77,6 +90,7 @@ dependencies {
 	// These are included in the Fabric API production distribution and allow you to update your mod to the latest modules at a later more convenient time.
 
 	include(modImplementation "io.github.ladysnake:PlayerAbilityLib:${project.pal_version}")
+	include(modImplementation("com.github.0x3C50:Renderer:master-SNAPSHOT"))
 
 	// modImplementation "net.fabricmc.fabric-api:fabric-api-deprecated:${project.fabric_version}"
 }
