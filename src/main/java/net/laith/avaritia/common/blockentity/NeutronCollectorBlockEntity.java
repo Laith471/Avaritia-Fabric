@@ -5,6 +5,7 @@ import net.laith.avaritia.common.block.NeutroniumCompressorBlock;
 import net.laith.avaritia.common.screenhandler.NeutronCollectorScreenHandler;
 import net.laith.avaritia.init.ModBlockEntities;
 import net.laith.avaritia.init.ModItems;
+import net.laith.avaritia.util.AvaritiaConfig;
 import net.laith.avaritia.util.inventory.ImplementedInventory;
 import net.laith.avaritia.util.inventory.ImplementedSidedInventory;
 import net.minecraft.block.BlockState;
@@ -25,7 +26,7 @@ import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
 public class NeutronCollectorBlockEntity extends BlockEntity implements NamedScreenHandlerFactory, ImplementedSidedInventory {
-    public static final int TIMER = 7111;
+    public static final int TIMER = AvaritiaConfig.getConfig().process;
     private final DefaultedList<ItemStack> inventory;
     private int progress = 0;
 

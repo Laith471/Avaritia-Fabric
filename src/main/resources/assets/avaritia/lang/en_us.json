@@ -72,5 +72,7 @@
   "block.avaritia.compressed_crafting_table": "Compressed Crafting Table",
   "block.avaritia.extreme_crafting_table": "Extreme Crafting Table",
   "block.avaritia.neutron_collector": "Neutron Collector",
-  "block.avaritia.neutronium_compressor": "Neutronium Compressor"
+  "block.avaritia.neutronium_compressor": "Neutronium Compressor",
+
+  "item.avaritia.infinity_shuriken": "§dInfinity Shuriken"
 }

@@ -71,11 +71,11 @@ public class EndestPearlEntity extends ThrownItemEntity {
         }
 
         if (!getEntityWorld().isClient) {
-            EntityGapingVoid ent;
+            GapingVoidEntity ent;
             if (shooter != null) {
-                ent = new EntityGapingVoid(getEntityWorld(), shooter);
+                ent = new GapingVoidEntity(getEntityWorld(), shooter);
 
-            } else ent = new EntityGapingVoid(getEntityWorld());
+            } else ent = new GapingVoidEntity(getEntityWorld());
 
             Direction dir = entity.getHorizontalFacing();
             Vec3d offset = Vec3d.ZERO;
@@ -99,11 +99,11 @@ public class EndestPearlEntity extends ThrownItemEntity {
 
         if (!getEntityWorld().isClient) {
 
-            EntityGapingVoid ent;
+            GapingVoidEntity ent;
             if (shooter != null) {
-                ent = new EntityGapingVoid(getEntityWorld(), shooter);
+                ent = new GapingVoidEntity(getEntityWorld(), shooter);
 
-            } else ent = new EntityGapingVoid(getEntityWorld());
+            } else ent = new GapingVoidEntity(getEntityWorld());
             Direction dir = blockHitResult.getSide();
             Vec3d offset = Vec3d.ZERO;
             if (dir != null) {

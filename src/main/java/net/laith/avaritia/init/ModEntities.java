@@ -1,10 +1,10 @@
 package net.laith.avaritia.init;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricEntityTypeBuilder;
+import net.fabricmc.loader.api.FabricLoader;
 import net.laith.avaritia.AvaritiaMod;
 import net.laith.avaritia.common.entity.*;
+import net.laith.avaritia.compat.tc.tools.shuriken.InfinityShurikenEntity;
 import net.minecraft.entity.EntityDimensions;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnGroup;
@@ -15,7 +15,7 @@ import net.minecraft.util.Identifier;
 public class ModEntities {
     public static EntityType<InfinityArrowEntity> INFINITY_ARROW_ENTITY;
     public static EntityType<InfinityArrowSubEntity> INFINITY_ARROW_SUB_ENTITY;
-    public static EntityType<EntityGapingVoid> GAPING_VOID;
+    public static EntityType<GapingVoidEntity> GAPING_VOID;
     public static EntityType<EndestPearlEntity> ENDEST_PEARL;
 
 
@@ -48,10 +48,12 @@ public class ModEntities {
                         .build()
         );
 
+
+
         GAPING_VOID = Registry.register(
                 Registries.ENTITY_TYPE,
                 new Identifier(AvaritiaMod.MOD_ID, "gaping_void"),
-                FabricEntityTypeBuilder.<EntityGapingVoid>create(SpawnGroup.MISC, EntityGapingVoid::new)
+                FabricEntityTypeBuilder.<GapingVoidEntity>create(SpawnGroup.MISC, GapingVoidEntity::new)
                         .build()
         );
     }

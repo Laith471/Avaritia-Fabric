@@ -12,8 +12,46 @@ base {
 
 repositories {
 
+	mavenCentral()
+	maven {
+		name = "Progwml6 maven"
+		url = "https://dvs1.progwml6.com/files/maven/"
+	}
+	maven {
+		name = "ModMaven"
+		url = "https://modmaven.dev"
+	}
+
+	maven {
+		name = "ModMenu"
+		url = "https://maven.terraformersmc.com/releases/"
+	}
+
+	maven {
+		name = "Star"
+		url = "https://maven.wispforest.io"
+	}
+
+	maven {
+		name = "Hephaestus"
+		url = "https://mvn.devos.one/releases/"
+	}
+
+
+	maven {
+		name = "Hephaestus"
+		url = "https://mvn.devos.one/snapshots/"
+	}
+
 	maven {
 		url = 'https://maven.ladysnake.org/releases'
+	}
+
+	maven {
+		url "https://cursemaven.com"
+		content {
+			includeGroup "curse.maven"
+		}
 	}
 
 	maven {
@@ -21,11 +59,23 @@ repositories {
 	}
 
 	maven {
+		url = 'https://jitpack.io'
+	}
+
+	maven {
+		url = "https://maven.jamieswhiteshirt.com/libs-release"
+		content {
+			includeGroup "com.jamieswhiteshirt"
+		}
+	}
+
+	maven {
 		url "https://maven.pkg.github.com/moremcmeta/*/"
 		credentials {
 			username System.getenv("MOREMCMETA_MAVEN_USER") ?: project.moremcmetaMavenUser
 			password System.getenv("MOREMCMETA_MAVEN_PASS") ?: project.moremcmetaMavenPass
-		}}
+		}
+	}
 
 	maven {
 		name = 'Ladysnake Mods'
@@ -36,13 +86,6 @@ repositories {
 			includeGroupByRegex 'dev.onyxstudios.*'
 		}
 	}
-	// Add repositories to retrieve artifacts from in here.
-	// You should only use this when depending on other mods because
-	// Loom adds the essential maven repositories to download Minecraft and libraries from automatically.
-	// See https://docs.gradle.org/current/userguide/declaring_repositories.html
-	// for more information about repositories.
-			mavenCentral()
-			maven { url 'https://jitpack.io' }
 }
 
 loom {
@@ -71,25 +114,42 @@ sourceSets {
 	}
 }
 dependencies {
-	// To change the versions see the gradle.properties file
+
+	//Minecraft
 	minecraft "com.mojang:minecraft:${project.minecraft_version}"
+
+	//Yarn mappings
 	mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
+
+	//Fabric Loader
 	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 
-	// Fabric API. This is technically optional, but you probably want it anyway.
+	// Fabric API
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
+
+	//MoreMCMeta
 	modImplementation "io.github.moremcmeta:moremcmeta-fabric:${project.moremcmeta_version}"
 
+	//Porting Lib required by Hephaestus
+	modCompileOnly "io.github.fabricators_of_create.Porting-Lib:Porting-Lib:${project.porting_lib_version}+${project.minecraft_base_version}-entity-refactor"
 
+	//Hephaestus(Tinker Construct port)
+	modCompileOnly "slimeknights.tconstruct:Hephaestus:${project.minecraft_version}-${project.hephaestus_version}"
 
-
+	//REI
 	modCompileOnly "me.shedaniel:RoughlyEnoughItems-api-fabric:${rei_version}"
 	modCompileOnly "me.shedaniel:RoughlyEnoughItems-default-plugin-fabric:${rei_version}"
 	modImplementation "me.shedaniel:RoughlyEnoughItems-fabric:${project.rei_version}"
-	// Uncomment the following line to enable the deprecated Fabric API modules.
-	// These are included in the Fabric API production distribution and allow you to update your mod to the latest modules at a later more convenient time.
 
+	//Cloth Config
+	modImplementation ("me.shedaniel.cloth:cloth-config-fabric:${project.cloth_config_version}") {
+		exclude(group: "net.fabricmc.fabric-api")
+	}
+
+	//PAL
 	include(modImplementation "io.github.ladysnake:PlayerAbilityLib:${project.pal_version}")
+
+	//Renderer
 	include(modImplementation("com.github.0x3C50:Renderer:master-SNAPSHOT"))
 
 	// modImplementation "net.fabricmc.fabric-api:fabric-api-deprecated:${project.fabric_version}"

@@ -1,6 +1,8 @@
 package net.laith.avaritia.util.helpers;
 
+import net.fabricmc.loader.api.FabricLoader;
 import net.laith.avaritia.init.ModItems;
+import net.laith.avaritia.util.AvaritiaConfig;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -38,5 +40,11 @@ public class BooleanHelper {
     public static boolean isWearingBoots(PlayerEntity player) {
         ItemStack feetSlot = player.getEquippedStack(EquipmentSlot.FEET);
         return feetSlot.getItem() == ModItems.INFINITY_BOOTS;
+    }
+
+    public static boolean tc = false;
+
+    public static void census(){
+        tc = FabricLoader.getInstance().isModLoaded("tconstruct") && AvaritiaConfig.getConfig().tc;
     }
 }

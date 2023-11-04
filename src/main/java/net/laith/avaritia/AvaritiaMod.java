@@ -1,16 +1,14 @@
 package net.laith.avaritia;
 
 import com.mojang.authlib.GameProfile;
-import me.x150.renderer.objfile.ObjFile;
 import net.fabricmc.api.ModInitializer;
 
-import net.laith.avaritia.init.*;
-import net.minecraft.sound.SoundEvent;
+import net.laith.avaritia.compat.ModCompat;
+import net.laith.avaritia.init.*;;
+import net.laith.avaritia.util.helpers.BooleanHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
-import java.nio.file.Path;
 import java.util.UUID;
 
 public class AvaritiaMod implements ModInitializer {
@@ -20,6 +18,8 @@ public class AvaritiaMod implements ModInitializer {
 
     @Override
 	public void onInitialize() {
+		BooleanHelper.census();
+		ModCompat.compatify();
 		ModEvents.Server.register();
 		ModItems.registerModItems();
 		ModEntities.registerEntities();
@@ -29,6 +29,7 @@ public class AvaritiaMod implements ModInitializer {
 		ModScreenHandlers.registerAllScreenHandlers();
 		ModRecipes.registerRecipes();
 		ModSounds.registerSounds();
+
 
 		LOGGER.info("Hello Fabric world!");
 	}

@@ -1,6 +1,7 @@
 package net.laith.avaritia.init;
 
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
+import net.fabricmc.loader.api.FabricLoader;
 import net.laith.avaritia.AvaritiaMod;
 import net.laith.avaritia.common.item.*;
 import net.laith.avaritia.common.item.armor.InfinityArmorItem;
