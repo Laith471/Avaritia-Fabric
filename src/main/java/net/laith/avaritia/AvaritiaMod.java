@@ -32,5 +32,6 @@ public class AvaritiaMod implements ModInitializer {
 
 
 		LOGGER.info("Hello Fabric world!");
+
 	}
 }
