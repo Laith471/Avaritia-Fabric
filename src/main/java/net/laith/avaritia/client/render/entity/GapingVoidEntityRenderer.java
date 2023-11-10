@@ -1,11 +1,7 @@
 package net.laith.avaritia.client.render.entity;
 
-import com.mojang.blaze3d.platform.GlStateManager;
-import com.mojang.blaze3d.systems.RenderSystem;
-import me.x150.renderer.objfile.ObjFile;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.laith.avaritia.AvaritiaMod;
 import net.laith.avaritia.client.model.GapingVoidModel;
 import net.laith.avaritia.common.entity.GapingVoidEntity;
 import net.minecraft.client.render.*;
@@ -15,12 +11,6 @@ import net.minecraft.client.render.entity.model.EntityModel;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.math.Vec3d;
-import org.joml.Matrix4f;
-import org.lwjgl.opengl.GL11;
-
-import java.io.IOException;
-import java.nio.file.Path;
 
 @Environment(EnvType.CLIENT)
 public class GapingVoidEntityRenderer extends EntityRenderer<GapingVoidEntity> {

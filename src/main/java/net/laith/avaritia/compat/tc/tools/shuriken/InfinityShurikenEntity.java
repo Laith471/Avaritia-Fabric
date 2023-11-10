@@ -21,7 +21,7 @@ public class InfinityShurikenEntity extends ShurikenEntityBase {
 
     @Override
     public float getDamage() {
-        return 1000;
+        return Float.MAX_VALUE;
     }
 
     @Override

@@ -8,6 +8,7 @@
     "BlocksMixinBedrock",
     "BlocksMixinEndPortalFrame",
     "EndermanEntityMixin",
+    "RecipeManagerMixin",
     "events.LivingEntityMixin"
   ],
   "injectors": {
