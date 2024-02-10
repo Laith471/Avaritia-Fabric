@@ -16,7 +16,7 @@ import net.laith.avaritia.client.screen.ExtremeCraftingTableScreen;
 import net.laith.avaritia.compat.rei.display.extreme.ExtremeCraftingDisplay;
 import net.laith.avaritia.compat.rei.ServerREIPlugin;
 import net.laith.avaritia.init.ModBlocks;
-import net.minecraft.text.Text;
+import net.minecraft.network.chat.Component;
 
 import java.util.List;
 
@@ -33,8 +33,8 @@ public class ExtremeCategory implements DisplayCategory<ExtremeCraftingDisplay<?
     }
 
     @Override
-    public Text getTitle() {
-        return Text.translatable("avaritia.category.rei.extreme_crafting");
+    public Component getTitle() {
+        return Component.translatable("avaritia.category.rei.extreme_crafting");
     }
 
     @Override
@@ -51,7 +51,7 @@ public class ExtremeCategory implements DisplayCategory<ExtremeCraftingDisplay<?
             slots.get(ingredient.getIndex()).entries(ingredient.get());
         }
         widgets.add(Widgets.createDrawableWidget((context, mouseX, mouseY, delta) -> {
-                    context.drawTexture(ExtremeCraftingTableScreen.REI_TEXTURE, startPoint.x + 42, startPoint.y + 100, 0, 0, 78, 31);
+                    context.blit(ExtremeCraftingTableScreen.REI_TEXTURE, startPoint.x + 42, startPoint.y + 100, 0, 0, 78, 31);
                 }));
         widgets.addAll(slots);
         widgets.add(Widgets.createSlot(new Point(startPoint.x + 73, startPoint.y + 109)).entries(display.getOutputEntries().get(0)).disableBackground().markOutput());

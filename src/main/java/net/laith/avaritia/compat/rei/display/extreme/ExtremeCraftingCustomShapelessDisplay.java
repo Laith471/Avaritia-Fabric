@@ -2,8 +2,8 @@ package net.laith.avaritia.compat.rei.display.extreme;
 
 import me.shedaniel.rei.api.common.entry.EntryIngredient;
 import me.shedaniel.rei.api.common.registry.RecipeManagerContext;
-import net.minecraft.recipe.Recipe;
-import net.minecraft.util.Identifier;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.crafting.Recipe;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -14,12 +14,12 @@ public ExtremeCraftingCustomShapelessDisplay(@Nullable Recipe<?> possibleRecipe,
         this(null, possibleRecipe, input, output);
         }
 
-public ExtremeCraftingCustomShapelessDisplay(@Nullable Identifier location, @Nullable Recipe<?> possibleRecipe, List<EntryIngredient> input, List<EntryIngredient> output) {
+public ExtremeCraftingCustomShapelessDisplay(@Nullable ResourceLocation location, @Nullable Recipe<?> possibleRecipe, List<EntryIngredient> input, List<EntryIngredient> output) {
         super(input, output, Optional.ofNullable(location == null && possibleRecipe != null ? possibleRecipe.getId() : location), Optional.ofNullable(possibleRecipe));
         }
 
-public static ExtremeCraftingCustomShapelessDisplay simple(List<EntryIngredient> input, List<EntryIngredient> output, Optional<Identifier> location) {
-        Recipe<?> optionalRecipe = location.flatMap(resourceLocation -> RecipeManagerContext.getInstance().getRecipeManager().get(resourceLocation))
+public static ExtremeCraftingCustomShapelessDisplay simple(List<EntryIngredient> input, List<EntryIngredient> output, Optional<ResourceLocation> location) {
+        Recipe<?> optionalRecipe = location.flatMap(resourceLocation -> RecipeManagerContext.getInstance().getRecipeManager().byKey(resourceLocation))
         .orElse(null);
         return new ExtremeCraftingCustomShapelessDisplay(location.orElse(null), optionalRecipe, input, output);
         }

@@ -1,38 +1,39 @@
 package net.laith.avaritia.common.recipe;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import it.unimi.dsi.fastutil.ints.IntList;
-import net.minecraft.inventory.CraftingInventory;
-import net.minecraft.inventory.RecipeInputInventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.network.PacketByteBuf;
-import net.minecraft.recipe.*;
-import net.minecraft.recipe.book.CraftingRecipeCategory;
-import net.minecraft.registry.DynamicRegistryManager;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.JsonHelper;
-import net.minecraft.util.collection.DefaultedList;
-import net.minecraft.world.World;
+import net.minecraft.core.NonNullList;
+import net.minecraft.core.RegistryAccess;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.GsonHelper;
+import net.minecraft.world.entity.player.StackedContents;
+import net.minecraft.world.inventory.CraftingContainer;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.level.Level;;
 
 import java.util.Iterator;
 
 public class ExtremeCraftingShapelessRecipe implements ExtremeRecipe {
-    private final Identifier id;
+    private final ResourceLocation resourceLocation;
     final String group;
     final ItemStack output;
-    final DefaultedList<Ingredient> input;
+    final NonNullList<Ingredient> input;
 
-    public ExtremeCraftingShapelessRecipe(Identifier id, String group, ItemStack output, DefaultedList<Ingredient> input) {
-        this.id = id;
+    public ExtremeCraftingShapelessRecipe(ResourceLocation resourceLocation, String group, ItemStack output, NonNullList<Ingredient> input) {
+        this.resourceLocation = resourceLocation;
         this.group = group;
         this.output = output;
         this.input = input;
     }
 
-    public Identifier getId() {
-        return this.id;
+    public ResourceLocation getId() {
+        return this.resourceLocation;
     }
 
     public RecipeSerializer<?> getSerializer() {
@@ -44,92 +45,92 @@ public class ExtremeCraftingShapelessRecipe implements ExtremeRecipe {
     }
 
 
-    public ItemStack getOutput(DynamicRegistryManager registryManager) {
+    public ItemStack getResultItem(RegistryAccess registryAccess) {
         return this.output;
     }
 
-    public DefaultedList<Ingredient> getIngredients() {
+    public NonNullList<Ingredient> getIngredients() {
         return this.input;
     }
 
+    private static NonNullList<Ingredient> getIngredients(JsonArray json) {
+        NonNullList<Ingredient> nonNullList = NonNullList.create();
 
-    public boolean matches(CraftingInventory craftingInventory, World world) {
-        RecipeMatcher recipeMatcher = new RecipeMatcher();
-        int i = 0;
-
-        for(int j = 0; j < craftingInventory.size(); ++j) {
-            ItemStack itemStack = craftingInventory.getStack(j);
-            if (!itemStack.isEmpty()) {
-                ++i;
-                recipeMatcher.addInput(itemStack, 1);
+        for(int i = 0; i < json.size(); ++i) {
+            Ingredient ingredient = Ingredient.fromJson(json.get(i), false);
+            if (!ingredient.isEmpty()) {
+                nonNullList.add(ingredient);
             }
         }
 
-        return i == this.input.size() && recipeMatcher.match(this, (IntList)null);
+        return nonNullList;
     }
 
-    public ItemStack craft(CraftingInventory craftingInventory, DynamicRegistryManager dynamicRegistryManager) {
+
+    public boolean matches(CraftingContainer container, Level level) {
+        StackedContents stackedContents = new StackedContents();
+        int i = 0;
+
+        for(int j = 0; j < container.getContainerSize(); ++j) {
+            ItemStack itemStack = container.getItem(j);
+            if (!itemStack.isEmpty()) {
+                ++i;
+                stackedContents.accountStack(itemStack, 1);
+            }
+        }
+
+        return i == this.input.size() && stackedContents.canCraft(this, (IntList)null);
+    }
+
+    public ItemStack assemble(CraftingContainer container, RegistryAccess registryAccess) {
         return this.output.copy();
     }
 
-    public boolean fits(int width, int height) {
+    public boolean canCraftInDimensions(int width, int height) {
         return width * height >= this.input.size();
     }
 
     public static class Serializer implements RecipeSerializer<ExtremeCraftingShapelessRecipe> {
         public static final Serializer INSTANCE = new Serializer();
-        public static final Identifier ID = new Identifier("shapeless");
+        public static final ResourceLocation ID = new ResourceLocation("shapeless");
 
-        public ExtremeCraftingShapelessRecipe read(Identifier identifier, JsonObject jsonObject) {
-            String string = JsonHelper.getString(jsonObject, "group", "");
-            DefaultedList<Ingredient> defaultedList = getIngredients(JsonHelper.getArray(jsonObject, "ingredients"));
+        public ExtremeCraftingShapelessRecipe fromJson(ResourceLocation identifier, JsonObject jsonObject) {
+            String string = GsonHelper.getAsString(jsonObject, "group", "");
+            NonNullList<Ingredient> defaultedList = getIngredients(GsonHelper.getAsJsonArray(jsonObject, "ingredients"));
             if (defaultedList.isEmpty()) {
                 throw new JsonParseException("No ingredients for shapeless recipe");
             } else if (defaultedList.size() > 81) {
                 throw new JsonParseException("Too many ingredients for shapeless recipe");
             } else {
-                ItemStack itemStack = ExtremeCraftingShapedRecipe.outputFromJson(JsonHelper.getObject(jsonObject, "result"));
+                ItemStack itemStack = ExtremeCraftingShapedRecipe.outputFromJson(GsonHelper.getAsJsonObject(jsonObject, "result"));
                 return new ExtremeCraftingShapelessRecipe(identifier, string, itemStack, defaultedList);
             }
         }
 
-        private static DefaultedList<Ingredient> getIngredients(JsonArray json) {
-            DefaultedList<Ingredient> defaultedList = DefaultedList.of();
+        public ExtremeCraftingShapelessRecipe fromNetwork(ResourceLocation identifier, FriendlyByteBuf buffer) {
+            String string = buffer.readUtf();
+            int i = buffer.readVarInt();
+            NonNullList<Ingredient> nonNullList = NonNullList.withSize(i, Ingredient.EMPTY);
 
-            for(int i = 0; i < json.size(); ++i) {
-                Ingredient ingredient = Ingredient.fromJson(json.get(i), false);
-                if (!ingredient.isEmpty()) {
-                    defaultedList.add(ingredient);
-                }
+            for(int j = 0; j < nonNullList.size(); ++j) {
+                nonNullList.set(j, Ingredient.fromNetwork(buffer));
             }
 
-            return defaultedList;
+            ItemStack itemStack = buffer.readItem();
+            return new ExtremeCraftingShapelessRecipe(identifier, string, itemStack, nonNullList);
         }
 
-        public ExtremeCraftingShapelessRecipe read(Identifier identifier, PacketByteBuf packetByteBuf) {
-            String string = packetByteBuf.readString();
-            int i = packetByteBuf.readVarInt();
-            DefaultedList<Ingredient> defaultedList = DefaultedList.ofSize(i, Ingredient.EMPTY);
-
-            for(int j = 0; j < defaultedList.size(); ++j) {
-                defaultedList.set(j, Ingredient.fromPacket(packetByteBuf));
-            }
-
-            ItemStack itemStack = packetByteBuf.readItemStack();
-            return new ExtremeCraftingShapelessRecipe(identifier, string, itemStack, defaultedList);
-        }
-
-        public void write(PacketByteBuf packetByteBuf, ExtremeCraftingShapelessRecipe shapelessRecipe) {
-            packetByteBuf.writeString(shapelessRecipe.group);
-            packetByteBuf.writeVarInt(shapelessRecipe.input.size());
+        public void toNetwork(FriendlyByteBuf buffer, ExtremeCraftingShapelessRecipe shapelessRecipe) {
+            buffer.writeUtf(shapelessRecipe.group);
+            buffer.writeVarInt(shapelessRecipe.input.size());
             Iterator var3 = shapelessRecipe.input.iterator();
 
             while(var3.hasNext()) {
                 Ingredient ingredient = (Ingredient)var3.next();
-                ingredient.write(packetByteBuf);
+                ingredient.toNetwork(buffer);
             }
 
-            packetByteBuf.writeItemStack(shapelessRecipe.output);
+            buffer.writeItem(shapelessRecipe.output);
         }
     }
 }

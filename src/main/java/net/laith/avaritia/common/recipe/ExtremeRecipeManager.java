@@ -1,12 +1,12 @@
 package net.laith.avaritia.common.recipe;
 
 import net.laith.avaritia.AvaritiaMod;
-import net.minecraft.block.Block;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.recipe.Ingredient;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.collection.DefaultedList;
+import net.minecraft.core.NonNullList;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.level.block.Block;
 
 import java.util.*;
 
@@ -52,17 +52,17 @@ public class ExtremeRecipeManager {
             Ingredient ingredient;
 
             if (recipe[i + 1] instanceof Item) {
-                ingredient = Ingredient.ofStacks(new ItemStack((Item) recipe[i + 1]));
+                ingredient = Ingredient.of(new ItemStack((Item) recipe[i + 1]));
             } else if (recipe[i + 1] instanceof Block) {
-                ingredient = Ingredient.ofStacks(new ItemStack((Block) recipe[i + 1]));
+                ingredient = Ingredient.of(new ItemStack((Block) recipe[i + 1]));
             } else if (recipe[i + 1] instanceof ItemStack) {
-                ingredient = Ingredient.ofStacks((ItemStack) recipe[i + 1]);
+                ingredient = Ingredient.of((ItemStack) recipe[i + 1]);
             } else ingredient = Ingredient.EMPTY;
 
             hashmap.put(character, ingredient);
         }
 
-        DefaultedList<Ingredient> ingredients = DefaultedList.of();
+        NonNullList<Ingredient> ingredients = NonNullList.create();
 
         char[] s = str.toString().toCharArray();
 
@@ -77,7 +77,7 @@ public class ExtremeRecipeManager {
             if (c0 == ' ')
                 ingredients.add(Ingredient.EMPTY);
 
-            ExtremeCraftingShapedRecipe shapedrecipes = new ExtremeCraftingShapedRecipe(new Identifier(AvaritiaMod.MOD_ID, result.getItem().toString()), "", width, height, ingredients, result);
+            ExtremeCraftingShapedRecipe shapedrecipes = new ExtremeCraftingShapedRecipe(new ResourceLocation(AvaritiaMod.MOD_ID, result.getItem().toString()), "", width, height, ingredients, result);
             recipes.add(shapedrecipes);
         }
     }

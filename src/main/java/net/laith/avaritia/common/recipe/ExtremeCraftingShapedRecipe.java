@@ -4,18 +4,22 @@ import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.google.gson.*;
-import net.minecraft.inventory.CraftingInventory;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.network.PacketByteBuf;
-import net.minecraft.recipe.*;
-import net.minecraft.registry.DynamicRegistryManager;
-import net.minecraft.registry.Registries;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.JsonHelper;
-import net.minecraft.util.collection.DefaultedList;
-import net.minecraft.world.World;
+import net.minecraft.core.NonNullList;
+import net.minecraft.core.RegistryAccess;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.GsonHelper;
+import net.minecraft.world.inventory.CraftingContainer;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.crafting.ShapedRecipe;
+import net.minecraft.world.level.Level;
+
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -25,23 +29,18 @@ public class ExtremeCraftingShapedRecipe
         implements ExtremeRecipe {
     final int width;
     final int height;
-    final DefaultedList<Ingredient> input;
+    final NonNullList<Ingredient> input;
     final ItemStack output;
-    private final Identifier id;
+    private final ResourceLocation resourceLocation;
     final String group;
 
-    public ExtremeCraftingShapedRecipe(Identifier id, String group, int width, int height, DefaultedList<Ingredient> input, ItemStack output) {
-        this.id = id;
+    public ExtremeCraftingShapedRecipe(ResourceLocation resourceLocation, String group, int width, int height, NonNullList<Ingredient> input, ItemStack output) {
+        this.resourceLocation = resourceLocation;
         this.group = group;
         this.width = width;
         this.height = height;
         this.input = input;
         this.output = output;
-    }
-
-    @Override
-    public Identifier getId() {
-        return this.id;
     }
 
     @Override
@@ -55,29 +54,33 @@ public class ExtremeCraftingShapedRecipe
     }
 
     @Override
-    public DefaultedList<Ingredient> getIngredients() {
+    public ResourceLocation getId() {
+        return this.resourceLocation;
+    }
+
+    @Override
+    public NonNullList<Ingredient> getIngredients() {
         return this.input;
     }
 
     @Override
-    public boolean fits(int width, int height) {
+    public boolean canCraftInDimensions(int width, int height) {
         return width >= this.width && height >= this.height;
     }
 
     @Override
-    public ItemStack getOutput(DynamicRegistryManager registryManager) {
+    public ItemStack getResultItem(RegistryAccess registryAccess) {
         return this.output;
     }
 
-
     @Override
-    public boolean matches(CraftingInventory craftingInventory, World world) {
-        for (int i = 0; i <= craftingInventory.getWidth() - this.width; ++i) {
-            for (int j = 0; j <= craftingInventory.getHeight() - this.height; ++j) {
-                if (this.matchesPattern(craftingInventory, i, j, true)) {
+    public boolean matches(CraftingContainer container, Level level) {
+        for (int i = 0; i <= container.getWidth() - this.width; ++i) {
+            for (int j = 0; j <= container.getHeight() - this.height; ++j) {
+                if (this.matchesPattern(container, i, j, true)) {
                     return true;
                 }
-                if (!this.matchesPattern(craftingInventory, i, j, false)) continue;
+                if (!this.matchesPattern(container, i, j, false)) continue;
                 return true;
             }
         }
@@ -85,20 +88,20 @@ public class ExtremeCraftingShapedRecipe
     }
 
     @Override
-    public ItemStack craft(CraftingInventory inventory, DynamicRegistryManager registryManager) {
-        return this.getOutput(registryManager).copy();
+    public ItemStack assemble(CraftingContainer inventory, RegistryAccess registryAccess) {
+        return this.getResultItem(registryAccess).copy();
     }
 
-    private boolean matchesPattern(CraftingInventory inv, int offsetX, int offsetY, boolean flipped) {
-        for (int i = 0; i < inv.getWidth(); ++i) {
-            for (int j = 0; j < inv.getHeight(); ++j) {
+    private boolean matchesPattern(CraftingContainer container, int offsetX, int offsetY, boolean flipped) {
+        for (int i = 0; i < container.getWidth(); ++i) {
+            for (int j = 0; j < container.getHeight(); ++j) {
                 int k = i - offsetX;
                 int l = j - offsetY;
                 Ingredient ingredient = Ingredient.EMPTY;
                 if (k >= 0 && l >= 0 && k < this.width && l < this.height) {
                     ingredient = flipped ? this.input.get(this.width - k - 1 + l * this.width) : this.input.get(k + l * this.width);
                 }
-                if (ingredient.test(inv.getStack(i + j * inv.getWidth()))) continue;
+                if (ingredient.test(container.getItem(i + j * container.getWidth()))) continue;
                 return false;
             }
         }
@@ -117,8 +120,8 @@ public class ExtremeCraftingShapedRecipe
      * Compiles a pattern and series of symbols into a list of ingredients (the matrix) suitable for matching
      * against a crafting grid.
      */
-    static DefaultedList<Ingredient> createPatternMatrix(String[] pattern, Map<String, Ingredient> symbols, int width, int height) {
-        DefaultedList<Ingredient> defaultedList = DefaultedList.ofSize(width * height, Ingredient.EMPTY);
+    static NonNullList<Ingredient> dissolvePattern(String[] pattern, Map<String, Ingredient> symbols, int width, int height) {
+        NonNullList<Ingredient> defaultedList = NonNullList.withSize(width * height, Ingredient.EMPTY);
         HashSet<String> set = Sets.newHashSet(symbols.keySet());
         set.remove(" ");
         for (int i = 0; i < pattern.length; ++i) {
@@ -138,11 +141,14 @@ public class ExtremeCraftingShapedRecipe
         return defaultedList;
     }
 
- 
     @Override
-    public boolean isEmpty() {
-        DefaultedList<Ingredient> defaultedList = this.getIngredients();
-        return defaultedList.isEmpty() || defaultedList.stream().filter(ingredient -> !ingredient.isEmpty()).anyMatch(ingredient -> ingredient.getMatchingStacks().length == 0);
+    public boolean isIncomplete() {
+        NonNullList<Ingredient> nonNullList = this.getIngredients();
+        return nonNullList.isEmpty() || nonNullList.stream().filter((ingredient) -> {
+            return !ingredient.isEmpty();
+        }).anyMatch((ingredient) -> {
+            return ingredient.getItems().length == 0;
+        });
     }
 
     private static int findFirstSymbol(String line) {
@@ -168,7 +174,7 @@ public class ExtremeCraftingShapedRecipe
             throw new JsonSyntaxException("Invalid pattern: empty pattern not allowed");
         }
         for (int i = 0; i < strings.length; ++i) {
-            String string = JsonHelper.asString(json.get(i), "pattern[" + i + "]");
+            String string = GsonHelper.convertToString(json.get(i), "pattern[" + i + "]");
             if (string.length() > 9) {
                 throw new JsonSyntaxException("Invalid pattern: too many columns, 9 is maximum");
             }
@@ -205,7 +211,7 @@ public class ExtremeCraftingShapedRecipe
         if (json.has("data")) {
             throw new JsonParseException("Disallowed data tag found");
         }
-        int i = JsonHelper.getInt(json, "count", 1);
+        int i = GsonHelper.getAsInt(json, "count", 1);
         if (i < 1) {
             throw new JsonSyntaxException("Invalid output count: " + i);
         }
@@ -213,8 +219,8 @@ public class ExtremeCraftingShapedRecipe
     }
 
     public static Item getItem(JsonObject json) {
-        String string = JsonHelper.getString(json, "item");
-        Item item = Registries.ITEM.getOrEmpty(new Identifier(string)).orElseThrow(() -> new JsonSyntaxException("Unknown item '" + string + "'"));
+        String string = GsonHelper.getAsString(json, "item");
+        Item item = (Item) BuiltInRegistries.ITEM.getOptional(new ResourceLocation(string)).orElseThrow(() -> new JsonSyntaxException("Unknown item '" + string + "'"));
         if (item == Items.AIR) {
             throw new JsonSyntaxException("Invalid item: " + string);
         }
@@ -223,43 +229,43 @@ public class ExtremeCraftingShapedRecipe
 
     public static class Serializer implements RecipeSerializer<ExtremeCraftingShapedRecipe> {
         public static final Serializer INSTANCE = new Serializer();
-        public static final Identifier ID = new Identifier("shaped");
+        public static final ResourceLocation ID = new ResourceLocation("shaped");
 
         @Override
 
-        public ExtremeCraftingShapedRecipe read(Identifier identifier, JsonObject jsonObject) {
-            String string = JsonHelper.getString(jsonObject, "group", "");
-            Map<String, Ingredient> map = ExtremeCraftingShapedRecipe.readSymbols(JsonHelper.getObject(jsonObject, "key"));
-            String[] strings = (ExtremeCraftingShapedRecipe.getPattern(JsonHelper.getArray(jsonObject, "pattern")));
+        public ExtremeCraftingShapedRecipe fromJson(ResourceLocation recipeId, JsonObject json) {
+            String string = GsonHelper.getAsString(json, "group", "");
+            Map<String, Ingredient> map = ExtremeCraftingShapedRecipe.readSymbols(GsonHelper.getAsJsonObject(json, "key"));
+            String[] strings = (ExtremeCraftingShapedRecipe.getPattern(GsonHelper.getAsJsonArray(json, "pattern")));
             int i = strings[0].length();
             int j = strings.length;
-            DefaultedList<Ingredient> defaultedList = ExtremeCraftingShapedRecipe.createPatternMatrix(strings, map, i, j);
-            ItemStack itemStack = ExtremeCraftingShapedRecipe.outputFromJson(JsonHelper.getObject(jsonObject, "result"));
-            return new ExtremeCraftingShapedRecipe(identifier, string, i, j, defaultedList, itemStack);
+            NonNullList<Ingredient> defaultedList = ExtremeCraftingShapedRecipe.dissolvePattern(strings, map, i, j);
+            ItemStack itemStack = ExtremeCraftingShapedRecipe.outputFromJson(GsonHelper.getAsJsonObject(json, "result"));
+            return new ExtremeCraftingShapedRecipe(recipeId, string, i, j, defaultedList, itemStack);
         }
 
         @Override
-        public ExtremeCraftingShapedRecipe read(Identifier identifier, PacketByteBuf packetByteBuf) {
-            int i = packetByteBuf.readVarInt();
-            int j = packetByteBuf.readVarInt();
-            String string = packetByteBuf.readString();
-            DefaultedList<Ingredient> defaultedList = DefaultedList.ofSize(i * j, Ingredient.EMPTY);
+        public ExtremeCraftingShapedRecipe fromNetwork(ResourceLocation recipeId, FriendlyByteBuf buffer) {
+            int i = buffer.readVarInt();
+            int j = buffer.readVarInt();
+            String string = buffer.readUtf();
+            NonNullList<Ingredient> defaultedList = NonNullList.withSize(i * j, Ingredient.EMPTY);
             for (int k = 0; k < defaultedList.size(); ++k) {
-                defaultedList.set(k, Ingredient.fromPacket(packetByteBuf));
+                defaultedList.set(k, Ingredient.fromNetwork(buffer));
             }
-            ItemStack itemStack = packetByteBuf.readItemStack();
-            return new ExtremeCraftingShapedRecipe(identifier, string, i, j, defaultedList, itemStack);
+            ItemStack itemStack = buffer.readItem();
+            return new ExtremeCraftingShapedRecipe(recipeId, string, i, j, defaultedList, itemStack);
         }
 
         @Override
-        public void write(PacketByteBuf packetByteBuf, ExtremeCraftingShapedRecipe shapedRecipe) {
-            packetByteBuf.writeVarInt(shapedRecipe.width);
-            packetByteBuf.writeVarInt(shapedRecipe.height);
-            packetByteBuf.writeString(shapedRecipe.group);
+        public void toNetwork(FriendlyByteBuf buffer, ExtremeCraftingShapedRecipe shapedRecipe) {
+            buffer.writeVarInt(shapedRecipe.width);
+            buffer.writeVarInt(shapedRecipe.height);
+            buffer.writeUtf(shapedRecipe.group);
             for (Ingredient ingredient : shapedRecipe.input) {
-                ingredient.write(packetByteBuf);
+                ingredient.toNetwork(buffer);
             }
-            packetByteBuf.writeItemStack(shapedRecipe.output);
+            buffer.writeItem(shapedRecipe.output);
         }
     }
 }

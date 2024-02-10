@@ -17,6 +17,12 @@ repositories {
 		name = "Progwml6 maven"
 		url = "https://dvs1.progwml6.com/files/maven/"
 	}
+
+	maven {
+		name = "Jared's maven"
+		url = "https://maven.blamejared.com/"
+	}
+
 	maven {
 		name = "ModMaven"
 		url = "https://modmaven.dev"
@@ -70,14 +76,6 @@ repositories {
 	}
 
 	maven {
-		url "https://maven.pkg.github.com/moremcmeta/*/"
-		credentials {
-			username System.getenv("MOREMCMETA_MAVEN_USER") ?: project.moremcmetaMavenUser
-			password System.getenv("MOREMCMETA_MAVEN_PASS") ?: project.moremcmetaMavenPass
-		}
-	}
-
-	maven {
 		name = 'Ladysnake Mods'
 		url = 'https://maven.ladysnake.org/releases'
 		content {
@@ -85,6 +83,16 @@ repositories {
 			includeGroup 'org.ladysnake'
 			includeGroupByRegex 'dev.onyxstudios.*'
 		}
+	}
+
+	maven {
+		name = 'ParchmentMC'
+		url = 'https://maven.parchmentmc.org'
+	}
+
+	maven {
+		name = "Modrinth"
+		url = "https://api.modrinth.com/maven"
 	}
 }
 
@@ -119,16 +127,16 @@ dependencies {
 	minecraft "com.mojang:minecraft:${project.minecraft_version}"
 
 	//Yarn mappings
-	mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
+	mappings loom.layered() {
+		officialMojangMappings()
+		parchment("org.parchmentmc.data:parchment-1.20.1:2023.09.03@zip")
+	}
 
 	//Fabric Loader
 	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 
 	// Fabric API
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
-
-	//MoreMCMeta
-	modImplementation "io.github.moremcmeta:moremcmeta-fabric:${project.moremcmeta_version}"
 
 	//Porting Lib required by Hephaestus
 	modCompileOnly "io.github.fabricators_of_create.Porting-Lib:Porting-Lib:${project.porting_lib_version}+${project.minecraft_base_version}-entity-refactor"
@@ -137,9 +145,22 @@ dependencies {
 	modCompileOnly "slimeknights.tconstruct:Hephaestus:${project.minecraft_version}-${project.hephaestus_version}"
 
 	//REI
-	modCompileOnly "me.shedaniel:RoughlyEnoughItems-api-fabric:${rei_version}"
-	modCompileOnly "me.shedaniel:RoughlyEnoughItems-default-plugin-fabric:${rei_version}"
-	modImplementation "me.shedaniel:RoughlyEnoughItems-fabric:${project.rei_version}"
+	if(project.test_runtime == "rei") {
+		modImplementation "me.shedaniel:RoughlyEnoughItems-fabric:${project.rei_version}"
+	} else {
+		modCompileOnly "me.shedaniel:RoughlyEnoughItems-api-fabric:${project.rei_version}"
+		modCompileOnly "me.shedaniel:RoughlyEnoughItems-default-plugin-fabric:${project.rei_version}"
+	}
+
+	if(project.test_runtime == "jei") {
+		modRuntimeOnly("mezz.jei:jei-${project.minecraft_version}-fabric:${project.jei_version}")
+	} else {
+		modCompileOnly("mezz.jei:jei-${project.minecraft_version}-common-api:${project.jei_version}")
+		modCompileOnly("mezz.jei:jei-${project.minecraft_version}-fabric-api:${project.jei_version}")
+	}
+
+	//Botania
+	modImplementation("vazkii.botania:Botania:1.20.1-443-FABRIC")
 
 	//Cloth Config
 	modImplementation ("me.shedaniel.cloth:cloth-config-fabric:${project.cloth_config_version}") {

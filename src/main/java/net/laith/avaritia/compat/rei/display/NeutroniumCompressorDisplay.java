@@ -4,17 +4,12 @@ import me.shedaniel.rei.api.common.category.CategoryIdentifier;
 import me.shedaniel.rei.api.common.display.basic.BasicDisplay;
 import me.shedaniel.rei.api.common.entry.EntryIngredient;
 import me.shedaniel.rei.api.common.registry.RecipeManagerContext;
-import me.shedaniel.rei.api.common.transfer.info.MenuInfo;
-import me.shedaniel.rei.api.common.transfer.info.MenuSerializationContext;
 import me.shedaniel.rei.api.common.util.EntryIngredients;
 import net.laith.avaritia.common.recipe.NeutroniumCompressorRecipe;
 import net.laith.avaritia.compat.rei.ServerREIPlugin;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.recipe.Recipe;
-import net.minecraft.util.Identifier;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.item.crafting.Recipe;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -24,11 +19,11 @@ public class NeutroniumCompressorDisplay extends BasicDisplay {
     private int cost;
 
     public NeutroniumCompressorDisplay(NeutroniumCompressorRecipe recipe) {
-        this(Collections.singletonList(EntryIngredients.ofIngredient(recipe.getInput())), Collections.singletonList(EntryIngredients.of(recipe.getOutput(null))), recipe, recipe.getCost());
+        this(Collections.singletonList(EntryIngredients.ofIngredient(recipe.getInput())), Collections.singletonList(EntryIngredients.of(recipe.getResultItem(null))), recipe, recipe.getCost());
 
     }
 
-    public NeutroniumCompressorDisplay(List<EntryIngredient> input, List<EntryIngredient> output, NbtCompound tag) {
+    public NeutroniumCompressorDisplay(List<EntryIngredient> input, List<EntryIngredient> output, CompoundTag tag) {
         this(input, output, (NeutroniumCompressorRecipe) RecipeManagerContext.getInstance().byId(tag, "location"),
                 tag.getInt("cost"));
     }

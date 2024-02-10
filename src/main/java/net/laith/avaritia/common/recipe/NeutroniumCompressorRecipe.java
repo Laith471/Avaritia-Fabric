@@ -1,32 +1,24 @@
 package net.laith.avaritia.common.recipe;
 
 import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-import com.mojang.datafixers.types.templates.Tag;
-import net.minecraft.inventory.SimpleInventory;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.network.PacketByteBuf;
-import net.minecraft.recipe.*;
-import net.minecraft.registry.DynamicRegistryManager;
-import net.minecraft.registry.tag.TagKey;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.JsonHelper;
-import net.minecraft.world.World;
+import net.minecraft.core.RegistryAccess;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.SimpleContainer;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.*;
+import net.minecraft.world.level.Level;
 
-import java.util.Arrays;
-
-public class NeutroniumCompressorRecipe implements Recipe<SimpleInventory> {
-    private final Identifier id;
+public class NeutroniumCompressorRecipe implements Recipe<SimpleContainer> {
+    private final ResourceLocation resourceLocation;
     private final Ingredient input;
     private final int cost;
     private final ItemStack output;
     private int progress;
 
 
-    public NeutroniumCompressorRecipe(Identifier id, Ingredient input, int cost, ItemStack output) {
-      this.id = id;
+    public NeutroniumCompressorRecipe(ResourceLocation resourceLocation, Ingredient input, int cost, ItemStack output) {
+      this.resourceLocation = resourceLocation;
       this.input = input;
       this.cost = cost;
       this.output = output;
@@ -36,22 +28,22 @@ public class NeutroniumCompressorRecipe implements Recipe<SimpleInventory> {
     }
 
     @Override
-    public boolean matches(SimpleInventory inventory, World world) {
-        if(world.isClient) {
+    public boolean matches(SimpleContainer inventory, Level level) {
+        if(level.isClientSide) {
             return false;
         }
-        ItemStack input = inventory.getStack(0);
+        ItemStack input = inventory.getItem(0);
 
         return this.input.test(input);
     }
 
     @Override
-    public ItemStack craft(SimpleInventory inventory, DynamicRegistryManager registryManager) {
+    public ItemStack assemble(SimpleContainer container, RegistryAccess registryAccess) {
         return null;
     }
 
     @Override
-    public boolean fits(int width, int height) {
+    public boolean canCraftInDimensions(int width, int height) {
         return false;
     }
 
@@ -60,7 +52,7 @@ public class NeutroniumCompressorRecipe implements Recipe<SimpleInventory> {
     }
 
     @Override
-    public ItemStack getOutput(DynamicRegistryManager registryManager) {
+    public ItemStack getResultItem(RegistryAccess RegistryAccess) {
         return output.copy();
     }
 
@@ -75,8 +67,8 @@ public class NeutroniumCompressorRecipe implements Recipe<SimpleInventory> {
 
 
     @Override
-    public Identifier getId() {
-        return id;
+    public ResourceLocation getId() {
+        return resourceLocation;
     }
 
     @Override
@@ -88,6 +80,7 @@ public class NeutroniumCompressorRecipe implements Recipe<SimpleInventory> {
     public RecipeType<?> getType() {
         return Type.INSTANCE;
     }
+
     public static class Type implements RecipeType<NeutroniumCompressorRecipe> {
         private Type() {}
         public static final Type INSTANCE = new Type();
@@ -95,31 +88,31 @@ public class NeutroniumCompressorRecipe implements Recipe<SimpleInventory> {
     }
     public static class Serializer implements RecipeSerializer<NeutroniumCompressorRecipe> {
         public static final Serializer INSTANCE = new Serializer();
-        public static final Identifier ID = new Identifier("compressor");
+        public static final ResourceLocation ID = new ResourceLocation("compressor");
 
         @Override
-        public NeutroniumCompressorRecipe read(Identifier id, JsonObject json) {
+        public NeutroniumCompressorRecipe fromJson(ResourceLocation resourceLocation, JsonObject json) {
             Ingredient input = Ingredient.fromJson(json.getAsJsonObject("input"));
             int cost = json.get("cost").getAsInt();
-            ItemStack output = ShapedRecipe.outputFromJson(json.getAsJsonObject("output"));
+            ItemStack output = ShapedRecipe.itemStackFromJson(json.getAsJsonObject("output"));
 
-            return new NeutroniumCompressorRecipe(id, input, cost, output);
+            return new NeutroniumCompressorRecipe(resourceLocation, input, cost, output);
         }
 
         @Override
-        public NeutroniumCompressorRecipe read(Identifier id, PacketByteBuf buf) {
-            Ingredient input = Ingredient.fromPacket(buf);
-            int cost = buf.readInt();
-            ItemStack output = buf.readItemStack();
+        public NeutroniumCompressorRecipe fromNetwork(ResourceLocation resourceLocation, FriendlyByteBuf buffer) {
+            Ingredient input = Ingredient.fromNetwork(buffer);
+            int cost = buffer.readInt();
+            ItemStack output = buffer.readItem();
 
-            return new NeutroniumCompressorRecipe(id, input, cost, output);
+            return new NeutroniumCompressorRecipe(resourceLocation, input, cost, output);
         }
 
         @Override
-        public void write(PacketByteBuf buf, NeutroniumCompressorRecipe recipe) {
-            recipe.input.write(buf);
-            buf.writeInt(recipe.cost);
-            buf.writeItemStack(recipe.output);
+        public void toNetwork(FriendlyByteBuf buffer, NeutroniumCompressorRecipe recipe) {
+            recipe.input.toNetwork(buffer);
+            buffer.writeInt(recipe.cost);
+            buffer.writeItem(recipe.output);
 
         }
     }

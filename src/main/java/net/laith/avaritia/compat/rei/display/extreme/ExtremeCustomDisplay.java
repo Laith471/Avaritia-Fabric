@@ -2,8 +2,8 @@ package net.laith.avaritia.compat.rei.display.extreme;
 
 import me.shedaniel.rei.api.common.entry.EntryIngredient;
 import me.shedaniel.rei.api.common.registry.RecipeManagerContext;
-import net.minecraft.recipe.Recipe;
-import net.minecraft.util.Identifier;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.crafting.Recipe;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.BitSet;
@@ -18,7 +18,7 @@ public class ExtremeCustomDisplay extends ExtremeCraftingDisplay{
         this(null, possibleRecipe, input, output);
     }
 
-    public ExtremeCustomDisplay(@Nullable Identifier location, @Nullable Recipe<?> possibleRecipe, List<EntryIngredient> input, List<EntryIngredient> output) {
+    public ExtremeCustomDisplay(@Nullable ResourceLocation location, @Nullable Recipe<?> possibleRecipe, List<EntryIngredient> input, List<EntryIngredient> output) {
         super(input, output, Optional.ofNullable(possibleRecipe));
         BitSet row = new BitSet(9);
         BitSet column = new BitSet(9);
@@ -34,8 +34,8 @@ public class ExtremeCustomDisplay extends ExtremeCraftingDisplay{
         this.height = row.cardinality();
     }
 
-    public static ExtremeCustomDisplay simple(List<EntryIngredient> input, List<EntryIngredient> output, Optional<Identifier> location) {
-        Recipe<?> optionalRecipe = location.flatMap(resourceLocation -> RecipeManagerContext.getInstance().getRecipeManager().get(resourceLocation))
+    public static ExtremeCustomDisplay simple(List<EntryIngredient> input, List<EntryIngredient> output, Optional<ResourceLocation> location) {
+        Recipe<?> optionalRecipe = location.flatMap(resourceLocation -> RecipeManagerContext.getInstance().getRecipeManager().byKey(resourceLocation))
                 .orElse(null);
         return new ExtremeCustomDisplay(location.orElse(null), optionalRecipe, input, output);
     }

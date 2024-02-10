@@ -1,16 +1,16 @@
 package net.laith.avaritia.util.slots;
 
-import net.minecraft.inventory.Inventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.screen.slot.Slot;
+import net.minecraft.world.Container;
+import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.item.ItemStack;
 
 public class OutputSlot extends Slot {
-    public OutputSlot(Inventory inventory, int index, int x, int y) {
-        super(inventory, index, x, y);
+    public OutputSlot(Container container, int index, int x, int y) {
+        super(container, index, x, y);
     }
 
     @Override
-    public boolean canInsert(ItemStack stack) {
+    public boolean mayPlace(ItemStack stack) {
         return false;
     }
 }

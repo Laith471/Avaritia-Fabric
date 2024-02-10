@@ -18,13 +18,13 @@ import me.shedaniel.rei.plugin.common.displays.crafting.*;
 import net.laith.avaritia.common.recipe.ExtremeCraftingShapedRecipe;
 import net.laith.avaritia.common.recipe.ExtremeCraftingShapelessRecipe;
 import net.laith.avaritia.compat.rei.ServerREIPlugin;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.recipe.Ingredient;
-import net.minecraft.recipe.Recipe;
-import net.minecraft.screen.ScreenHandler;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.collection.DefaultedList;
+import net.minecraft.core.NonNullList;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.Recipe;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
@@ -36,7 +36,7 @@ public abstract class ExtremeCraftingDisplay<C extends Recipe<?>> extends BasicD
         this(inputs, outputs, recipe.map(Recipe::getId), recipe);
     }
 
-    public ExtremeCraftingDisplay(List<EntryIngredient> inputs, List<EntryIngredient> outputs, Optional<Identifier> location, Optional<C> recipe) {
+    public ExtremeCraftingDisplay(List<EntryIngredient> inputs, List<EntryIngredient> outputs, Optional<ResourceLocation> location, Optional<C> recipe) {
         super(inputs, outputs, location);
         this.recipe = recipe;
     }
@@ -53,20 +53,20 @@ public abstract class ExtremeCraftingDisplay<C extends Recipe<?>> extends BasicD
             return new ExtremeCraftingShapelessDisplay((ExtremeCraftingShapelessRecipe) recipe);
         } else if (recipe instanceof ExtremeCraftingShapedRecipe) {
             return new ExtremeCraftingShapedDisplay((ExtremeCraftingShapedRecipe) recipe);
-        } else if (!recipe.isIgnoredInRecipeBook()) {
-            DefaultedList<Ingredient> ingredients = recipe.getIngredients();
+        } else if (!recipe.isSpecial()) {
+            NonNullList<Ingredient> ingredients = recipe.getIngredients();
             for (CraftingRecipeSizeProvider<?> pair : SIZE_PROVIDER) {
                 CraftingRecipeSizeProvider.Size size = ((CraftingRecipeSizeProvider<Recipe<?>>) pair).getSize(recipe);
 
                 if (size != null) {
                     return new ExtremeCraftingCustomShapedDisplay(recipe, EntryIngredients.ofIngredients(recipe.getIngredients()),
-                            Collections.singletonList(EntryIngredients.of(recipe.getOutput(BasicDisplay.registryAccess()))),
+                            Collections.singletonList(EntryIngredients.of(recipe.getResultItem(BasicDisplay.registryAccess()))),
                             size.getWidth(), size.getHeight());
                 }
             }
 
             return new ExtremeCustomDisplay(recipe, EntryIngredients.ofIngredients(recipe.getIngredients()),
-                    Collections.singletonList(EntryIngredients.of(recipe.getOutput(BasicDisplay.registryAccess()))));
+                    Collections.singletonList(EntryIngredients.of(recipe.getResultItem(BasicDisplay.registryAccess()))));
         }
 
         return null;
@@ -82,17 +82,17 @@ public abstract class ExtremeCraftingDisplay<C extends Recipe<?>> extends BasicD
     }
 
     @Override
-    public Optional<Identifier> getDisplayLocation() {
+    public Optional<ResourceLocation> getDisplayLocation() {
         return getOptionalRecipe().map(Recipe::getId);
     }
 
-    public <T extends ScreenHandler> List<List<ItemStack>> getOrganisedInputEntries(SimpleGridMenuInfo<T, ExtremeCraftingDisplay<?>> menuInfo, T container) {
+    public <T extends AbstractContainerMenu> List<List<ItemStack>> getOrganisedInputEntries(SimpleGridMenuInfo<T, ExtremeCraftingDisplay<?>> menuInfo, T container) {
         return CollectionUtils.map(getOrganisedInputEntries(menuInfo.getCraftingWidth(container), menuInfo.getCraftingHeight(container)), ingredient ->
                 CollectionUtils.<EntryStack<?>, ItemStack>filterAndMap(ingredient, stack -> stack.getType() == VanillaEntryTypes.ITEM,
                         EntryStack::castValue));
     }
 
-    public <T extends ScreenHandler> List<EntryIngredient> getOrganisedInputEntries(int menuWidth, int menuHeight) {
+    public <T extends AbstractContainerMenu> List<EntryIngredient> getOrganisedInputEntries(int menuWidth, int menuHeight) {
         List<EntryIngredient> list = new ArrayList<>(menuWidth * menuHeight);
         for (int i = 0; i < menuWidth * menuHeight; i++) {
             list.add(EntryIngredient.empty());
@@ -143,15 +143,15 @@ public abstract class ExtremeCraftingDisplay<C extends Recipe<?>> extends BasicD
         int craftingWidth = 9, craftingHeight = 9;
 
         if (info instanceof SimpleGridMenuInfo && fill) {
-            craftingWidth = ((SimpleGridMenuInfo<ScreenHandler, ?>) info).getCraftingWidth(context.getMenu());
-            craftingHeight = ((SimpleGridMenuInfo<ScreenHandler, ?>) info).getCraftingHeight(context.getMenu());
+            craftingWidth = ((SimpleGridMenuInfo<AbstractContainerMenu, ?>) info).getCraftingWidth(context.getMenu());
+            craftingHeight = ((SimpleGridMenuInfo<AbstractContainerMenu, ?>) info).getCraftingHeight(context.getMenu());
         }
 
         return getInputIngredients(craftingWidth, craftingHeight);
     }
 
     @Override
-    public List<InputIngredient<EntryStack<?>>> getInputIngredients(@Nullable ScreenHandler menu, @Nullable PlayerEntity player) {
+    public List<InputIngredient<EntryStack<?>>> getInputIngredients(@Nullable AbstractContainerMenu menu, @Nullable Player player) {
         return getInputIngredients(9, 9);
     }
 

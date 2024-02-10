@@ -1,46 +1,46 @@
 package net.laith.avaritia.common.entity;
 
 import net.laith.avaritia.init.ModEntities;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.boss.dragon.EnderDragonEntity;
-import net.minecraft.entity.projectile.PersistentProjectileEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.particle.ParticleTypes;
-import net.minecraft.world.World;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.boss.enderdragon.EnderDragon;
+import net.minecraft.world.entity.projectile.AbstractArrow;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.level.Level;
 
-public class InfinityArrowSubEntity extends PersistentProjectileEntity {
+public class InfinityArrowSubEntity extends AbstractArrow {
 
-    public InfinityArrowSubEntity(EntityType<? extends PersistentProjectileEntity> entityType, World world) {
-        super(entityType, world);
-        this.setDamage(9999);
+    public InfinityArrowSubEntity(EntityType<? extends AbstractArrow> entityType, Level level) {
+        super(entityType, level);
+        this.setBaseDamage(9999);
     }
 
-    public InfinityArrowSubEntity(double x, double y, double z, World world) {
-        super(ModEntities.INFINITY_ARROW_SUB_ENTITY, x, y, z, world);
-        this.setDamage(9999);
+    public InfinityArrowSubEntity(double x, double y, double z, Level level) {
+        super(ModEntities.INFINITY_ARROW_SUB_ENTITY, x, y, z, level);
+        this.setBaseDamage(9999);
     }
 
-    public InfinityArrowSubEntity(LivingEntity owner, World world) {
-        super(ModEntities.INFINITY_ARROW_SUB_ENTITY, owner, world);
-        this.setDamage(9999);
-    }
-
-    @Override
-    protected ItemStack asItemStack() {
-        return Items.ARROW.getDefaultStack();
+    public InfinityArrowSubEntity(LivingEntity owner, Level level) {
+        super(ModEntities.INFINITY_ARROW_SUB_ENTITY, owner, level);
+        this.setBaseDamage(9999);
     }
 
     @Override
-    protected void onHit(LivingEntity target) {
-        super.onHit(target);
+    protected ItemStack getPickupItem() {
+        return Items.ARROW.getDefaultInstance();
+    }
+
+    @Override
+    protected void doPostHurtEffects(LivingEntity target) {
+        super.doPostHurtEffects(target);
 
         if (!(target instanceof LivingEntity)) {
             return;
         } else {
 
-            if (target instanceof EnderDragonEntity enderDragon) {
+            if (target instanceof EnderDragon enderDragon) {
                 if (!enderDragon.isInvulnerable()) {
                     enderDragon.setHealth(0.0F);
                 }
@@ -60,7 +60,7 @@ public class InfinityArrowSubEntity extends PersistentProjectileEntity {
         if (this.inGroundTime == 20) {
             this.kill();
         }
-        if (this.getWorld().isClient) {
+        if (this.getCommandSenderWorld().isClientSide) {
             if(!this.inGround) {
                 this.spawnParticles(2);
             }
@@ -75,7 +75,7 @@ public class InfinityArrowSubEntity extends PersistentProjectileEntity {
             double f = (double)(i >> 0 & 255) / 255.0;
 
             for(int j = 0; j < amount; ++j) {
-                this.getWorld().addParticle(ParticleTypes.CRIT, this.getParticleX(0.5), this.getRandomBodyY(), this.getParticleZ(0.5), d, e, f);
+                this.getCommandSenderWorld().addParticle(ParticleTypes.CRIT, this.getRandomX(0.5), this.getRandomY(), this.getRandomZ(0.5), d, e, f);
             }
 
         }

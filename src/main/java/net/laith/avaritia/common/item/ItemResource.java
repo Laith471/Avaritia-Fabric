@@ -1,11 +1,11 @@
 package net.laith.avaritia.common.item;
 
-import net.minecraft.client.item.TooltipContext;
-import net.minecraft.entity.damage.DamageSource;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.text.Text;
-import net.minecraft.world.World;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -14,24 +14,24 @@ public class ItemResource extends Item {
     public String translatable;
     public boolean isDamageable;
 
-    public ItemResource(Item.Settings settings, String translatable, boolean isDamageable) {
-        super(settings);
+    public ItemResource(Properties properties, String translatable, boolean isDamageable) {
+        super(properties);
         this.translatable = translatable;
         this.isDamageable = isDamageable;
     }
 
-        @Override
-        public void appendTooltip(ItemStack stack, @Nullable World world, List< Text > tooltip, TooltipContext context) {
-            tooltip.add(Text.translatable(translatable));
-            super.appendTooltip(stack, world, tooltip, context);
-        }
+    @Override
+    public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltipComponents, TooltipFlag isAdvanced) {
+        tooltipComponents.add(Component.translatable(translatable));
+        super.appendHoverText(stack, level, tooltipComponents, isAdvanced);
+    }
 
     @Override
-    public boolean damage(DamageSource source) {
+    public boolean canBeHurtBy(DamageSource source) {
         if(!isDamageable) {
             return false;
         } else {
-            return super.damage(source);
+            return super.canBeHurtBy(source);
         }
     }
 }

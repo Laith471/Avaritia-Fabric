@@ -2,37 +2,37 @@ package net.laith.avaritia.common.entity;
 
 import net.laith.avaritia.init.ModEntities;
 import net.laith.avaritia.init.ModItems;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.projectile.thrown.ThrownItemEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.particle.ItemStackParticleEffect;
-import net.minecraft.particle.ParticleEffect;
-import net.minecraft.particle.ParticleTypes;
-import net.minecraft.util.hit.BlockHitResult;
-import net.minecraft.util.hit.EntityHitResult;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
-import net.minecraft.util.math.Vec3d;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.core.particles.ItemParticleOption;
+import net.minecraft.core.particles.ParticleOptions;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.projectile.ThrowableItemProjectile;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.EntityHitResult;
+import net.minecraft.world.phys.Vec3;
 
-public class EndestPearlEntity extends ThrownItemEntity {
+public class EndestPearlEntity extends ThrowableItemProjectile {
     private LivingEntity shooter;
 
-    public EndestPearlEntity(EntityType<? extends ThrownItemEntity> entityType, World world) {
-        super(entityType, world);
+    public EndestPearlEntity(EntityType<? extends ThrowableItemProjectile> entityType, Level level) {
+        super(entityType, level);
     }
 
 
-    public EndestPearlEntity(World world, double x, double y, double z) {
-        this(ModEntities.ENDEST_PEARL, world);
+    public EndestPearlEntity(Level level, double x, double y, double z) {
+        this(ModEntities.ENDEST_PEARL, level);
         setPos(x, y, z);
     }
 
-    public EndestPearlEntity(World world, LivingEntity shooter) {
-        this(ModEntities.ENDEST_PEARL, world);
+    public EndestPearlEntity(Level level, LivingEntity shooter) {
+        this(ModEntities.ENDEST_PEARL, level);
         this.setShooter(shooter);
     }
 
@@ -41,9 +41,9 @@ public class EndestPearlEntity extends ThrownItemEntity {
         return ModItems.ENDEST_PEARL;
     }
 
-    private ParticleEffect getParticle() {
+    private ParticleOptions getParticle() {
         ItemStack itemstack = this.getItem();
-        return itemstack.isEmpty() ? ParticleTypes.PORTAL : new ItemStackParticleEffect(ParticleTypes.ITEM, itemstack);
+        return itemstack.isEmpty() ? ParticleTypes.PORTAL : new ItemParticleOption(ParticleTypes.ITEM, itemstack);
     }
 
     public void setShooter(LivingEntity shooter) {
@@ -51,69 +51,69 @@ public class EndestPearlEntity extends ThrownItemEntity {
     }
 
     @Override
-    public void handleStatus(byte status) {
-        if (status == 3) {
-            ParticleEffect particleoptions = this.getParticle();
+    public void handleEntityEvent(byte id) {
+        if (id == 3) {
+            ParticleOptions particleoptions = this.getParticle();
 
             for (int i = 0; i < 8; ++i) {
-                this.getWorld().addParticle(particleoptions, this.getX(), this.getY(), this.getZ(), 0.0D, 0.0D, 0.0D);
+                this.level().addParticle(particleoptions, this.getX(), this.getY(), this.getZ(), 0.0D, 0.0D, 0.0D);
             }
         }
     }
 
     @Override
-    protected void onEntityHit(EntityHitResult entityHitResult) {
-        super.onEntityHit(entityHitResult);
-        Entity entity = entityHitResult.getEntity();
+    protected void onHitEntity(EntityHitResult result) {
+        super.onHitEntity(result);
+        Entity entity = result.getEntity();
 
         if (entity != null) {
-            entity.damage(this.getDamageSources().thrown(this, getOwner()), 0.0F);
+            entity.hurt(this.damageSources().thrown(this, getOwner()), 0.0F);
         }
 
-        if (!getEntityWorld().isClient) {
+        if (!getCommandSenderWorld().isClientSide) {
             GapingVoidEntity ent;
             if (shooter != null) {
-                ent = new GapingVoidEntity(getEntityWorld(), shooter);
+                ent = new GapingVoidEntity(getCommandSenderWorld(), shooter);
 
-            } else ent = new GapingVoidEntity(getEntityWorld());
+            } else ent = new GapingVoidEntity(getCommandSenderWorld());
 
-            Direction dir = entity.getHorizontalFacing();
-            Vec3d offset = Vec3d.ZERO;
+            Direction dir = entity.getDirection();
+            Vec3 offset = Vec3.ZERO;
             if (dir != null) {
-                offset = new Vec3d(dir.getOffsetX(), dir.getOffsetY(), dir.getOffsetZ());
+                offset = new Vec3(dir.getStepX(), dir.getStepY(), dir.getStepZ());
             }
             if (shooter != null) {
                 ent.setUser(shooter);
             }
-            ent.refreshPositionAndAngles(entity.getX() + offset.x * 0.25, entity.getY() + offset.y * 0.25, entity.getZ() + offset.z * 0.25, entity.getYaw(), 0.0F);
-            getEntityWorld().spawnEntity(ent);
+            ent.moveTo(entity.getX() + offset.x * 0.25, entity.getY() + offset.y * 0.25, entity.getZ() + offset.z * 0.25, entity.getYRot(), 0.0F);
+            getCommandSenderWorld().addFreshEntity(ent);
 
             remove(RemovalReason.KILLED);
         }
     }
 
     @Override
-    protected void onBlockHit(BlockHitResult blockHitResult) {
-        super.onBlockHit(blockHitResult);
+    protected void onHitBlock(BlockHitResult blockHitResult) {
+        super.onHitBlock(blockHitResult);
         BlockPos pos = blockHitResult.getBlockPos();
 
-        if (!getEntityWorld().isClient) {
+        if (!getCommandSenderWorld().isClientSide) {
 
             GapingVoidEntity ent;
             if (shooter != null) {
-                ent = new GapingVoidEntity(getEntityWorld(), shooter);
+                ent = new GapingVoidEntity(getCommandSenderWorld(), shooter);
 
-            } else ent = new GapingVoidEntity(getEntityWorld());
-            Direction dir = blockHitResult.getSide();
-            Vec3d offset = Vec3d.ZERO;
+            } else ent = new GapingVoidEntity(getCommandSenderWorld());
+            Direction dir = blockHitResult.getDirection();
+            Vec3 offset = Vec3.ZERO;
             if (dir != null) {
-                offset = new Vec3d(dir.getOffsetX(), dir.getOffsetY(), dir.getOffsetZ());
+                offset = new Vec3(dir.getStepX(), dir.getStepY(), dir.getStepZ());
             }
             if (shooter != null) {
                 ent.setUser(shooter);
             }
-            ent.refreshPositionAndAngles(pos.getX() + offset.x * 0.25, pos.getY() + offset.y * 0.25, pos.getZ() + offset.z * 0.25, getYaw(), 0.0F);
-            getEntityWorld().spawnEntity(ent);
+            ent.moveTo(pos.getX() + offset.x * 0.25, pos.getY() + offset.y * 0.25, pos.getZ() + offset.z * 0.25, getYRot(), 0.0F);
+            getCommandSenderWorld().addFreshEntity(ent);
 
             remove(RemovalReason.KILLED);
         }

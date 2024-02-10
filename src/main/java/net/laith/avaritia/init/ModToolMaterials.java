@@ -1,28 +1,28 @@
 package net.laith.avaritia.init;
 
-import net.minecraft.item.ItemConvertible;
-import net.minecraft.item.ToolMaterial;
-import net.minecraft.recipe.Ingredient;
-import net.minecraft.util.Lazy;
+import net.minecraft.util.LazyLoadedValue;
+import net.minecraft.world.item.Tier;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.level.ItemLike;
 
 import java.util.function.Supplier;
 
-public enum ModToolMaterials implements ToolMaterial {
+public enum ModToolMaterials implements Tier {
 
     INFINITY_SWORD(32, 0, 8.0F, 12.0F, 0, () -> {
-        return Ingredient.ofItems(new ItemConvertible[]{ModItems.INFINITY_INGOT});
+        return Ingredient.of(new ItemLike[]{ModItems.INFINITY_INGOT});
     }),
 
     INFINITY_AXE(32, 0, 9999.0F, 29.0F, 0, () -> {
-        return Ingredient.ofItems(new ItemConvertible[]{ModItems.INFINITY_INGOT});
+        return Ingredient.of(new ItemLike[]{ModItems.INFINITY_INGOT});
     }),
 
     INFINITY_PICKAXE(32, 0, 9999.0F, 15.0F, 0, () -> {
-        return Ingredient.ofItems(new ItemConvertible[]{ModItems.INFINITY_INGOT});
+        return Ingredient.of(new ItemLike[]{ModItems.INFINITY_INGOT});
     }),
 
     INFINITY_SHOVEL(32, 0, 9999F, 16.0F, 0, () -> {
-        return Ingredient.ofItems(new ItemConvertible[]{ModItems.INFINITY_INGOT});
+        return Ingredient.of(new ItemLike[]{ModItems.INFINITY_INGOT});
     });
 
 
@@ -32,7 +32,7 @@ public enum ModToolMaterials implements ToolMaterial {
     private final float miningSpeed;
     private final float attackDamage;
     private final int enchantability;
-    private final Lazy<Ingredient> repairIngredient;
+    private final LazyLoadedValue<Ingredient> repairIngredient;
 
     private ModToolMaterials(int miningLevel, int itemDurability, float miningSpeed, float attackDamage, int enchantability, Supplier repairIngredient) {
         this.miningLevel = miningLevel;
@@ -40,26 +40,31 @@ public enum ModToolMaterials implements ToolMaterial {
         this.miningSpeed = miningSpeed;
         this.attackDamage = attackDamage;
         this.enchantability = enchantability;
-        this.repairIngredient = new Lazy(repairIngredient);
+        this.repairIngredient = new LazyLoadedValue<>(repairIngredient);
     }
 
-    public int getDurability() {
+    @Override
+    public int getUses() {
         return this.itemDurability;
     }
 
-    public float getMiningSpeedMultiplier() {
+    @Override
+    public float getSpeed() {
         return this.miningSpeed;
     }
 
-    public float getAttackDamage() {
+    @Override
+    public float getAttackDamageBonus() {
         return this.attackDamage;
     }
 
-    public int getMiningLevel() {
+    @Override
+    public int getLevel() {
         return this.miningLevel;
     }
 
-    public int getEnchantability() {
+    @Override
+    public int getEnchantmentValue() {
         return this.enchantability;
     }
 

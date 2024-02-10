@@ -4,11 +4,11 @@ import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.laith.avaritia.AvaritiaMod;
 import net.laith.avaritia.common.block.*;
-import net.minecraft.block.Block;
-import net.minecraft.item.BlockItem;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.Registry;
-import net.minecraft.util.Identifier;
+import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.level.block.Block;
 
 public class ModBlocks {
 
@@ -32,11 +32,11 @@ public class ModBlocks {
 
     public static Block registerBlock(String name, Block block) {
         registerBlockItem(name, block);
-        return Registry.register(Registries.BLOCK, new Identifier(AvaritiaMod.MOD_ID, name), block);
+        return Registry.register(BuiltInRegistries.BLOCK, new ResourceLocation(AvaritiaMod.MOD_ID, name), block);
     }
 
     public static void registerBlockItem(String name, Block block) {
-        Registry.register(Registries.ITEM, new Identifier(AvaritiaMod.MOD_ID, name), new BlockItem(block, new FabricItemSettings()));
+        Registry.register(BuiltInRegistries.ITEM, new ResourceLocation(AvaritiaMod.MOD_ID, name), new BlockItem(block, new FabricItemSettings()));
     }
 
     public static void registerModBlocks() {

@@ -1,28 +1,28 @@
 package net.laith.avaritia.common.item;
 
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.item.TooltipContext;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.text.Text;
-import net.minecraft.world.World;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
 public class PileOfNeutrons extends Item {
-    public PileOfNeutrons(Settings settings) {
-        super(settings);
+    public PileOfNeutrons(Properties properties) {
+        super(properties);
     }
 
     @Override
-    public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
+    public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltipComponents, TooltipFlag isAdvanced) {
         if(Screen.hasShiftDown()) {
-            tooltip.add(Text.translatable("item.avaritia.pile_of_neutrons_source.tooltip"));
+            tooltipComponents.add(Component.translatable("item.avaritia.pile_of_neutrons_source.tooltip"));
         } else {
-            tooltip.add(Text.translatable("item.avaritia.pile_of_neutrons_see_source.tooltip"));
+            tooltipComponents.add(Component.translatable("item.avaritia.pile_of_neutrons_see_source.tooltip"));
         }
-        tooltip.add(Text.translatable("item.avaritia.pile_of_neutrons.tooltip"));
-        super.appendTooltip(stack, world, tooltip, context);
+        tooltipComponents.add(Component.translatable("item.avaritia.pile_of_neutrons.tooltip"));
+        super.appendHoverText(stack, level, tooltipComponents, isAdvanced);
     }
 }

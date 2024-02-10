@@ -1,65 +1,67 @@
 package net.laith.avaritia.common.blockentity;
+
 import net.laith.avaritia.init.ModBlockEntities;
 import net.laith.avaritia.common.screenhandler.ExtremeCraftingTableScreenHandler;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.Inventories;
-import net.minecraft.inventory.Inventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.screen.NamedScreenHandlerFactory;
-import net.minecraft.screen.ScreenHandler;
-import net.minecraft.text.Text;
-import net.minecraft.util.collection.DefaultedList;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.NonNullList;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.Container;
+import net.minecraft.world.ContainerHelper;
+import net.minecraft.world.MenuProvider;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Iterator;
 
-
-public class ExtremeCraftingTableBlockEntity extends BlockEntity implements NamedScreenHandlerFactory, Inventory {
-    private final DefaultedList<ItemStack> inventory;
+public class ExtremeCraftingTableBlockEntity extends BlockEntity implements MenuProvider, Container {
+    private final NonNullList<ItemStack> inventory;
 
     public ExtremeCraftingTableBlockEntity(BlockPos blockPos, BlockState blockState) {
         super(ModBlockEntities.EXTREME_CRAFTING_TABLE_BLOCK_ENTITY, blockPos, blockState);
-        this.inventory = DefaultedList.ofSize(81, ItemStack.EMPTY);
-    }
-
-    // BlockEntity
-    @Override
-    public void readNbt(NbtCompound nbt) {
-        super.readNbt(nbt);
-        Inventories.readNbt(nbt, inventory);
+        this.inventory = NonNullList.withSize(81, ItemStack.EMPTY);
     }
 
     @Override
-    public void writeNbt(NbtCompound nbt) {
-        super.writeNbt(nbt);
-        Inventories.writeNbt(nbt, inventory);
+    public void load(CompoundTag tag) {
+        super.load(tag);
+        ContainerHelper.loadAllItems(tag, inventory);
     }
 
-    // NamedScreenHandlerFactory
     @Override
-    public ScreenHandler createMenu(int syncId, PlayerInventory playerInventory, PlayerEntity player) {
+    protected void saveAdditional(CompoundTag tag) {
+        super.saveAdditional(tag);
+        ContainerHelper.saveAllItems(tag, inventory);
+    }
+
+    @Nullable
+    @Override
+    public AbstractContainerMenu createMenu(int syncId, Inventory playerInventory, Player player) {
         return new ExtremeCraftingTableScreenHandler(syncId, playerInventory, this);
     }
 
     @Override
-    public Text getDisplayName() {
-        return Text.translatable(getCachedState().getBlock().getTranslationKey());
+    public Component getDisplayName() {
+        return Component.translatable(getBlockState().getBlock().getDescriptionId());
     }
 
 
     // Inventory
-    @Override
-    public void clear() {
-        inventory.clear();
-        markDirty();
-    }
 
     @Override
-    public int size() {
+    public void clearContent() {
+        inventory.clear();
+        setChanged();
+    }
+
+
+    @Override
+    public int getContainerSize() {
         return 81;
     }
 
@@ -74,50 +76,49 @@ public class ExtremeCraftingTableBlockEntity extends BlockEntity implements Name
             }
 
             stack = iterator.next();
-        } while(stack.isEmpty());
+        } while (stack.isEmpty());
 
         return false;
     }
 
     @Override
-    public ItemStack getStack(int slot) {
+    public ItemStack getItem(int slot) {
         return slot >= 0 && slot < inventory.size() ? inventory.get(slot) : ItemStack.EMPTY;
     }
 
     @Override
-    public ItemStack removeStack(int slot, int amount) {
-        ItemStack stack = Inventories.splitStack(inventory, slot, amount);
+    public ItemStack removeItem(int slot, int amount) {
+        ItemStack stack = ContainerHelper.removeItem(inventory, slot, amount);
         if (!stack.isEmpty()) {
-            markDirty();
+            setChanged();
         }
 
         return stack;
     }
 
     @Override
-    public ItemStack removeStack(int slot) {
-        return Inventories.removeStack(inventory, slot);
+    public ItemStack removeItemNoUpdate(int slot) {
+        return ContainerHelper.takeItem(inventory, slot);
     }
 
     @Override
-    public void setStack(int slot, ItemStack stack) {
+    public void setItem(int slot, ItemStack stack) {
         inventory.set(slot, stack);
-        if (!stack.isEmpty() && stack.getCount() > getMaxCountPerStack()) {
-            stack.setCount(getMaxCountPerStack());
+        if (!stack.isEmpty() && stack.getCount() > getMaxStackSize()) {
+            stack.setCount(getMaxStackSize());
         }
 
-        markDirty();
+        setChanged();
     }
 
     @Override
-    public boolean canPlayerUse(PlayerEntity player) {
-        if (world == null){
+    public boolean stillValid(Player player) {
+        if (level == null) {
             return false;
         }
-        if (world.getBlockEntity(pos) != this) {
+        if (level.getBlockEntity(getBlockPos()) != this) {
             return false;
         }
-        return player.squaredDistanceTo((double)pos.getX() + 0.5D, (double)pos.getY() + 0.5D, (double)pos.getZ() + 0.5D) <= 64.0D;
+        return player.distanceToSqr((double) getBlockPos().getX() + 0.5D, (double) getBlockPos().getY() + 0.5D, (double) getBlockPos().getZ() + 0.5D) <= 64.0D;
     }
-
 }

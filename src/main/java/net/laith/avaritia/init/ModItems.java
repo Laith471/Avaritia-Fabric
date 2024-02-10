@@ -1,18 +1,17 @@
 package net.laith.avaritia.init;
 
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
-import net.fabricmc.loader.api.FabricLoader;
 import net.laith.avaritia.AvaritiaMod;
 import net.laith.avaritia.common.item.*;
 import net.laith.avaritia.common.item.armor.InfinityArmorItem;
 import net.laith.avaritia.common.item.tools.*;
-import net.minecraft.item.ArmorItem;
-import net.minecraft.item.Item;
-import net.minecraft.item.ToolMaterials;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.Registry;
-import net.minecraft.util.Identifier;
-
+import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ArmorItem;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.TieredItem;
+import net.minecraft.world.item.Tiers;
 
 public class ModItems {
 
@@ -113,7 +112,7 @@ public class ModItems {
             new InfinityShovelItem(ModToolMaterials.INFINITY_SHOVEL, -1, -3.0F, new FabricItemSettings()));
 
     public static final Item SKULLFIRE_SWORD = registerItem("skullfire_sword",
-            new SkullFireSwordItem(ToolMaterials.DIAMOND, 3, -2.4F, new FabricItemSettings()));
+            new SkullFireSwordItem(Tiers.DIAMOND, 3, -2.4F, new FabricItemSettings()));
 
     public static final Item INFINITY_HELMET = registerItem("infinity_helmet",
             new InfinityArmorItem(ModArmorMaterials.INFINITY, ArmorItem.Type.HELMET, new FabricItemSettings()));
@@ -128,8 +127,8 @@ public class ModItems {
             new InfinityArmorItem(ModArmorMaterials.INFINITY, ArmorItem.Type.BOOTS, new FabricItemSettings()));
 
     private static Item registerItem(String name, Item item) {
-        return Registry.register(Registries.ITEM,
-                new Identifier(AvaritiaMod.MOD_ID, name), item);
+        return Registry.register(BuiltInRegistries.ITEM,
+                new ResourceLocation(AvaritiaMod.MOD_ID, name), item);
     }
     public static void registerModItems() {
         AvaritiaMod.LOGGER.info("Registering Mod Items for " + AvaritiaMod.MOD_ID);

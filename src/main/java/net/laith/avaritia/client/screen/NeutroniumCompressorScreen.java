@@ -3,49 +3,50 @@ package net.laith.avaritia.client.screen;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.laith.avaritia.AvaritiaMod;
 import net.laith.avaritia.common.screenhandler.NeutroniumCompressorScreenHandler;
-import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.gui.screen.ingame.HandledScreen;
-import net.minecraft.client.render.GameRenderer;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.text.Text;
-import net.minecraft.util.Identifier;
+import net.minecraft.client.gui.Gui;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
+import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.player.Inventory;
 
-public class NeutroniumCompressorScreen extends HandledScreen<NeutroniumCompressorScreenHandler> {
-    public static final Identifier TEXTURE = new Identifier(AvaritiaMod.MOD_ID, "textures/gui/neutronium_compressor.png");
-    public static final Identifier REI_TEXTURE = new Identifier(AvaritiaMod.MOD_ID, "textures/gui/neutronium_compressor_rei.png");
+public class NeutroniumCompressorScreen extends AbstractContainerScreen<NeutroniumCompressorScreenHandler> {
+    public static final ResourceLocation TEXTURE = new ResourceLocation(AvaritiaMod.MOD_ID, "textures/gui/neutronium_compressor.png");
+    public static final ResourceLocation REI_TEXTURE = new ResourceLocation(AvaritiaMod.MOD_ID, "textures/gui/neutronium_compressor_rei.png");
     NeutroniumCompressorScreenHandler screenHandler;
 
-    public NeutroniumCompressorScreen(NeutroniumCompressorScreenHandler handler, PlayerInventory inventory, Text title) {
-        super(handler, inventory, Text.of("Neutronium Compressor"));
+    public NeutroniumCompressorScreen(NeutroniumCompressorScreenHandler handler, Inventory inventory, Component title) {
+        super(handler, inventory, Component.literal("Neutronium Compressor"));
         screenHandler = handler;
     }
 
     @Override
-    protected void drawBackground(DrawContext context, float delta, int mouseX, int mouseY) {
-        RenderSystem.setShader(GameRenderer::getPositionTexProgram);
+    protected void renderBg(GuiGraphics guiGraphics, float delta, int mouseX, int mouseY) {
+        RenderSystem.setShader(GameRenderer::getPositionTexShader);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         RenderSystem.setShaderTexture(0, TEXTURE);
-        context.drawTexture(TEXTURE, x, y, 0, 0, 176, 166);
-        context.drawTexture(TEXTURE, x+ 90, y + 35, 176, 16, 16, handler.getScaledProgress());
-        showText(context);
+        guiGraphics.blit(TEXTURE, this.leftPos, this.topPos, 0, 0, 176, 166);
+        guiGraphics.blit(TEXTURE, this.leftPos + 90, this.topPos + 35, 176, 16, 16, menu.getScaledProgress());
+        showText(guiGraphics);
     }
 
-    private void showText(DrawContext context) {
-        if(handler.isCrafting()) {
-            context.drawText(textRenderer, handler.getProgress() + " / " + handler.getCost(), x + 62, y + 60, 4210752, false);
+    private void showText(GuiGraphics guiGraphics) {
+        if(menu.isCrafting()) {
+            guiGraphics.drawString(font, menu.getProgress() + " / " + menu.getCost(), this.leftPos + 62, this.topPos + 60, 4210752, false);
         }
     }
 
     @Override
-    public void render(DrawContext context, int mouseX, int mouseY, float delta) {
-        renderBackground(context);
-        super.render(context, mouseX, mouseY, delta);
-        drawMouseoverTooltip(context, mouseX, mouseY);
+    public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float delta) {
+        renderBackground(guiGraphics);
+        super.render(guiGraphics, mouseX, mouseY, delta);
+        renderTooltip(guiGraphics, mouseX, mouseY);
     }
 
     @Override
     protected void init() {
         super.init();
-        titleX = (backgroundWidth - textRenderer.getWidth(title)) / 2;
+        titleLabelX = (imageWidth - font.width(title)) / 2;
     }
 }

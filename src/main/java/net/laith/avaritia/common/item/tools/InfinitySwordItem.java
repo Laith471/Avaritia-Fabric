@@ -2,36 +2,32 @@ package net.laith.avaritia.common.item.tools;
 
 import net.laith.avaritia.init.ModDamageTypes;
 import net.laith.avaritia.util.helpers.BooleanHelper;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.boss.dragon.EnderDragonEntity;
-import net.minecraft.entity.damage.DamageSource;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.SwordItem;
-import net.minecraft.item.ToolMaterial;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.Hand;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.boss.enderdragon.EnderDragon;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.SwordItem;
+import net.minecraft.world.item.Tier;
 
 public class InfinitySwordItem extends SwordItem {
-
-
-    public InfinitySwordItem(ToolMaterial toolMaterial, int attackDamage, float attackSpeed, Settings settings) {
-        super(toolMaterial, attackDamage, attackSpeed, settings);
+    public InfinitySwordItem(Tier tier, int attackDamage, float attackSpeed, Properties properties) {
+        super(tier, attackDamage, attackSpeed, properties);
     }
 
     @Override
-    public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-        if(attacker.getWorld().isClient) {
+    public boolean hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {
+        if(attacker.getCommandSenderWorld().isClientSide) {
             return true;
         }
 
-        if(target instanceof PlayerEntity player) {
-                if(BooleanHelper.isWearingTheFullArmor(player)) {
-                    target.damage(attacker.getDamageSources().create(ModDamageTypes.INFINITY, attacker), 4.0f);
-                }
+        if(target instanceof Player player) {
+            if(BooleanHelper.isWearingTheFullArmor(player)) {
+                target.hurt(attacker.damageSources().source(ModDamageTypes.INFINITY, attacker), 4.0f);
             }
+        }
 
-        else if (target instanceof EnderDragonEntity enderDragon) {
+        else if (target instanceof EnderDragon enderDragon) {
             if (!enderDragon.isInvulnerable()) {
                 enderDragon.setHealth(0.0F);
                 return true;
@@ -47,12 +43,12 @@ public class InfinitySwordItem extends SwordItem {
     }
 
     @Override
-    public boolean isDamageable() {
+    public boolean canBeDepleted() {
         return false;
     }
 
     @Override
-    public boolean damage(DamageSource source) {
+    public boolean canBeHurtBy(DamageSource source) {
         return false;
     }
 

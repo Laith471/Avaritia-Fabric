@@ -1,53 +1,53 @@
 package net.laith.avaritia.util.slots;
 
 import net.laith.avaritia.common.screenhandler.ExtremeCraftingTableScreenHandler;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.CraftingInventory;
-import net.minecraft.inventory.Inventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.recipe.RecipeType;
-import net.minecraft.screen.slot.CraftingResultSlot;
-import net.minecraft.util.collection.DefaultedList;
+import net.minecraft.core.NonNullList;
+import net.minecraft.world.Container;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.CraftingContainer;
+import net.minecraft.world.inventory.ResultSlot;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.RecipeType;
 
-public class ExtremeResultSlot extends CraftingResultSlot {
+public class ExtremeResultSlot extends ResultSlot {
     protected final ExtremeCraftingTableScreenHandler screenHandler;
 
-     public ExtremeResultSlot(ExtremeCraftingTableScreenHandler screenHandler, PlayerEntity player, CraftingInventory input, Inventory inventory, int index, int x, int y) {
+     public ExtremeResultSlot(ExtremeCraftingTableScreenHandler screenHandler, Player player, CraftingContainer input, Container inventory, int index, int x, int y) {
             super(player, input, inventory, index, x, y);
             this.screenHandler = screenHandler;
         }
 
     @Override
-    public void onTakeItem(PlayerEntity player, ItemStack stack) {
-        this.onCrafted(stack);
-        DefaultedList<ItemStack> remainingStacks;
+    public void onTake(Player player, ItemStack stack) {
+        this.checkTakeAchievements(stack);
+        NonNullList<ItemStack> remainingStacks;
 
-        if (screenHandler.cachedRecipe != null && screenHandler.cachedRecipe.matches(screenHandler.craftingInventory, player.getWorld())) {
-            remainingStacks = screenHandler.cachedRecipe.getRemainder(screenHandler.craftingInventory);
+        if (screenHandler.cachedRecipe != null && screenHandler.cachedRecipe.matches(screenHandler.craftingInventory, player.getCommandSenderWorld())) {
+            remainingStacks = screenHandler.cachedRecipe.getRemainingItems(screenHandler.craftingInventory);
         }
         else {
-            remainingStacks = player.getWorld().getRecipeManager().getRemainingStacks(RecipeType.CRAFTING, screenHandler.craftingInventory, player.getWorld());
+            remainingStacks = player.getCommandSenderWorld().getRecipeManager().getRemainingItemsFor(RecipeType.CRAFTING, screenHandler.craftingInventory, player.getCommandSenderWorld());
         }
 
         for (int i = 0; i < remainingStacks.size(); ++i) {
-            ItemStack inventoryStack = screenHandler.craftingInventory.getStack(i);
+            ItemStack inventoryStack = screenHandler.craftingInventory.getItem(i);
             ItemStack remainingStack = remainingStacks.get(i);
             if (!inventoryStack.isEmpty()) {
-                screenHandler.craftingInventory.removeStack(i, 1);
-                inventoryStack = screenHandler.craftingInventory.getStack(i);
+                screenHandler.craftingInventory.removeItem(i, 1);
+                inventoryStack = screenHandler.craftingInventory.getItem(i);
             }
             if (remainingStack.isEmpty()) continue;
             if (inventoryStack.isEmpty()) {
-                screenHandler.craftingInventory.setStack(i, remainingStack);
+                screenHandler.craftingInventory.setItem(i, remainingStack);
                 continue;
             }
-            if (ItemStack.areEqual(inventoryStack, remainingStack) && ItemStack.areItemsEqual(inventoryStack, remainingStack)) {
-                remainingStack.increment(inventoryStack.getCount());
-                screenHandler.craftingInventory.setStack(i, remainingStack);
+            if (ItemStack.matches(inventoryStack, remainingStack) && ItemStack.isSameItem(inventoryStack, remainingStack)) {
+                remainingStack.grow(inventoryStack.getCount());
+                screenHandler.craftingInventory.setItem(i, remainingStack);
                 continue;
             }
-            if (screenHandler.player.getInventory().insertStack(remainingStack)) continue;
-            screenHandler.player.dropItem(remainingStack, false);
+            if (screenHandler.player.getInventory().add(remainingStack)) continue;
+            screenHandler.player.drop(remainingStack, false);
         }
     }
 }

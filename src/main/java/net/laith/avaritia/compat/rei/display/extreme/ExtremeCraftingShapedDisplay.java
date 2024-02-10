@@ -11,7 +11,7 @@ public class ExtremeCraftingShapedDisplay extends ExtremeCraftingDisplay<Extreme
     public ExtremeCraftingShapedDisplay(ExtremeCraftingShapedRecipe recipe) {
         super(
                 EntryIngredients.ofIngredients(recipe.getIngredients()),
-                Collections.singletonList(EntryIngredients.of(recipe.getOutput(BasicDisplay.registryAccess()))),
+                Collections.singletonList(EntryIngredients.of(recipe.getResultItem(BasicDisplay.registryAccess()))),
                 Optional.of(recipe)
         );
     }

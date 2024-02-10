@@ -4,23 +4,16 @@ import com.google.common.collect.Lists;
 import me.shedaniel.math.Point;
 import me.shedaniel.math.Rectangle;
 import me.shedaniel.rei.api.client.gui.Renderer;
-import me.shedaniel.rei.api.client.gui.widgets.Label;
 import me.shedaniel.rei.api.client.gui.widgets.Widget;
 import me.shedaniel.rei.api.client.gui.widgets.Widgets;
 import me.shedaniel.rei.api.client.registry.display.DisplayCategory;
 import me.shedaniel.rei.api.common.category.CategoryIdentifier;
-import me.shedaniel.rei.api.common.entry.EntryIngredient;
-import me.shedaniel.rei.api.common.entry.EntryStack;
-import me.shedaniel.rei.api.common.entry.InputIngredient;
 import me.shedaniel.rei.api.common.util.EntryStacks;
-import net.laith.avaritia.client.screen.ExtremeCraftingTableScreen;
 import net.laith.avaritia.client.screen.NeutroniumCompressorScreen;
 import net.laith.avaritia.compat.rei.ServerREIPlugin;
 import net.laith.avaritia.compat.rei.display.NeutroniumCompressorDisplay;
 import net.laith.avaritia.init.ModBlocks;
-import net.minecraft.client.font.TextRenderer;
-import net.minecraft.text.Style;
-import net.minecraft.text.Text;
+import net.minecraft.network.chat.Component;
 
 import java.util.List;
 
@@ -31,8 +24,8 @@ public class NeutroniumCompressorCategory implements DisplayCategory<NeutroniumC
     }
 
     @Override
-    public Text getTitle() {
-        return Text.translatable("avaritia.category.rei.neutronium_compressor");
+    public Component getTitle() {
+        return Component.translatable("avaritia.category.rei.neutronium_compressor");
     }
 
     @Override
@@ -52,10 +45,10 @@ public class NeutroniumCompressorCategory implements DisplayCategory<NeutroniumC
         widgets.add(Widgets.createSlot(new Point(startPoint.x + 110, startPoint.y + 27)).entries(display.getOutputEntries().get(0)).markOutput().disableBackground());
 
         widgets.add(Widgets.createDrawableWidget((context, mouseX, mouseY, delta) -> {
-            context.drawTexture(NeutroniumCompressorScreen.TEXTURE, startPoint.x + 83, startPoint.y + 27, 176, 16, 16, (int) ((System.currentTimeMillis() / display.getCost()) % 15 ));
+            context.blit(NeutroniumCompressorScreen.TEXTURE, startPoint.x + 83, startPoint.y + 27, 176, 16, 16, (int) ((System.currentTimeMillis() / display.getCost()) % 15 ));
         }));
 
-        widgets.add(Widgets.createLabel(new Point(startPoint.x + 55, startPoint.y + 39), Text.of(String.valueOf(display.getCost()))));
+        widgets.add(Widgets.createLabel(new Point(startPoint.x + 55, startPoint.y + 39), Component.literal(String.valueOf(display.getCost()))));
         return widgets;
     }
 

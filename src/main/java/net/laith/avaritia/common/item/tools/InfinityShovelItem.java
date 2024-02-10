@@ -1,52 +1,42 @@
 package net.laith.avaritia.common.item.tools;
 
-import net.laith.avaritia.util.helpers.ToolHelper;
-import net.minecraft.block.BlockState;
-import net.minecraft.client.item.TooltipContext;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.damage.DamageSource;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.ShovelItem;
-import net.minecraft.item.ToolMaterial;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.registry.tag.BlockTags;
-import net.minecraft.text.Text;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.Arm;
-import net.minecraft.util.Hand;
-import net.minecraft.util.TypedActionResult;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
-import org.jetbrains.annotations.Nullable;
-
-import java.util.List;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.HumanoidArm;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ShovelItem;
+import net.minecraft.world.item.Tier;
+import net.minecraft.world.level.Level;
 
 public class InfinityShovelItem extends ShovelItem {
 
-    public InfinityShovelItem(ToolMaterial material, float attackDamage, float attackSpeed, Settings settings) {
-        super(material, attackDamage, attackSpeed, settings);
+    public InfinityShovelItem(Tier tier, float attackDamage, float attackSpeed, Properties properties) {
+        super(tier, attackDamage, attackSpeed, properties);
     }
 
     @Override
-    public boolean isDamageable() {
+    public boolean canBeDepleted() {
         return false;
     }
 
     @Override
-    public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
-        ItemStack stack = user.getStackInHand(hand);
-        if (user.isSneaking()) {
-            NbtCompound tags = stack.getOrCreateNbt();
-            tags.putBoolean("destroyer", !tags.getBoolean("destroyer"));
-            user.setMainArm(Arm.RIGHT);
-            return new TypedActionResult<>(ActionResult.SUCCESS, stack);
+    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand usedHand) {
+        ItemStack stack = player.getItemInHand(usedHand);
+        if (player.isShiftKeyDown()) {
+            CompoundTag tag = stack.getOrCreateTag();
+            tag.putBoolean("destroyer", !tag.getBoolean("destroyer"));
+            player.setMainArm(HumanoidArm.RIGHT);
+            return new InteractionResultHolder<>(InteractionResult.SUCCESS, stack);
         }
-        return super.use(world, user, hand);
+        return super.use(level, player, usedHand);
     }
 
     @Override
-    public boolean damage(DamageSource source) {
+    public boolean canBeHurtBy(DamageSource source) {
         return false;
     }
 }

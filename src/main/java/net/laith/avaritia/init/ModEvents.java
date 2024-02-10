@@ -16,14 +16,15 @@ import net.laith.avaritia.util.TextUtil;
 import net.laith.avaritia.util.events.JumpEvent;
 import net.laith.avaritia.util.helpers.BooleanHelper;
 import net.laith.avaritia.util.helpers.ToolHelper;
-import net.minecraft.client.render.entity.PlayerEntityRenderer;
-import net.minecraft.entity.EquipmentSlot;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.registry.tag.BlockTags;
-import net.minecraft.text.Text;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.Formatting;
+import net.minecraft.ChatFormatting;
+import net.minecraft.client.renderer.entity.player.PlayerRenderer;
+import net.minecraft.network.chat.Component;
+import net.minecraft.tags.BlockTags;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.phys.Vec3;
 
 import java.util.List;
 
@@ -32,44 +33,44 @@ public class ModEvents {
     public static class Server {
         public static void register() {
             ServerTickEvents.START_WORLD_TICK.register(world -> {
-                for(var player: world.getPlayers()) {
+                for(var player: world.players()) {
                     InfinityHandler.serverAbilities(player);
                 }
             });
 
             ServerLivingEntityEvents.ALLOW_DAMAGE.register(((entity, source, amount) -> {
-                if(entity instanceof PlayerEntity player) {
+                if(entity instanceof Player player) {
                     return !BooleanHelper.isWearingTheFullArmor(player);
                 }
                 return true;
             }));
 
             AttackEntityCallback.EVENT.register((attacker, world, hand, entity, hitResult) -> {
-                if(attacker.getEquippedStack(EquipmentSlot.MAINHAND).isOf(ModItems.INFINITY_SWORD)) {
-                    if (!entity.getWorld().isClient && entity instanceof PlayerEntity victim) {
-                        if (victim.isCreative() && !victim.isDead() && victim.getHealth() > 0 && !BooleanHelper.isWearingTheFullArmor(victim)) {
-                            victim.getDamageTracker().onDamage(attacker.getDamageSources().create(ModDamageTypes.INFINITY, attacker, victim), victim.getHealth());
+                if(attacker.getItemBySlot(EquipmentSlot.MAINHAND).is(ModItems.INFINITY_SWORD)) {
+                    if (!entity.getCommandSenderWorld().isClientSide && entity instanceof Player victim) {
+                        if (victim.isCreative() && !victim.isDeadOrDying() && victim.getHealth() > 0 && !BooleanHelper.isWearingTheFullArmor(victim)) {
+                            victim.getCombatTracker().recordDamage(attacker.damageSources().source(ModDamageTypes.INFINITY, attacker, victim), victim.getHealth());
                             victim.setHealth(0);
-                            victim.onDeath(attacker.getDamageSources().create(ModDamageTypes.INFINITY, attacker, victim));
-                            return ActionResult.SUCCESS;
+                            victim.die(attacker.damageSources().source(ModDamageTypes.INFINITY, attacker, victim));
+                            return InteractionResult.SUCCESS;
                         }
                     }
                 }
-                return ActionResult.PASS;
+                return InteractionResult.PASS;
             });
 
             PlayerBlockBreakEvents.BEFORE.register((world, player, pos, state, blockEntity) -> {
-               ItemStack stack = player.getEquippedStack(EquipmentSlot.MAINHAND);
-               if(stack.isOf(ModItems.INFINITY_PICKAXE)) {
-                   if (stack.getOrCreateNbt().getBoolean("hammer")) {
-                       if (state.isIn(ModTags.Blocks.INFINITY_PICKAXE)) {
+               ItemStack stack = player.getItemBySlot(EquipmentSlot.MAINHAND);
+               if(stack.is(ModItems.INFINITY_PICKAXE)) {
+                   if (stack.getOrCreateTag().getBoolean("hammer")) {
+                       if (state.is(ModTags.Blocks.INFINITY_PICKAXE)) {
                            ToolHelper.mineCube(player, world, ModTags.Blocks.INFINITY_PICKAXE);
                        }
                    }
                }
-                   else if (stack.getOrCreateNbt().getBoolean("destroyer")) {
-                       if (state.isIn(BlockTags.SHOVEL_MINEABLE)) {
-                           ToolHelper.mineCube(player, world, BlockTags.SHOVEL_MINEABLE);
+                   else if (stack.getOrCreateTag().getBoolean("destroyer")) {
+                       if (state.is(BlockTags.MINEABLE_WITH_SHOVEL)) {
+                           ToolHelper.mineCube(player, world, BlockTags.MINEABLE_WITH_SHOVEL);
                        }
                    }
                return true;
@@ -82,31 +83,31 @@ public class ModEvents {
         public static void register() {
 
            ClientTickEvents.START_WORLD_TICK.register(world -> {
-                for (var player: world.getPlayers()) {
+                for (var player: world.players()) {
                     InfinityHandler.clientAbilities(player);
                 }
             });
 
 
             LivingEntityFeatureRendererRegistrationCallback.EVENT.register((entityType, entityRenderer, registrationHelper, context) -> {
-                if (entityRenderer instanceof PlayerEntityRenderer playerEntityRenderer) {
-                    registrationHelper.register(new WingRenderer<>(playerEntityRenderer));
-                    registrationHelper.register(new EyeRenderer(playerEntityRenderer));
+                if (entityRenderer instanceof PlayerRenderer playerRenderer) {
+                    registrationHelper.register(new WingRenderer<>(playerRenderer));
+                    registrationHelper.register(new EyeRenderer(playerRenderer));
                 }
             });
 
             JumpEvent.ON_NORMAL.register(entity -> {
-                if (entity.getWorld().isClient && entity instanceof PlayerEntity player) {
+                if (entity.getCommandSenderWorld().isClientSide && entity instanceof Player player) {
                     if (BooleanHelper.isWearingBoots(player)) {
-                        player.addVelocity(0, 0.5, 0);
+                        player.addDeltaMovement(new Vec3(0, 0.5, 0));
                     }
                 }
             });
 
             JumpEvent.ON_SPRINT.register(entity -> {
-                if (entity.getWorld().isClient && entity instanceof PlayerEntity player) {
+                if (entity.getCommandSenderWorld().isClientSide && entity instanceof Player player) {
                     if (BooleanHelper.isWearingBoots(player)) {
-                        player.addVelocity(0, 0.08, 0);
+                        player.addDeltaMovement(new Vec3(0, 0.08, 0));
                     }
                 }
             });
@@ -114,11 +115,11 @@ public class ModEvents {
             ItemTooltipCallback.EVENT.register((stack, context, list) -> {
                 if (stack.getItem() == ModItems.INFINITY_SWORD) {
                         int s = 0;
-                        if (stack.hasEnchantments()) {
-                            List a = stack.getEnchantments().stream().toList();
+                        if (stack.isEnchanted()) {
+                            List a = stack.getEnchantmentTags().stream().toList();
                             s = a.size();
                         }
-                        list.set(3 + s, Text.of(TextUtil.makeFabulous("+Infinite") + Formatting.DARK_GREEN + " Attack Damage"));
+                        list.set(3 + s, Component.nullToEmpty(TextUtil.makeFabulous("+Infinite") + ChatFormatting.DARK_GREEN + " Attack Damage"));
                         return;
                 }
 

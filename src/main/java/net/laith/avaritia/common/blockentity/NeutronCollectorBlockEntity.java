@@ -2,40 +2,41 @@ package net.laith.avaritia.common.blockentity;
 
 import net.laith.avaritia.common.block.NeutronCollectorBlock;
 import net.laith.avaritia.common.block.NeutroniumCompressorBlock;
+import net.laith.avaritia.common.screenhandler.ExtremeCraftingTableScreenHandler;
 import net.laith.avaritia.common.screenhandler.NeutronCollectorScreenHandler;
 import net.laith.avaritia.init.ModBlockEntities;
 import net.laith.avaritia.init.ModItems;
 import net.laith.avaritia.util.AvaritiaConfig;
 import net.laith.avaritia.util.inventory.ImplementedInventory;
-import net.laith.avaritia.util.inventory.ImplementedSidedInventory;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.Inventories;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.screen.NamedScreenHandlerFactory;
-import net.minecraft.screen.PropertyDelegate;
-import net.minecraft.screen.ScreenHandler;
-import net.minecraft.text.Text;
-import net.minecraft.util.collection.DefaultedList;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
-import net.minecraft.world.World;
+import net.laith.avaritia.util.inventory.ImplementedSidedInventory;;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.core.NonNullList;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.ContainerHelper;
+import net.minecraft.world.MenuProvider;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.ContainerData;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
 
-public class NeutronCollectorBlockEntity extends BlockEntity implements NamedScreenHandlerFactory, ImplementedSidedInventory {
+public class NeutronCollectorBlockEntity extends BlockEntity implements MenuProvider, ImplementedSidedInventory {
     public static final int TIMER = AvaritiaConfig.getConfig().process;
-    private final DefaultedList<ItemStack> inventory;
+    private final NonNullList<ItemStack> inventory;
     private int progress = 0;
 
-    protected final PropertyDelegate propertyDelegate;
+    protected final ContainerData containerData;
 
     public NeutronCollectorBlockEntity(BlockPos pos, BlockState state) {
         super(ModBlockEntities.NEUTRON_COLLECTOR_BLOCK_ENTITY, pos, state);
-        this.inventory = DefaultedList.ofSize(1, ItemStack.EMPTY);
-        this.propertyDelegate = new PropertyDelegate() {
+        this.inventory = NonNullList.withSize(1, ItemStack.EMPTY);
+        this.containerData = new ContainerData() {
             @Override
             public int get(int index) {
                 return progress;
@@ -48,7 +49,7 @@ public class NeutronCollectorBlockEntity extends BlockEntity implements NamedScr
             }
 
             @Override
-            public int size() {
+            public int getCount() {
                 return 1;
             }
         };
@@ -56,54 +57,54 @@ public class NeutronCollectorBlockEntity extends BlockEntity implements NamedScr
 
 
     @Override
-    public DefaultedList<ItemStack> getItems() {
+    public NonNullList<ItemStack> getItems() {
         return inventory;
     }
 
-
-    public static void tick(World world, BlockPos blockPos, BlockState state, NeutronCollectorBlockEntity entity) {
-        if (world.isClient()) {
+    public static void tick(Level level, BlockPos blockPos, BlockState state, NeutronCollectorBlockEntity entity) {
+        if (level.isClientSide) {
             return;
         }
         if(entity.inventory.get(0).getCount() < 64) {
-            world.setBlockState(blockPos, state.with(NeutronCollectorBlock.ACTIVE, true));
-            entity.propertyDelegate.set(0, entity.propertyDelegate.get(0)+1);
+            level.setBlockAndUpdate(blockPos, state.setValue(NeutronCollectorBlock.ACTIVE, true));
+            entity.containerData.set(0, entity.containerData.get(0)+1);
             if(entity.progress == TIMER) {
                 craftItem(entity);
                 entity.resetProgress();
-                markDirty(world, blockPos, state);
+                setChanged(level, blockPos, state);
             } else {
-                markDirty(world, blockPos, state);
+                setChanged(level, blockPos, state);
             }
         } else {
-            world.setBlockState(blockPos, state.with(NeutronCollectorBlock.ACTIVE, false));
+            level.setBlockAndUpdate(blockPos, state.setValue(NeutronCollectorBlock.ACTIVE, false));
         }
     }
 
+    @Nullable
     @Override
-    public ScreenHandler createMenu(int syncId, PlayerInventory playerInventory, PlayerEntity player) {
-        return new NeutronCollectorScreenHandler(syncId, playerInventory, this, this.propertyDelegate);
+    public AbstractContainerMenu createMenu(int i, Inventory inventory, Player player) {
+        return new NeutronCollectorScreenHandler(i, inventory, this, this.containerData);
     }
 
     @Override
-    public Text getDisplayName() {
-        return Text.translatable(getCachedState().getBlock().getTranslationKey());
+    public Component getDisplayName() {
+        return Component.translatable(getBlockState().getBlock().getDescriptionId());
     }
 
     @Override
-    public void readNbt(NbtCompound nbt) {
-        super.readNbt(nbt);
-        this.progress = nbt.getInt("progress");
-        Inventories.readNbt(nbt, this.inventory);
+    public void load(CompoundTag tag) {
+        super.load(tag);
+        this.progress = tag.getInt("progress");
+        ContainerHelper.loadAllItems(tag, this.inventory);
     }
 
     @Override
-    public void writeNbt(NbtCompound nbt) {
-        super.writeNbt(nbt);
+    public void saveAdditional(CompoundTag tag) {
+        super.saveAdditional(tag);
         if(this.inventory.get(0).getCount() < 64) {
-            nbt.putInt("progress", this.progress);
+            tag.putInt("progress", this.progress);
         }
-        Inventories.writeNbt(nbt, this.inventory);
+        ContainerHelper.saveAllItems(tag, this.inventory);
     }
 
     private static void craftItem(NeutronCollectorBlockEntity entity) {
@@ -116,40 +117,40 @@ public class NeutronCollectorBlockEntity extends BlockEntity implements NamedScr
     }
 
     @Override
-    public boolean canInsert(int slot, ItemStack stack, @Nullable Direction side) {
+    public boolean canPlaceItemThroughFace(int index, ItemStack itemStack, @Nullable Direction direction) {
         return false;
     }
 
     @Override
-    public boolean canExtract(int slot, ItemStack stack, @Nullable Direction side) {
-        Direction localDir = this.getWorld().getBlockState(this.pos).get(NeutroniumCompressorBlock.FACING);
+    public boolean canTakeItemThroughFace(int index, ItemStack stack, Direction direction) {
+        Direction localDir = this.getLevel().getBlockState(this.getBlockPos()).getValue(NeutroniumCompressorBlock.FACING);
 
 
-        if(side == Direction.UP || side == Direction.DOWN) {
-            return slot == 0;
+        if(direction == Direction.UP || direction == Direction.DOWN) {
+            return index == 0;
         }
 
         return switch (localDir) {
             default ->
-                    side.getOpposite() == Direction.NORTH && slot == 0 ||
-                            side.getOpposite() == Direction.EAST && slot == 0 ||
-                            side.getOpposite() == Direction.WEST && slot == 0 ||
-                            side.getOpposite() == Direction.SOUTH && slot == 0;
+                    direction.getOpposite() == Direction.NORTH && index == 0 ||
+                            direction.getOpposite() == Direction.EAST && index == 0 ||
+                            direction.getOpposite() == Direction.WEST && index == 0 ||
+                            direction.getOpposite() == Direction.SOUTH && index == 0;
             case EAST ->
-                    side.rotateYClockwise() == Direction.NORTH && slot == 0 ||
-                            side.rotateYClockwise() == Direction.EAST && slot == 0 ||
-                            side.rotateYClockwise() == Direction.WEST && slot == 0 ||
-                            side.rotateYClockwise() == Direction.SOUTH && slot == 0;
+                    direction.getClockWise() == Direction.NORTH && index == 0 ||
+                            direction.getClockWise() == Direction.EAST && index == 0 ||
+                            direction.getClockWise() == Direction.WEST && index == 0 ||
+                            direction.getClockWise() == Direction.SOUTH && index == 0;
             case SOUTH ->
-                    side == Direction.NORTH && slot == 0 ||
-                            side == Direction.EAST && slot == 0 ||
-                            side == Direction.WEST && slot == 0 ||
-                            side == Direction.SOUTH && slot == 0;
+                    direction == Direction.NORTH && index == 0 ||
+                            direction == Direction.EAST && index == 0 ||
+                            direction == Direction.WEST && index == 0 ||
+                            direction == Direction.SOUTH && index == 0;
             case WEST ->
-                    side.rotateYCounterclockwise() == Direction.NORTH && slot == 0 ||
-                            side.rotateYCounterclockwise() == Direction.EAST && slot == 0 ||
-                            side.rotateYCounterclockwise() == Direction.WEST && slot == 0 ||
-                            side.rotateYCounterclockwise() == Direction.SOUTH && slot == 0;
+                    direction.getCounterClockWise() == Direction.NORTH && index == 0 ||
+                            direction.getCounterClockWise() == Direction.EAST && index == 0 ||
+                            direction.getCounterClockWise() == Direction.WEST && index == 0 ||
+                            direction.getCounterClockWise() == Direction.SOUTH && index == 0;
         };
     }
 }

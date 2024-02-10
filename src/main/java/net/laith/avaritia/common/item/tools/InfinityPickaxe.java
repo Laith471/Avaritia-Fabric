@@ -1,79 +1,75 @@
 package net.laith.avaritia.common.item.tools;
 
 import net.laith.avaritia.init.ModTags;
-import net.laith.avaritia.util.helpers.ToolHelper;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.client.item.TooltipContext;
-import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.enchantment.Enchantments;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.damage.DamageSource;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.MiningToolItem;
-import net.minecraft.item.ToolMaterial;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.text.Text;
-import net.minecraft.util.*;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.world.World;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.util.Mth;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.HumanoidArm;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.DiggerItem;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Tier;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.item.enchantment.Enchantments;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class InfinityPickaxe extends MiningToolItem {
+public class InfinityPickaxe extends DiggerItem {
 
-    public InfinityPickaxe(ToolMaterial material, int attackDamage, float attackSpeed, Settings settings) {
-        super(attackDamage, attackSpeed, material, ModTags.Blocks.INFINITY_PICKAXE, settings);
+    public InfinityPickaxe(Tier tier, int attackDamage, float attackSpeed, Properties properties) {
+        super(attackDamage, attackSpeed, tier, ModTags.Blocks.INFINITY_PICKAXE, properties);
     }
 
 
     @Override
-    public boolean isDamageable() {
+    public boolean canBeDepleted() {
         return false;
     }
-
     @Override
-    public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
-        ItemStack stack = user.getStackInHand(hand);
-        if (user.isSneaking()) {
-            NbtCompound tags = stack.getOrCreateNbt();
-            if (EnchantmentHelper.getLevel(Enchantments.FORTUNE, stack) < 10) {
-                stack.addEnchantment(Enchantments.FORTUNE, 10);
+    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand usedHand) {
+        ItemStack stack = player.getItemInHand(usedHand);
+        if (player.isShiftKeyDown()) {
+            CompoundTag tag = stack.getOrCreateTag();
+            if (EnchantmentHelper.getItemEnchantmentLevel(Enchantments.BLOCK_FORTUNE, stack) < 10) {
+                stack.enchant(Enchantments.BLOCK_FORTUNE, 10);
             }
-            tags.putBoolean("hammer", !tags.getBoolean("hammer"));
-            user.setMainArm(Arm.RIGHT);
-            return new TypedActionResult<>(ActionResult.SUCCESS, stack);
+            tag.putBoolean("hammer", !tag.getBoolean("hammer"));
+            player.setMainArm(HumanoidArm.RIGHT);
+            return new InteractionResultHolder<>(InteractionResult.SUCCESS, stack);
         }
-        return super.use(world, user, hand);
+        return super.use(level, player, usedHand);
     }
 
     @Override
-    public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-        if (stack.getOrCreateNbt().getBoolean("hammer")) {
-            if (!(target instanceof PlayerEntity)) {
+    public boolean hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {
+        if (stack.getOrCreateTag().getBoolean("hammer")) {
+            if (!(target instanceof Player)) {
                 int i = 10;
-                target.addVelocity(-MathHelper.sin(attacker.getYaw() * (float) Math.PI / 180.0F) * i * 0.5F, 2.0D, MathHelper.cos(attacker.getYaw() * (float) Math.PI / 180.0F) * i * 0.5F);
+                target.setDeltaMovement(-Mth.sin(attacker.getYRot() * (float) Math.PI / 180.0F) * i * 0.5F, 2.0D, Mth.cos(attacker.getYRot() * (float) Math.PI / 180.0F) * i * 0.5F);
             }
         }
         return true;
     }
 
-
     @Override
-    public boolean damage(DamageSource source) {
+    public boolean canBeHurtBy(DamageSource source) {
         return false;
     }
 
     @Override
-    public float getMiningSpeedMultiplier(ItemStack stack, BlockState state) {
-        if (stack.getOrCreateNbt().getBoolean("hammer")) {
+    public float getDestroySpeed(ItemStack stack, BlockState state) {
+        if (stack.getOrCreateTag().getBoolean("hammer")) {
             return 5.0F;
-        } if(!state.isIn(ModTags.Blocks.INFINITY_PICKAXE)) {
+        } if(!state.is(ModTags.Blocks.INFINITY_PICKAXE)) {
             return 275.0F;
         }
-        return super.miningSpeed;
+        return super.speed;
     }
 }

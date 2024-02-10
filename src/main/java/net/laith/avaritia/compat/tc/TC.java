@@ -5,13 +5,13 @@ import net.fabricmc.fabric.api.object.builder.v1.entity.FabricEntityTypeBuilder;
 import net.laith.avaritia.AvaritiaMod;
 import net.laith.avaritia.compat.tc.tools.shuriken.InfinityShurikenEntity;
 import net.laith.avaritia.compat.tc.tools.shuriken.InfinityShurikenItem;
-import net.minecraft.entity.EntityDimensions;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.SpawnGroup;
-import net.minecraft.item.Item;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.Registry;
-import net.minecraft.util.Identifier;
+import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.EntityDimensions;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.MobCategory;
+import net.minecraft.world.item.Item;
 
 public class TC {
     public static EntityType<InfinityShurikenEntity> INFINITY_SHURIKEN_ENTITY;
@@ -19,9 +19,9 @@ public class TC {
 
     private static void registerTinkerConstructEntities() {
         INFINITY_SHURIKEN_ENTITY = Registry.register(
-                Registries.ENTITY_TYPE,
-                new Identifier(AvaritiaMod.MOD_ID, "infinity_shuriken"),
-                FabricEntityTypeBuilder.<InfinityShurikenEntity>create(SpawnGroup.MISC, InfinityShurikenEntity::new)
+                BuiltInRegistries.ENTITY_TYPE,
+                new ResourceLocation(AvaritiaMod.MOD_ID, "infinity_shuriken"),
+                FabricEntityTypeBuilder.<InfinityShurikenEntity>create(MobCategory.MISC, InfinityShurikenEntity::new)
                         .dimensions(EntityDimensions.fixed(0.25F, 0.25F))
                         .trackRangeBlocks(4).trackedUpdateRate(10)
                         .forceTrackedVelocityUpdates(true)
@@ -30,7 +30,7 @@ public class TC {
     }
 
     private static void registerTinkerConstructItems() {
-         INFINITY_SHURIKEN = Registry.register(Registries.ITEM, new Identifier(AvaritiaMod.MOD_ID, "infinity_shuriken"), new InfinityShurikenItem(new FabricItemSettings().maxCount(16), InfinityShurikenEntity::new));
+         INFINITY_SHURIKEN = Registry.register(BuiltInRegistries.ITEM, new ResourceLocation(AvaritiaMod.MOD_ID, "infinity_shuriken"), new InfinityShurikenItem(new FabricItemSettings().maxCount(16), InfinityShurikenEntity::new));
     }
 
     public static void init() {

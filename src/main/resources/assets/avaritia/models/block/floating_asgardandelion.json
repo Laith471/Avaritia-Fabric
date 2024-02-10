@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/block",
+  "flower": {
+    "parent": "avaritia:block/asgardandelion"
+  },
+  "loader": "botania:floating_flower"
+}

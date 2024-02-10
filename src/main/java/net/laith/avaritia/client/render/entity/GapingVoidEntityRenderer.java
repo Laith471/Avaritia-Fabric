@@ -1,42 +1,44 @@
 package net.laith.avaritia.client.render.entity;
 
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.laith.avaritia.client.model.GapingVoidModel;
 import net.laith.avaritia.common.entity.GapingVoidEntity;
-import net.minecraft.client.render.*;
-import net.minecraft.client.render.entity.EntityRenderer;
-import net.minecraft.client.render.entity.EntityRendererFactory;
-import net.minecraft.client.render.entity.model.EntityModel;
-import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.entity.Entity;
-import net.minecraft.util.Identifier;
+import net.minecraft.client.model.EntityModel;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.entity.EntityRenderer;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.Entity;
 
 @Environment(EnvType.CLIENT)
 public class GapingVoidEntityRenderer extends EntityRenderer<GapingVoidEntity> {
 
-    private final Identifier fill = new Identifier("avaritia:textures/entity/voidtemp.png");
+    private final ResourceLocation fill = new ResourceLocation("avaritia:textures/entity/voidtemp.png");
 
     private final EntityModel<Entity> gapingVoid;
 
-    public GapingVoidEntityRenderer(EntityRendererFactory.Context context) {
+    public GapingVoidEntityRenderer(EntityRendererProvider.Context context) {
         super(context);
-        gapingVoid = new GapingVoidModel<>(context.getPart(GapingVoidModel.LAYER_LOCATION));
+        gapingVoid = new GapingVoidModel<>(context.bakeLayer(GapingVoidModel.LAYER_LOCATION));
     }
 
     @Override
-    public Identifier getTexture(GapingVoidEntity entity) {
+    public ResourceLocation getTextureLocation(GapingVoidEntity entity) {
         return fill;
     }
 
     @Override
-    public void render(GapingVoidEntity entity, float yaw, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light) {
-        matrices.push();
-        VertexConsumer builder = vertexConsumers.getBuffer(this.gapingVoid.getLayer(this.getTexture(entity)));
+    public void render(GapingVoidEntity entity, float yaw, float tickDelta, PoseStack matrices, MultiBufferSource vertexConsumers, int light) {
+        matrices.pushPose();
+        VertexConsumer builder = vertexConsumers.getBuffer(this.gapingVoid.renderType(this.getTextureLocation(entity)));
         float scale = (float) GapingVoidEntity.getVoidScale(entity.getAge() + tickDelta);
         matrices.scale(scale, scale, scale);
         matrices.translate(0, -scale * 0.1d, 0);
-        this.gapingVoid.render(matrices, builder, light, OverlayTexture.DEFAULT_UV, 1.0f, 1.0f, 1.0f, 1.0f);
+        this.gapingVoid.renderToBuffer(matrices, builder, light, OverlayTexture.NO_OVERLAY, 1.0f, 1.0f, 1.0f, 1.0f);
 
       /*  float scale = (float) GapingVoidEntity.getVoidScale(entity.getAge() + tickDelta) * 1.25F;
         float cache = RenderSystem.getShaderFogStart();
@@ -55,6 +57,6 @@ public class GapingVoidEntityRenderer extends EntityRenderer<GapingVoidEntity> {
         RenderSystem.disableDepthTest();
 
        */
-        matrices.pop();
+        matrices.popPose();
     }
 }

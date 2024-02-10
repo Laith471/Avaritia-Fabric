@@ -7,32 +7,32 @@ import net.laith.avaritia.common.screenhandler.NeutroniumCompressorScreenHandler
 import net.laith.avaritia.init.ModBlockEntities;
 import net.laith.avaritia.util.blockentities.NeutroniumHelper;
 import net.laith.avaritia.util.inventory.ImplementedSidedInventory;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.Inventories;
-import net.minecraft.inventory.SimpleInventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.nbt.NbtElement;
-import net.minecraft.recipe.Ingredient;
-import net.minecraft.screen.NamedScreenHandlerFactory;
-import net.minecraft.screen.PropertyDelegate;
-import net.minecraft.screen.ScreenHandler;
-import net.minecraft.text.Text;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.collection.DefaultedList;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.core.NonNullList;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.Tag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.ContainerHelper;
+import net.minecraft.world.MenuProvider;
+import net.minecraft.world.SimpleContainer;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.ContainerData;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
 
-public class NeutroniumCompressorBlockEntity extends BlockEntity implements NamedScreenHandlerFactory, ImplementedSidedInventory {
-    public final DefaultedList<ItemStack> inventory;
+public class NeutroniumCompressorBlockEntity extends BlockEntity implements MenuProvider, ImplementedSidedInventory {
+    public final NonNullList<ItemStack> inventory;
     public NeutroniumCompressorRecipe recipe;
     public int progress;
     public int cost;
@@ -40,14 +40,14 @@ public class NeutroniumCompressorBlockEntity extends BlockEntity implements Name
     public Ingredient cachedInput;
     public ItemStack cachedOutput;
     public int cachedCost;
-    public Identifier cachedId;
-    protected final PropertyDelegate propertyDelegate;
+    public ResourceLocation cachedId;
+    protected final ContainerData containerData;
 
 
     public NeutroniumCompressorBlockEntity(BlockPos pos, BlockState state) {
         super(ModBlockEntities.NEUTRONIUM_COMPRESSOR_BLOCK_ENTITY, pos, state);
-        this.inventory = DefaultedList.ofSize(2, ItemStack.EMPTY);
-        this.propertyDelegate = new PropertyDelegate() {
+        this.inventory = NonNullList.withSize(2, ItemStack.EMPTY);
+        this.containerData = new ContainerData() {
             @Override
             public int get(int index) {
                 switch (index) {
@@ -72,7 +72,7 @@ public class NeutroniumCompressorBlockEntity extends BlockEntity implements Name
             }
 
             @Override
-            public int size() {
+            public int getCount() {
                 return 2;
             }
 
@@ -80,24 +80,23 @@ public class NeutroniumCompressorBlockEntity extends BlockEntity implements Name
     }
 
     @Override
-    public DefaultedList<ItemStack> getItems() {
+    public NonNullList<ItemStack> getItems() {
         return inventory;
     }
 
-
     @Override
-    public ScreenHandler createMenu(int syncId, PlayerInventory playerInventory, PlayerEntity player) {
-        return new NeutroniumCompressorScreenHandler(syncId, playerInventory, this, this.propertyDelegate);
+    public AbstractContainerMenu createMenu(int i, Inventory inventory, Player player) {
+        return new NeutroniumCompressorScreenHandler(i, inventory, this, this.containerData);
     }
 
-    public static void tick(World world, BlockPos blockPos, BlockState state, NeutroniumCompressorBlockEntity entity) {
-        if (world.isClient) {
+    public static void tick(Level level, BlockPos blockPos, BlockState state, NeutroniumCompressorBlockEntity entity) {
+        if (level.isClientSide) {
             return;
         }
 
-        SimpleInventory simpleInventory = new SimpleInventory(entity.size());
-        for (int i = 0; i < entity.size(); i++) {
-            simpleInventory.setStack(i, entity.getStack(i));
+        SimpleContainer simpleContainer = new SimpleContainer(entity.getContainerSize());
+        for (int i = 0; i < entity.getContainerSize(); i++) {
+            simpleContainer.setItem(i, entity.getItem(i));
         }
         if (entity.inventory.get(1).getCount() < 64) {
             if (entity.cachedInput != null && entity.cachedId != null && entity.cachedOutput.getItem() != Items.AIR && entity.cachedCost != 0) {
@@ -106,21 +105,21 @@ public class NeutroniumCompressorBlockEntity extends BlockEntity implements Name
                 entity.match = Optional.of(new NeutroniumCompressorRecipe(entity.cachedId, entity.cachedInput, entity.cachedCost, entity.cachedOutput));
             }
 
-            ItemStack outputStack = entity.getStack(1);
+            ItemStack outputStack = entity.getItem(1);
             if (outputStack.isEmpty() && entity.progress == 0) {
                 entity.recipe = null; // Reset the current recipe if the output slot is empty
             }
 
             if (entity.recipe == null) {
                 // we check if the recipe is null and if we get a match
-                entity.match = world.getRecipeManager().getFirstMatch(NeutroniumCompressorRecipe.Type.INSTANCE, simpleInventory, entity.getWorld());
+                entity.match = level.getRecipeManager().getRecipeFor(NeutroniumCompressorRecipe.Type.INSTANCE, simpleContainer, entity.getLevel());
             }
 
             if (entity.progress > 0) {
-                world.setBlockState(blockPos, state.with(NeutroniumCompressorBlock.ACTIVE, true));
+                level.setBlockAndUpdate(blockPos, state.setValue(NeutroniumCompressorBlock.ACTIVE, true));
             }
             if (entity.progress == 0) {
-                world.setBlockState(blockPos, state.with(NeutroniumCompressorBlock.ACTIVE, false));
+                level.setBlockAndUpdate(blockPos, state.setValue(NeutroniumCompressorBlock.ACTIVE, false));
             }
 
             // if there is a match and its present it will be true. we take the match from either the cachedRecipe or the new recipe.
@@ -128,18 +127,18 @@ public class NeutroniumCompressorBlockEntity extends BlockEntity implements Name
                 //this field will be functional only if we get a match from the new recipe
                 entity.recipe = (NeutroniumCompressorRecipe) entity.match.get();
                 // here we set the cached value from any recipe
-                NeutroniumHelper.setCachedValues(entity, world);
+                NeutroniumHelper.setCachedValues(entity, level);
                 //and here the same from any recipe
                 entity.cost = entity.recipe.getCost();
 
-                if (NeutroniumHelper.checker(simpleInventory, entity, world)) {
-                    NeutroniumHelper.shrink(simpleInventory, entity);
+                if (NeutroniumHelper.checker(simpleContainer, entity, level)) {
+                    NeutroniumHelper.shrink(simpleContainer, entity);
                     //we have to save lol :)
-                    markDirty(world, blockPos, state);
+                    setChanged(level, blockPos, state);
                     if (entity.progress >= entity.cost) {
-                        NeutroniumHelper.craftItem(entity, world);
+                        NeutroniumHelper.craftItem(entity, level);
                         // and here :-)
-                        markDirty(world, blockPos, state);
+                        setChanged(level, blockPos, state);
                     }
                 }
             }
@@ -147,117 +146,116 @@ public class NeutroniumCompressorBlockEntity extends BlockEntity implements Name
     }
 
     @Override
-    public Text getDisplayName() {
-        return Text.translatable(getCachedState().getBlock().getTranslationKey());
+    public Component getDisplayName() {
+        return Component.translatable(getBlockState().getBlock().getDescriptionId());
     }
 
     @Override
-    public void readNbt(NbtCompound nbt) {
-        super.readNbt(nbt);
+    public void load(CompoundTag tag) {
+        super.load(tag);
         // we check when we load world if there is a match and that will mean that the player has left the world in the middle of the crafting process
-        this.progress = nbt.getInt("progress");
-        this.cost = nbt.getInt("cost");
-        this.cachedId = new Identifier(nbt.getString("cachedId"));
-        this.cachedCost = nbt.getInt("cachedCost");
-        if (nbt.contains("cachedInput", NbtElement.COMPOUND_TYPE)) {
-            NbtCompound cachedInputNbt = nbt.getCompound("cachedInput");
-            if (cachedInputNbt.contains("cachedInputJson", NbtElement.STRING_TYPE)) {
-                String cachedInputJson = cachedInputNbt.getString("cachedInputJson");
+        this.progress = tag.getInt("progress");
+        this.cost = tag.getInt("cost");
+        this.cachedId = new ResourceLocation(tag.getString("cachedId"));
+        this.cachedCost = tag.getInt("cachedCost");
+        if (tag.contains("cachedInput", Tag.TAG_COMPOUND)) {
+            CompoundTag cachedInputTag = tag.getCompound("cachedInput");
+            if (cachedInputTag.contains("cachedInputJson", Tag.TAG_STRING)) {
+                String cachedInputJson = cachedInputTag.getString("cachedInputJson");
                 cachedInput = Ingredient.fromJson(new JsonParser().parse(cachedInputJson));
             }
         }
-        if (nbt.contains("cachedOutput", NbtElement.COMPOUND_TYPE)) {
-            this.cachedOutput = ItemStack.fromNbt(nbt.getCompound("cachedOutput"));
+        if (tag.contains("cachedOutput", Tag.TAG_COMPOUND)) {
+            this.cachedOutput = ItemStack.of(tag.getCompound("cachedOutput"));
         }
         // obvious
-        Inventories.readNbt(nbt, this.inventory);
+        ContainerHelper.loadAllItems(tag, this.inventory);
     }
 
     @Override
-    public void writeNbt(NbtCompound nbt) {
-        super.writeNbt(nbt);
+    public void saveAdditional(CompoundTag tag) {
+        super.saveAdditional(tag);
         //here we put the value of the boolean
         //saving the progress and the cost
-        nbt.putInt("progress", this.progress);
-        nbt.putInt("cost", this.cost);
+        tag.putInt("progress", this.progress);
+        tag.putInt("cost", this.cost);
         // we have to save them all the time, so we satisfy the player :--)
         if (this.recipe != null) {
-            nbt.putString("cachedId", this.cachedId.toString());
-            nbt.putInt("cachedCost", this.cachedCost);
+            tag.putString("cachedId", this.cachedId.toString());
+            tag.putInt("cachedCost", this.cachedCost);
 
-            NbtCompound cachedInputNbt = new NbtCompound();
-            cachedInputNbt.putString("cachedInputJson", cachedInput.toJson().toString());
-            nbt.put("cachedInput", cachedInputNbt);
+            CompoundTag cachedInputTag = new CompoundTag();
+            cachedInputTag.putString("cachedInputJson", cachedInput.toJson().toString());
+            tag.put("cachedInput", cachedInputTag);
 
             if (!this.cachedOutput.isEmpty()) {
-                NbtCompound cachedOutputNbt = new NbtCompound();
-                this.cachedOutput.writeNbt(cachedOutputNbt);
-                nbt.put("cachedOutput", cachedOutputNbt);
+                CompoundTag cachedOutputTag = new CompoundTag();
+                this.cachedOutput.save(cachedOutputTag);
+                tag.put("cachedOutput", cachedOutputTag);
             }
         }
 
 
-        Inventories.writeNbt(nbt, this.inventory);
+        ContainerHelper.saveAllItems(tag, this.inventory);
     }
 
     @Override
-    public boolean canInsert(int slot, ItemStack stack, @Nullable Direction side) {
+    public boolean canPlaceItemThroughFace(int index, ItemStack itemStack, @Nullable Direction direction) {
+        Direction localDir = this.getLevel().getBlockState(this.getBlockPos()).getValue(NeutroniumCompressorBlock.FACING);
 
-        Direction localDir = this.getWorld().getBlockState(this.pos).get(NeutroniumCompressorBlock.FACING);
-
-        if(side == Direction.DOWN) {
+        if(direction == Direction.DOWN) {
             return false;
         }
 
-        if(side == Direction.UP) {
-            return slot == 0;
+        if(direction == Direction.UP) {
+            return index == 0;
         }
 
         return switch (localDir) {
             default ->
-                    side.getOpposite() == Direction.NORTH && slot == 0 ||
-                            side.getOpposite() == Direction.EAST && slot == 0 ||
-                            side.getOpposite() == Direction.WEST && slot == 0 ||
-                            side.getOpposite() == Direction.SOUTH && slot == 0;
+                    direction.getOpposite() == Direction.NORTH && index == 0 ||
+                            direction.getOpposite() == Direction.EAST && index == 0 ||
+                            direction.getOpposite() == Direction.WEST && index == 0 ||
+                            direction.getOpposite() == Direction.SOUTH && index == 0;
             case EAST ->
-                    side.rotateYClockwise() == Direction.NORTH && slot == 0 ||
-                            side.rotateYClockwise() == Direction.EAST && slot == 0 ||
-                            side.rotateYClockwise() == Direction.WEST && slot == 0 ||
-                            side.rotateYClockwise() == Direction.SOUTH && slot == 0;
+                    direction.getClockWise() == Direction.NORTH && index == 0 ||
+                            direction.getClockWise() == Direction.EAST && index == 0 ||
+                            direction.getClockWise() == Direction.WEST && index == 0 ||
+                            direction.getClockWise() == Direction.SOUTH && index == 0;
             case SOUTH ->
-                    side == Direction.NORTH && slot == 0 ||
-                            side == Direction.EAST && slot == 0 ||
-                            side == Direction.WEST && slot == 0 ||
-                            side == Direction.SOUTH && slot == 0;
+                    direction == Direction.NORTH && index == 0 ||
+                            direction == Direction.EAST && index == 0 ||
+                            direction == Direction.WEST && index == 0 ||
+                            direction == Direction.SOUTH && index == 0;
             case WEST ->
-                    side.rotateYCounterclockwise() == Direction.NORTH && slot == 0 ||
-                            side.rotateYCounterclockwise() == Direction.EAST && slot == 0 ||
-                            side.rotateYCounterclockwise() == Direction.WEST && slot == 0 ||
-                            side.rotateYCounterclockwise() == Direction.SOUTH && slot == 0;
+                    direction.getCounterClockWise() == Direction.NORTH && index == 0 ||
+                            direction.getCounterClockWise() == Direction.EAST && index == 0 ||
+                            direction.getCounterClockWise() == Direction.WEST && index == 0 ||
+                            direction.getCounterClockWise() == Direction.SOUTH && index == 0;
         };
     }
 
     @Override
-    public boolean canExtract(int slot, ItemStack stack, Direction side) {
-        Direction localDir = this.getWorld().getBlockState(this.pos).get(NeutroniumCompressorBlock.FACING);
+    public boolean canTakeItemThroughFace(int index, ItemStack stack, Direction direction) {
+        Direction localDir = this.getLevel().getBlockState(this.getBlockPos()).getValue(NeutroniumCompressorBlock.FACING);
 
-        if (side == Direction.UP) {
+        if (direction == Direction.UP) {
             return false;
         }
 
         // Down extract 2
-        if (side == Direction.DOWN) {
-            return slot == 1;
+        if (direction == Direction.DOWN) {
+            return index == 1;
         }
 
         return switch (localDir) {
-            default -> side.getOpposite() == Direction.EAST && slot == 1;
+            default -> direction.getOpposite() == Direction.EAST && index == 1;
 
-            case EAST ->  side.rotateYClockwise() == Direction.EAST && slot == 1;
+            case EAST ->  direction.getClockWise() == Direction.EAST && index == 1;
 
-            case SOUTH ->     side == Direction.EAST && slot == 1;
+            case SOUTH ->     direction == Direction.EAST && index == 1;
 
-            case WEST -> side.rotateYCounterclockwise() == Direction.EAST && slot == 1;
+            case WEST -> direction.getCounterClockWise() == Direction.EAST && index == 1;
         };
     }
 }

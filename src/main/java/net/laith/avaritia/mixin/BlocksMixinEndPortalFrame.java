@@ -1,7 +1,7 @@
 package net.laith.avaritia.mixin;
 
-import net.minecraft.block.AbstractBlock;
-import net.minecraft.block.Blocks;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
@@ -17,9 +17,9 @@ public class BlocksMixinEndPortalFrame {
     @Redirect(
             method = "<clinit>",
             slice = @Slice(from = @At(value = "CONSTANT", args = "stringValue=end_portal_frame")),
-            at = @At(value = "INVOKE", target = "Lnet/minecraft/block/AbstractBlock$Settings;dropsNothing()Lnet/minecraft/block/AbstractBlock$Settings;", ordinal = 0)
+            at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/block/state/BlockBehaviour$Properties;noLootTable()Lnet/minecraft/world/level/block/state/BlockBehaviour$Properties;", ordinal = 0)
     )
-    private static AbstractBlock.Settings endDropsItself(AbstractBlock.Settings instance) {
+    private static BlockBehaviour.Properties bedrockDropsItself(BlockBehaviour.Properties instance) {
         return instance;
     }
 }

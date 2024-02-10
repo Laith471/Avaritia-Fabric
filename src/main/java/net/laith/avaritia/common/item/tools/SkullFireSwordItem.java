@@ -1,36 +1,35 @@
 package net.laith.avaritia.common.item.tools;
 
-import net.minecraft.client.item.TooltipContext;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.mob.SkeletonEntity;
-import net.minecraft.entity.mob.WitherSkeletonEntity;
-import net.minecraft.item.*;
-import net.minecraft.text.Text;
-import net.minecraft.world.World;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.monster.Skeleton;
+import net.minecraft.world.entity.monster.WitherSkeleton;
+import net.minecraft.world.item.*;
+import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
 public class SkullFireSwordItem extends SwordItem {
 
-    public SkullFireSwordItem(ToolMaterial toolMaterial, int attackDamage, float attackSpeed, Settings settings) {
-        super(ToolMaterials.DIAMOND, attackDamage, attackSpeed, settings);
+    public SkullFireSwordItem(Tier tier, int attackDamage, float attackSpeed, Properties properties) {
+        super(Tiers.DIAMOND, attackDamage, attackSpeed, properties);
     }
 
     @Override
-    public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-        if(target instanceof SkeletonEntity || target instanceof WitherSkeletonEntity) {
+    public boolean hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {
+        if (target instanceof Skeleton || target instanceof WitherSkeleton) {
 
-            if(target.isDead()) {
-                target.dropItem(Items.WITHER_SKELETON_SKULL);
+            if (target.isDeadOrDying()) {
+                target.spawnAtLocation(Items.WITHER_SKELETON_SKULL);
             }
         }
-        return super.postHit(stack, target, attacker);
+        return super.hurtEnemy(stack, target, attacker);
     }
 
     @Override
-    public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
-        tooltip.add(Text.translatable("item.avaritia.skullfire_sword.tooltip"));
-        super.appendTooltip(stack, world, tooltip, context);
+    public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltipComponents, TooltipFlag isAdvanced) {
+        tooltipComponents.add(Component.translatable("item.avaritia.skullfire_sword.tooltip"));
+        super.appendHoverText(stack, level, tooltipComponents, isAdvanced);
     }
 }

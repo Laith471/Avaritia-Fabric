@@ -1,38 +1,39 @@
 package net.laith.avaritia.common.item;
 
 import net.laith.avaritia.common.entity.EndestPearlEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.sound.SoundCategory;
-import net.minecraft.sound.SoundEvents;
-import net.minecraft.util.Hand;
-import net.minecraft.util.TypedActionResult;
-import net.minecraft.world.World;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 
 public class EndestPearlItem extends Item {
-    public EndestPearlItem(Settings settings) {
-        super(settings);
+    public EndestPearlItem(Properties properties) {
+        super(properties);
     }
 
     @Override
-    public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
-        ItemStack stack = user.getStackInHand(hand);
-        if (!user.isCreative()) {
-            stack.decrement(1);
+    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand usedHand) {
+        ItemStack stack = player.getItemInHand(usedHand);
+        if (!player.isCreative()) {
+            stack.shrink(1);
         }
 
-        world.playSound(null, user.getX(), user.getY(), user.getZ(), SoundEvents.ENTITY_ENDER_PEARL_THROW, SoundCategory.NEUTRAL, 0.5F, 0.4F / (world.random.nextFloat() * 0.4F + 0.8F));
+        level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.ENDER_PEARL_THROW, SoundSource.NEUTRAL, 0.5F, 0.4F / (level.random.nextFloat() * 0.4F + 0.8F));
 
-        if (!world.isClient) {
-            EndestPearlEntity pearl = new EndestPearlEntity(world, user);
+        if (!level.isClientSide) {
+            EndestPearlEntity pearl = new EndestPearlEntity(level, player);
             pearl.setItem(stack);
-            pearl.setPos(user.getX(), user.getEyeY() + 0.1, user.getZ());
-            pearl.setVelocity(user, user.getPitch(), user.getYaw(), 0.0F, 1.5F, 1.0F);
-            world.spawnEntity(pearl);
-            user.getItemCooldownManager().set(stack.getItem(), 30);
+            pearl.setPos(player.getX(), player.getEyeY() + 0.1, player.getZ());
+            pearl.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0F, 1.5F, 1.0F);
+            level.addFreshEntity(pearl);
+            player.getCooldowns().addCooldown(stack.getItem(), 30);
         }
-        return TypedActionResult.success(stack, world.isClient);
+        return new InteractionResultHolder<>(InteractionResult.SUCCESS, stack);
     }
 
 }

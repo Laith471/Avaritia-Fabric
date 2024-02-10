@@ -6,10 +6,10 @@ import net.laith.avaritia.common.blockentity.ExtremeCraftingTableBlockEntity;
 import net.laith.avaritia.common.blockentity.MatterClusterBlockEntity;
 import net.laith.avaritia.common.blockentity.NeutronCollectorBlockEntity;
 import net.laith.avaritia.common.blockentity.NeutroniumCompressorBlockEntity;
-import net.minecraft.block.entity.BlockEntityType;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.Registry;
-import net.minecraft.util.Identifier;
+import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 
 public class ModBlockEntities {
     public static BlockEntityType<ExtremeCraftingTableBlockEntity> EXTREME_CRAFTING_TABLE_BLOCK_ENTITY;
@@ -18,16 +18,16 @@ public class ModBlockEntities {
     public static BlockEntityType<MatterClusterBlockEntity> MATTER_CLUSTER_BLOCK_ENTITY;
 
     public static void registerBlockEntities() {
-        EXTREME_CRAFTING_TABLE_BLOCK_ENTITY = Registry.register(Registries.BLOCK_ENTITY_TYPE, new Identifier(AvaritiaMod.MOD_ID, "extreme_crafting_table"),
+        EXTREME_CRAFTING_TABLE_BLOCK_ENTITY = Registry.register(BuiltInRegistries.BLOCK_ENTITY_TYPE, new ResourceLocation(AvaritiaMod.MOD_ID, "extreme_crafting_table"),
                 FabricBlockEntityTypeBuilder.create(ExtremeCraftingTableBlockEntity::new, ModBlocks.EXTREME_CRAFTING_TABLE).build(null));
 
-    NEUTRON_COLLECTOR_BLOCK_ENTITY = Registry.register(Registries.BLOCK_ENTITY_TYPE, new Identifier(AvaritiaMod.MOD_ID, "neutron_collector"),
+    NEUTRON_COLLECTOR_BLOCK_ENTITY = Registry.register(BuiltInRegistries.BLOCK_ENTITY_TYPE, new ResourceLocation(AvaritiaMod.MOD_ID, "neutron_collector"),
                 FabricBlockEntityTypeBuilder.create(NeutronCollectorBlockEntity::new, ModBlocks.NEUTRON_COLLECTOR).build(null));
 
-    NEUTRONIUM_COMPRESSOR_BLOCK_ENTITY = Registry.register(Registries.BLOCK_ENTITY_TYPE, new Identifier(AvaritiaMod.MOD_ID, "neutronium_compressor"),
+    NEUTRONIUM_COMPRESSOR_BLOCK_ENTITY = Registry.register(BuiltInRegistries.BLOCK_ENTITY_TYPE, new ResourceLocation(AvaritiaMod.MOD_ID, "neutronium_compressor"),
             FabricBlockEntityTypeBuilder.create(NeutroniumCompressorBlockEntity::new, ModBlocks.NEUTRONIUM_COMPRESSOR).build(null));
 
-        MATTER_CLUSTER_BLOCK_ENTITY = Registry.register(Registries.BLOCK_ENTITY_TYPE, new Identifier(AvaritiaMod.MOD_ID, "matter_cluster"),
+        MATTER_CLUSTER_BLOCK_ENTITY = Registry.register(BuiltInRegistries.BLOCK_ENTITY_TYPE, new ResourceLocation(AvaritiaMod.MOD_ID, "matter_cluster"),
                 FabricBlockEntityTypeBuilder.create(MatterClusterBlockEntity::new, ModBlocks.MATTER_CLUSTER).build(null));
     }
 }

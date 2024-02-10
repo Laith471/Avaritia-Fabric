@@ -12,7 +12,7 @@ public class ExtremeCraftingShapelessDisplay extends ExtremeCraftingDisplay<Extr
     public ExtremeCraftingShapelessDisplay(ExtremeCraftingShapelessRecipe recipe) {
         super(
                 EntryIngredients.ofIngredients(recipe.getIngredients()),
-                Collections.singletonList(EntryIngredients.of(recipe.getOutput(BasicDisplay.registryAccess()))),
+                Collections.singletonList(EntryIngredients.of(recipe.getResultItem(BasicDisplay.registryAccess()))),
                 Optional.of(recipe)
         );
     }

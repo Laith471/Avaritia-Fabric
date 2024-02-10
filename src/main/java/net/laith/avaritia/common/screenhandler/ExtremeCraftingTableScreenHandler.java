@@ -3,46 +3,46 @@ package net.laith.avaritia.common.screenhandler;
 import net.laith.avaritia.common.recipe.ExtremeRecipe;
 import net.laith.avaritia.init.ModScreenHandlers;
 import net.laith.avaritia.util.slots.ExtremeResultSlot;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.*;
-import net.minecraft.item.ItemStack;
-import net.minecraft.network.packet.s2c.play.ScreenHandlerSlotUpdateS2CPacket;
-import net.minecraft.recipe.Recipe;
-import net.minecraft.screen.ScreenHandler;
-import net.minecraft.screen.ScreenHandlerType;
-import net.minecraft.screen.slot.Slot;
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.world.World;
+import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
+import net.minecraft.network.protocol.game.ClientboundContainerSetSlotPacket;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.Container;
+import net.minecraft.world.SimpleContainer;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.*;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.level.Level;
 
 import java.util.Optional;
 
-public class ExtremeCraftingTableScreenHandler extends ScreenHandler {
-    public final CraftingInventory craftingInventory = new CraftingInventory(this, 9, 9);
-    public final PlayerEntity player;
-    private final CraftingResultInventory resultInventory = new CraftingResultInventory();
-    private final Inventory blockEntityInventory;
-    private final World world;
+public class ExtremeCraftingTableScreenHandler extends AbstractContainerMenu {
+    public final TransientCraftingContainer craftingInventory = new TransientCraftingContainer(this, 9, 9);
+    public final Player player;
+    private final ResultContainer resultInventory = new ResultContainer();
+    private final Container blockEntityInventory;
+    private final Level level;
     public ExtremeRecipe cachedRecipe = null;
 
-    public ExtremeCraftingTableScreenHandler(int syncId, PlayerInventory playerInventory) {
-        this(syncId, playerInventory, new SimpleInventory(81));
+    public ExtremeCraftingTableScreenHandler(int syncId, Inventory playerInventory) {
+        this(syncId, playerInventory, new SimpleContainer(81));
     }
 
-    public ExtremeCraftingTableScreenHandler(int syncId, PlayerInventory playerInventory, Inventory inventory) {
-        this(ModScreenHandlers.EXTREME_CRAFTING_TABLE_SCREEN_HANDLER, syncId, playerInventory, inventory);
+    public ExtremeCraftingTableScreenHandler(int syncId, Inventory playerInventory, Container container) {
+        this(ModScreenHandlers.EXTREME_CRAFTING_TABLE_SCREEN_HANDLER, syncId, playerInventory, container);
     }
 
-    protected ExtremeCraftingTableScreenHandler(ScreenHandlerType<?> type, int syncId, PlayerInventory playerInventory, Inventory beInventory) {
+    protected ExtremeCraftingTableScreenHandler(MenuType<?> type, int syncId, Inventory playerInventory, Container beInventory) {
         super(type, syncId);
         this.player = playerInventory.player;
-        this.world = playerInventory.player.getWorld();
+        this.level = playerInventory.player.getCommandSenderWorld();
         this.blockEntityInventory = beInventory;
-        checkSize(beInventory, 81);
+        checkContainerSize(beInventory, 81);
 
         // Load blockentity inventory into crafting grid
         for (int i = 0; i < 81; i++) {
-            craftingInventory.setStack(i, blockEntityInventory.getStack(i));
+            craftingInventory.setItem(i, blockEntityInventory.getItem(i));
         }
 
         // Crafting Result Slot
@@ -70,70 +70,70 @@ public class ExtremeCraftingTableScreenHandler extends ScreenHandler {
     }
 
     @Override
-    public ItemStack quickMove(PlayerEntity player, int index) {
+    public ItemStack quickMoveStack(Player player, int index) {
         ItemStack itemStack = ItemStack.EMPTY;
         Slot slot = this.slots.get(index);
-        if (!slot.hasStack()) {
+        if (!slot.hasItem()) {
             return itemStack;
         }
-        ItemStack itemStack2 = slot.getStack();
+        ItemStack itemStack2 = slot.getItem();
         itemStack = itemStack2.copy();
         if (index == 0) {
-            itemStack2.getItem().onCraft(itemStack2, world, player);
-            if (!this.insertItem(itemStack2, 82, 118, true)) {
+            itemStack2.getItem().onCraftedBy(itemStack2, level, player);
+            if (!this.moveItemStackTo(itemStack2, 82, 118, true)) {
                 return ItemStack.EMPTY;
             }
-            slot.onQuickTransfer(itemStack2, itemStack);
-        } else if (index >= 82 && index < 118 ? !this.insertItem(itemStack2, 1, 82, false) && (index < 109 ? !this.insertItem(itemStack2, 109, 118, false) : !this.insertItem(itemStack2, 82, 109, false)) : !this.insertItem(itemStack2, 82, 118, false)) {
+            slot.onQuickCraft(itemStack2, itemStack);
+        } else if (index >= 82 && index < 118 ? !this.moveItemStackTo(itemStack2, 1, 82, false) && (index < 109 ? !this.moveItemStackTo(itemStack2, 109, 118, false) : !this.moveItemStackTo(itemStack2, 82, 109, false)) : !this.moveItemStackTo(itemStack2, 82, 118, false)) {
             return ItemStack.EMPTY;
         }
         if (itemStack2.isEmpty()) {
-            slot.setStack(ItemStack.EMPTY);
+            slot.setByPlayer(ItemStack.EMPTY);
         } else {
-            slot.markDirty();
+            slot.setChanged();
         }
         if (itemStack2.getCount() == itemStack.getCount()) {
             return ItemStack.EMPTY;
         }
-        slot.onTakeItem(player, itemStack2);
+        slot.onTake(player, itemStack2);
         if (index == 0) {
-            player.dropItem(itemStack2, false);
+            player.drop(itemStack2, false);
         }
 
         return itemStack;
     }
 
     @Override
-    public boolean canUse(PlayerEntity player) {
-        return this.blockEntityInventory.canPlayerUse(player);
+    public boolean stillValid(Player player) {
+        return this.blockEntityInventory.stillValid(player);
     }
 
     @Override
-    public void onClosed(PlayerEntity player) {
-        if (this.world.isClient) {
+    public void removed(Player player) {
+        if (this.level.isClientSide) {
             return;
         }
         for (int i = 0; i < 81; i++) {
-            if (!blockEntityInventory.getStack(i).isEmpty()) {
-                blockEntityInventory.setStack(i, ItemStack.EMPTY);
+            if (!blockEntityInventory.getItem(i).isEmpty()) {
+                blockEntityInventory.setItem(i, ItemStack.EMPTY);
             }
-            blockEntityInventory.setStack(i, craftingInventory.removeStack(i));
+            blockEntityInventory.setItem(i, craftingInventory.removeItemNoUpdate(i));
         }
     }
 
     @Override
-    public void onContentChanged(Inventory inventory) {
+    public void slotsChanged(Container container) {
         ItemStack craftingResult;
         ExtremeRecipe currentRecipe = null;
 
         // Check cache
-        if (cachedRecipe != null && !cachedRecipe.matches(craftingInventory, world)) {
+        if (cachedRecipe != null && !cachedRecipe.matches(craftingInventory, level)) {
             cachedRecipe = null;
         }
 
         // Find or set current recipe
         if (cachedRecipe == null) {
-            Optional<? extends Recipe<CraftingInventory>> optional = world.getRecipeManager().getFirstMatch(ExtremeRecipe.Type.INSTANCE, craftingInventory, world);
+            Optional<? extends Recipe<CraftingContainer>> optional = level.getRecipeManager().getRecipeFor(ExtremeRecipe.Type.INSTANCE, craftingInventory, level);
             if (optional.isPresent()) {
                 currentRecipe = (ExtremeRecipe) optional.get();
                 cachedRecipe = currentRecipe;
@@ -142,20 +142,19 @@ public class ExtremeCraftingTableScreenHandler extends ScreenHandler {
             currentRecipe = cachedRecipe;
         }
 
-        if (world.isClient) {
+        if (level.isClientSide) {
             return;
         }
 
-        ServerPlayerEntity serverPlayerEntity = (ServerPlayerEntity) player;
-        if (currentRecipe != null && resultInventory.shouldCraftRecipe(world, serverPlayerEntity, currentRecipe)) {
-            craftingResult = currentRecipe.craft(craftingInventory, world.getRegistryManager());
+        ServerPlayer serverPlayerEntity = (ServerPlayer) player;
+        if (currentRecipe != null && resultInventory.setRecipeUsed(level, serverPlayerEntity, currentRecipe)) {
+            craftingResult = currentRecipe.assemble(craftingInventory, level.registryAccess());
         } else {
             craftingResult = ItemStack.EMPTY;
         }
 
-        resultInventory.setStack(0, craftingResult);
+        resultInventory.setItem(0, craftingResult);
         //setPreviousTrackedSlot(0, craftingResult);
-        serverPlayerEntity.networkHandler.sendPacket(new ScreenHandlerSlotUpdateS2CPacket(syncId, nextRevision(), 0, craftingResult));
-
+        serverPlayerEntity.connection.send(new ClientboundContainerSetSlotPacket(containerId, incrementStateId(), 0, craftingResult));
     }
 }
