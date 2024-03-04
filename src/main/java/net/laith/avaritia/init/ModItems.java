@@ -10,28 +10,27 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.TieredItem;
 import net.minecraft.world.item.Tiers;
 
 public class ModItems {
 
     public static final Item INFINITY_CATALYST = registerItem("infinity_catalyst",
-            new ItemResource(new FabricItemSettings(), "item.avaritia.infinity_catalyst.tooltip", false));
+            new ItemResource(new FabricItemSettings(), "item.avaritia.infinity_catalyst.tooltip", false, 5));
 
     public static final Item INFINITY_INGOT = registerItem("infinity_ingot",
-            new ItemResource(new FabricItemSettings(), "item.avaritia.infinity_ingot.tooltip", false));
+            new ItemResource(new FabricItemSettings(), "item.avaritia.infinity_ingot.tooltip", false, 6));
 
     public static final Item CRYSTAL_MATRIX_INGOT = registerItem("crystal_matrix_ingot",
-            new ItemResource(new FabricItemSettings(), "item.avaritia.crystal_matrix_ingot.tooltip", true));
+            new ItemResource(new FabricItemSettings(), "item.avaritia.crystal_matrix_ingot.tooltip", true, 0));
 
     public static final Item RECORD_FRAGMENT = registerItem("record_fragment",
-            new ItemResource(new FabricItemSettings(), "item.avaritia.record_fragment.tooltip", true));
+            new ItemResource(new FabricItemSettings(), "item.avaritia.record_fragment.tooltip", true, 0));
 
     public static final Item NEUTRONIUM_INGOT = registerItem("neutronium_ingot",
-            new ItemResource(new FabricItemSettings(), "item.avaritia.neutronium_ingot.tooltip", true));
+            new ItemResource(new FabricItemSettings(), "item.avaritia.neutronium_ingot.tooltip", true,4));
 
     public static final Item NEUTRONIUM_NUGGET = registerItem("neutronium_nugget",
-            new ItemResource(new FabricItemSettings(), "item.avaritia.neutronium_nugget.tooltip", true));
+            new ItemResource(new FabricItemSettings(), "item.avaritia.neutronium_nugget.tooltip", true,3));
 
     public static final Item PILE_OF_NEUTRONS = registerItem("pile_of_neutrons",
             new PileOfNeutrons(new FabricItemSettings()));

@@ -1,24 +1,18 @@
 package net.laith.avaritia.compat;
 
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
-import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
-import net.fabricmc.loader.api.FabricLoader;
 import net.laith.avaritia.AvaritiaMod;
-import net.laith.avaritia.common.blockentity.ExtremeCraftingTableBlockEntity;
-import net.laith.avaritia.common.blockentity.MatterClusterBlockEntity;
 import net.laith.avaritia.common.recipe.ExtremeRecipeManager;
 import net.laith.avaritia.compat.botania.Botania;
-import net.laith.avaritia.compat.botania.flowerblock.AsgardandelionBlockEntity;
 import net.laith.avaritia.compat.tc.TC;
 import net.laith.avaritia.init.ModBlocks;
 import net.laith.avaritia.init.ModItems;
 import net.laith.avaritia.util.helpers.BooleanHelper;
-import net.minecraft.core.Registry;
-import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.block.entity.BlockEntityType;
 import slimeknights.tconstruct.common.TinkerTabs;
+import vazkii.botania.api.BotaniaRegistries;
+import vazkii.botania.common.block.BotaniaBlock;
+import vazkii.botania.common.block.BotaniaFlowerBlocks;
 
 public class ModCompat {
     public static void compatify() {
@@ -44,8 +38,28 @@ public class ModCompat {
                 AvaritiaMod.LOGGER.info("Avaritia fell into smeltery");
             }
         }
-        if(FabricLoader.getInstance().isModLoaded("botania")) {
-            Botania.init();
+        if(BooleanHelper.botania) {
+            try {
+                Botania.init();
+                ExtremeRecipeManager.getInstance().addRecipe(new ItemStack(Botania.ASGARDANDELION),
+                        "   III   ",
+                        "  IIIII  ",
+                        "  IIXII  ",
+                        "  IIIII  ",
+                        "   III   ",
+                        " nn N nn ",
+                        "nnnnNnnnn",
+                        " nn N nn ",
+                        "    N    ",
+                        'I', new ItemStack(ModItems.INFINITY_INGOT),
+                        'X', new ItemStack(ModItems.INFINITY_CATALYST),
+                        'N', new ItemStack(ModItems.NEUTRONIUM_INGOT),
+                        'n', new ItemStack(ModItems.NEUTRONIUM_NUGGET));
+                ItemGroupEvents.modifyEntriesEvent(BotaniaRegistries.BOTANIA_TAB_KEY).register(entries -> entries.addAfter(BotaniaFlowerBlocks.shulkMeNot, Botania.ASGARDANDELION));
+                ItemGroupEvents.modifyEntriesEvent(BotaniaRegistries.BOTANIA_TAB_KEY).register(entries -> entries.addAfter(Botania.ASGARDANDELION, Botania.FLOATING_ASGARDANDELION));
+            } catch (Throwable e) {
+                AvaritiaMod.LOGGER.info("Avaritia doesn't see the beauty of the nature");
+            }
         }
     }
 }

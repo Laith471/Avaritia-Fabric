@@ -2,7 +2,7 @@ package net.laith.avaritia;
 
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.rendering.v1.ColorProviderRegistry;
-import net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry;;
+import net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry;
 import net.laith.avaritia.client.model.GapingVoidModel;
 import net.laith.avaritia.client.model.WingModel;
 import net.laith.avaritia.client.screen.ExtremeCraftingTableScreen;
@@ -13,7 +13,6 @@ import net.laith.avaritia.common.item.ItemSingularity;
 import net.laith.avaritia.compat.ModCompatClient;
 import net.laith.avaritia.init.*;
 import net.minecraft.client.gui.screens.MenuScreens;
-import net.minecraft.client.renderer.GameRenderer;
 
 public class AvaritiaModClient implements ClientModInitializer {
 

@@ -2,9 +2,8 @@ package net.laith.avaritia;
 
 import com.mojang.authlib.GameProfile;
 import net.fabricmc.api.ModInitializer;
-
 import net.laith.avaritia.compat.ModCompat;
-import net.laith.avaritia.init.*;;
+import net.laith.avaritia.init.*;
 import net.laith.avaritia.util.helpers.BooleanHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -66,6 +66,11 @@
 
   "block.avaritia.crystal_matrix_block": "Crystal Matrix Block",
   "block.avaritia.matter_cluster": "Matter Cluster",
+
+  "block.avaritia.asgardandelion": "Asgardandelion",
+  "block.avaritia.floating_asgardandelion": "Floating Asgardandelion",
+  "block.avaritia.infinity_spreader": "Infinity Spreader",
+
   "block.avaritia.infinity_block": "Infinity Block",
   "block.avaritia.neutronium_block": "Neutronium Block",
   "block.avaritia.double_compressed_crafting_table": "Double Compressed Crafting Table",
@@ -74,5 +79,8 @@
   "block.avaritia.neutron_collector": "Neutron Collector",
   "block.avaritia.neutronium_compressor": "Neutronium Compressor",
 
-  "item.avaritia.infinity_shuriken": "§dInfinity Shuriken"
+  "item.avaritia.infinity_shuriken": "§dInfinity Shuriken",
+
+  "avaritia.entry.asgardandelion": "Asgardandelion",
+  "avaritia.page.asgardandelion": "Rumors abound about some kind of godlike flower that can produce a never-ending torrent of mana. If such a mythical flower were to exist, it would probably require wealth and resources beyond mortal reckoning.<BR>&oStill not a SAO reference.&r"
 }

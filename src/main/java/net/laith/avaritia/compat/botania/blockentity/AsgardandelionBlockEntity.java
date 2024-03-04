@@ -1,4 +1,4 @@
-package net.laith.avaritia.compat.botania.flowerblock;
+package net.laith.avaritia.compat.botania.blockentity;
 
 import net.laith.avaritia.compat.botania.Botania;
 import net.minecraft.core.BlockPos;

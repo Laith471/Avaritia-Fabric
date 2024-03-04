@@ -1,0 +1,10 @@
+{
+  "parent": "avaritia:block/shapes/spreader_item",
+  "textures": {
+    "back": "avaritia:block/infinity_spreader_back",
+    "core": "avaritia:block/infinity_spreader_core",
+    "inside": "avaritia:block/infinity_spreader_inside",
+    "outside": "avaritia:block/infinity_spreader_outside",
+    "side": "avaritia:block/infinity_spreader_side"
+  }
+}

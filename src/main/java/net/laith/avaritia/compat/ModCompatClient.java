@@ -18,8 +18,12 @@ public class ModCompatClient {
             }
 
         }
-        if(FabricLoader.getInstance().isModLoaded("botania")) {
-            BotaniaClient.init();
+        if(BooleanHelper.botania) {
+            try {
+                BotaniaClient.init();
+            } catch (Throwable e) {
+                AvaritiaMod.LOGGER.info("Avaritia doesn't see the beauty of the nature");
+            }
         }
     }
 }

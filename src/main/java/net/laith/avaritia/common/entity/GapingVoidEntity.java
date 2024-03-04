@@ -6,7 +6,6 @@ import net.laith.avaritia.AvaritiaMod;
 import net.laith.avaritia.init.ModDamageTypes;
 import net.laith.avaritia.init.ModEntities;
 import net.laith.avaritia.init.ModSounds;
-import net.minecraft.core.Vec3i;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.Entity;

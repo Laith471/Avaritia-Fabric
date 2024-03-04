@@ -160,7 +160,7 @@ dependencies {
 	}
 
 	//Botania
-	modImplementation("vazkii.botania:Botania:1.20.1-443-FABRIC")
+	modCompileOnly("vazkii.botania:Botania:1.20.1-443-FABRIC")
 
 	//Cloth Config
 	modImplementation ("me.shedaniel.cloth:cloth-config-fabric:${project.cloth_config_version}") {

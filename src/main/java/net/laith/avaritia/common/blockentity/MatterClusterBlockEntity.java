@@ -1,6 +1,5 @@
 package net.laith.avaritia.common.blockentity;
 
-import net.laith.avaritia.common.screenhandler.ExtremeCraftingTableScreenHandler;
 import net.laith.avaritia.common.screenhandler.MatterClusterScreenHandler;
 import net.laith.avaritia.init.ModBlockEntities;
 import net.laith.avaritia.util.inventory.ImplementedInventory;
@@ -8,7 +7,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.Container;
 import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;

@@ -9,4 +9,9 @@ public class StackHelper {
         return stack.is(ModItems.INFINITY_CATALYST) ||
          stack.is(ModItems.INFINITY_INGOT);
     }
+
+    public static boolean isHalo(ItemStack stack) {
+        return stack.is(ModItems.INFINITY_CATALYST) ||
+                stack.is(ModItems.INFINITY_INGOT);
+    }
 }

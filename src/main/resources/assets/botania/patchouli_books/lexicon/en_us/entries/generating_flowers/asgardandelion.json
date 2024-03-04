@@ -1,0 +1,14 @@
+{
+  "name": "avaritia.entry.asgardandelion",
+  "category": "botania:generating_flowers",
+  "icon": "avaritia:asgardandelion",
+  "pages": [
+    {
+      "type": "text",
+      "text": "avaritia.page.asgardandelion"
+    }
+  ],
+  "extra_recipe_mappings": {
+    "avaritia:floating_asgardandelion": 1
+  }
+}

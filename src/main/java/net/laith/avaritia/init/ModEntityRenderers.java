@@ -1,12 +1,10 @@
 package net.laith.avaritia.init;
 
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
-import net.fabricmc.loader.api.FabricLoader;
 import net.laith.avaritia.client.render.entity.GapingVoidEntityRenderer;
 import net.laith.avaritia.client.render.entity.InfinityArrowEntityRenderer;
 import net.laith.avaritia.client.render.entity.InfinityArrowSubEntityRenderer;
 import net.minecraft.client.renderer.entity.ThrownItemRenderer;
-import slimeknights.tconstruct.gadgets.client.RenderShuriken;
 
 public class ModEntityRenderers {
 

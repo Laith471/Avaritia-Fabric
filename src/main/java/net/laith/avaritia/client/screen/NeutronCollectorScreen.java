@@ -11,8 +11,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 
-import java.awt.*;
-
 public class NeutronCollectorScreen extends AbstractContainerScreen<NeutronCollectorScreenHandler> {
     private static final ResourceLocation TEXTURE = new ResourceLocation(AvaritiaMod.MOD_ID, "textures/gui/neutron_collector.png");
     NeutronCollectorScreenHandler screenHandler;

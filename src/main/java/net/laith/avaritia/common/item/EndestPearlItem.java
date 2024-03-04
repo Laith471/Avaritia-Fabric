@@ -1,6 +1,9 @@
 package net.laith.avaritia.common.item;
 
 import net.laith.avaritia.common.entity.EndestPearlEntity;
+import net.laith.avaritia.init.ModTextures;
+import net.laith.avaritia.util.render.IHaloRenderItem;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
@@ -11,7 +14,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 
-public class EndestPearlItem extends Item {
+public class EndestPearlItem extends Item implements IHaloRenderItem {
     public EndestPearlItem(Properties properties) {
         super(properties);
     }
@@ -36,4 +39,33 @@ public class EndestPearlItem extends Item {
         return new InteractionResultHolder<>(InteractionResult.SUCCESS, stack);
     }
 
+    @Override
+    public boolean shouldDrawHalo(ItemStack stack) {
+        return true;
+    }
+
+    @Override
+    public ResourceLocation getHaloTexture(ItemStack stack) {
+        return ModTextures.HALO;
+    }
+
+    @Override
+    public int getHaloColour(ItemStack stack) {
+        return 0xFF000000;
+    }
+
+    @Override
+    public int getHaloSize(ItemStack stack) {
+        return 4;
+    }
+
+    @Override
+    public boolean shouldDrawPulse(ItemStack stack) {
+        return true;
+    }
+
+    @Override
+    public boolean isItNeutron(ItemStack stack) {
+        return false;
+    }
 }

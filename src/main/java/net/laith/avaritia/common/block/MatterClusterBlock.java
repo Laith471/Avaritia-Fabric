@@ -1,6 +1,5 @@
 package net.laith.avaritia.common.block;
 
-import net.laith.avaritia.common.blockentity.ExtremeCraftingTableBlockEntity;
 import net.laith.avaritia.common.blockentity.MatterClusterBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;

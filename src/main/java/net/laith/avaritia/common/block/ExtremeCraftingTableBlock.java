@@ -1,9 +1,7 @@
 package net.laith.avaritia.common.block;
 
 import net.laith.avaritia.common.blockentity.ExtremeCraftingTableBlockEntity;
-import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.core.BlockPos;
-import net.minecraft.server.dedicated.Settings;
 import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;

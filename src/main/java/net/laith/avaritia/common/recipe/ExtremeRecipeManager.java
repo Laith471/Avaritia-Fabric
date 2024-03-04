@@ -13,10 +13,9 @@ import java.util.*;
 public class ExtremeRecipeManager {
 
     private static final ExtremeRecipeManager instance = new ExtremeRecipeManager();
-    //配方列表
+
     public static final List<ExtremeRecipe> recipes = new LinkedList<>();
 
-    //获取实例
     public static ExtremeRecipeManager getInstance() {
         return instance;
 

@@ -43,8 +43,10 @@ public class BooleanHelper {
     }
 
     public static boolean tc = false;
+    public static boolean botania = false;
 
     public static void census(){
         tc = FabricLoader.getInstance().isModLoaded("tconstruct") && AvaritiaConfig.getConfig().tc;
+        botania = FabricLoader.getInstance().isModLoaded("botania") && AvaritiaConfig.getConfig().botania;
     }
 }

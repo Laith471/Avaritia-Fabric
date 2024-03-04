@@ -62,17 +62,24 @@ public class ModEvents {
             PlayerBlockBreakEvents.BEFORE.register((world, player, pos, state, blockEntity) -> {
                ItemStack stack = player.getItemBySlot(EquipmentSlot.MAINHAND);
                if(stack.is(ModItems.INFINITY_PICKAXE)) {
-                   if (stack.getOrCreateTag().getBoolean("hammer")) {
-                       if (state.is(ModTags.Blocks.INFINITY_PICKAXE)) {
-                           ToolHelper.mineCube(player, world, ModTags.Blocks.INFINITY_PICKAXE);
+                   if (!(stack.getTag() == null) && stack.getTag().contains("hammer")) {
+                       if(stack.getTag().getBoolean("hammer")) {
+                           if (state.is(ModTags.Blocks.INFINITY_PICKAXE)) {
+                               ToolHelper.mineCube(player, world, ModTags.Blocks.INFINITY_PICKAXE);
+                           }
                        }
                    }
                }
-                   else if (stack.getOrCreateTag().getBoolean("destroyer")) {
-                       if (state.is(BlockTags.MINEABLE_WITH_SHOVEL)) {
-                           ToolHelper.mineCube(player, world, BlockTags.MINEABLE_WITH_SHOVEL);
+
+                if(stack.is(ModItems.INFINITY_SHOVEL)) {
+                   if (!(stack.getTag() == null) && stack.getTag().contains("destroyer")) {
+                       if(stack.getTag().getBoolean("destroyer")) {
+                           if (state.is(BlockTags.MINEABLE_WITH_SHOVEL)) {
+                               ToolHelper.mineCube(player, world, BlockTags.MINEABLE_WITH_SHOVEL);
+                           }
                        }
-                   }
+                    }
+                }
                return true;
             });
         }

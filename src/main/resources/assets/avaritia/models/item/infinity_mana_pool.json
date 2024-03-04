@@ -1,0 +1,11 @@
+{
+  "parent": "avaritia:block/mana_pool",
+  "overrides": [
+    {
+      "model": "avaritia:block/mana_pool_full",
+      "predicate": {
+        "avaritia:full": 1.0
+      }
+    }
+  ]
+}

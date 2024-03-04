@@ -1,7 +1,5 @@
 package net.laith.avaritia.init;
 
-import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
-import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerType;
 import net.fabricmc.fabric.api.screenhandler.v1.ScreenHandlerRegistry;
 import net.laith.avaritia.AvaritiaMod;
 import net.laith.avaritia.common.screenhandler.ExtremeCraftingTableScreenHandler;

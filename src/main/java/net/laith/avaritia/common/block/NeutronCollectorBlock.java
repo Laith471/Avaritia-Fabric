@@ -1,8 +1,6 @@
 package net.laith.avaritia.common.block;
 
-import net.laith.avaritia.common.blockentity.ExtremeCraftingTableBlockEntity;
 import net.laith.avaritia.common.blockentity.NeutronCollectorBlockEntity;
-import net.laith.avaritia.common.blockentity.NeutroniumCompressorBlockEntity;
 import net.laith.avaritia.init.ModBlockEntities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;

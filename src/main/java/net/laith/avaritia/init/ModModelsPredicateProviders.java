@@ -1,8 +1,11 @@
 package net.laith.avaritia.init;
 
 import net.laith.avaritia.AvaritiaMod;
+import net.minecraft.client.renderer.item.ClampedItemPropertyFunction;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.level.block.Block;
 
 public class ModModelsPredicateProviders {
 
@@ -23,6 +26,12 @@ public class ModModelsPredicateProviders {
             }
             return livingEntity.isUsingItem() && livingEntity.getUseItem() == itemStack ? 1.0F : 0.0F;
         });
+        ResourceLocation poolFullId = new ResourceLocation(AvaritiaMod.MOD_ID, "full");
+        ClampedItemPropertyFunction poolFull = (stack, world, entity, seed) -> {
+            Block block = ((BlockItem) stack.getItem()).getBlock();
+            boolean renderFull = stack.hasTag() && stack.getTag().getBoolean("RenderFull");
+            return renderFull ? 1F : 0F;
+        };
     }
 
 }

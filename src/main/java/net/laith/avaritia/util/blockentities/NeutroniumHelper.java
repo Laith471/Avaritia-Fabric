@@ -1,7 +1,6 @@
 package net.laith.avaritia.util.blockentities;
 
 import net.laith.avaritia.common.blockentity.NeutroniumCompressorBlockEntity;
-import net.minecraft.core.RegistryAccess;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.item.ItemStack;

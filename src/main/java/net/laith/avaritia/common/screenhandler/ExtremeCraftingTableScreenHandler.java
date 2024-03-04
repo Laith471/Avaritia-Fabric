@@ -3,7 +3,6 @@ package net.laith.avaritia.common.screenhandler;
 import net.laith.avaritia.common.recipe.ExtremeRecipe;
 import net.laith.avaritia.init.ModScreenHandlers;
 import net.laith.avaritia.util.slots.ExtremeResultSlot;
-import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.protocol.game.ClientboundContainerSetSlotPacket;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Container;

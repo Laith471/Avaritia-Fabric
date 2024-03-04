@@ -1,0 +1,6 @@
+{
+  "parent": "avaritia:block/shapes/spreader_core",
+  "textures": {
+    "core": "avaritia:block/infinity_spreader_core"
+  }
+}

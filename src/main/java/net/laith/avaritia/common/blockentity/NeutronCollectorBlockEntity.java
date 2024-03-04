@@ -2,13 +2,11 @@ package net.laith.avaritia.common.blockentity;
 
 import net.laith.avaritia.common.block.NeutronCollectorBlock;
 import net.laith.avaritia.common.block.NeutroniumCompressorBlock;
-import net.laith.avaritia.common.screenhandler.ExtremeCraftingTableScreenHandler;
 import net.laith.avaritia.common.screenhandler.NeutronCollectorScreenHandler;
 import net.laith.avaritia.init.ModBlockEntities;
 import net.laith.avaritia.init.ModItems;
 import net.laith.avaritia.util.AvaritiaConfig;
-import net.laith.avaritia.util.inventory.ImplementedInventory;
-import net.laith.avaritia.util.inventory.ImplementedSidedInventory;;
+import net.laith.avaritia.util.inventory.ImplementedSidedInventory;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;

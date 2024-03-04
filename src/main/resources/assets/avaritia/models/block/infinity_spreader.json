@@ -1,0 +1,9 @@
+{
+  "parent": "botania:block/shapes/spreader",
+  "textures": {
+    "back": "avaritia:block/infinity_spreader_back",
+    "inside": "avaritia:block/infinity_spreader_inside",
+    "outside": "avaritia:block/infinity_spreader_outside",
+    "side": "avaritia:block/infinity_spreader_side"
+  }
+}

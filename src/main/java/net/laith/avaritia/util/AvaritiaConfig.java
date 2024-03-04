@@ -11,6 +11,7 @@ import net.laith.avaritia.AvaritiaMod;
 public class AvaritiaConfig implements ConfigData {
     public int process = 7111;
     public boolean tc = true;
+    public boolean botania = true;
 
     @ConfigEntry.Gui.Excluded
     private transient static boolean registered = false;
