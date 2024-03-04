@@ -8,7 +8,6 @@ import net.laith.avaritia.client.model.WingModel;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.laith.avaritia.init.ModItems;
-import net.laith.avaritia.util.helpers.BooleanHelper;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -21,7 +20,6 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
-
 
 @Environment(EnvType.CLIENT)
 public class WingRenderer<T extends LivingEntity, M extends EntityModel<T>> extends RenderLayer<T, M> {

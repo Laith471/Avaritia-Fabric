@@ -39,7 +39,6 @@ public class WingModel extends AgeableListModel<Player> {
         bone.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
     }
 
-
     @Override
     protected Iterable<ModelPart> headParts() {
         return ImmutableList.of();

@@ -38,6 +38,7 @@ public class ModCompat {
                 AvaritiaMod.LOGGER.info("Avaritia fell into smeltery");
             }
         }
+        /*
         if(BooleanHelper.botania) {
             try {
                 Botania.init();
@@ -60,6 +61,7 @@ public class ModCompat {
             } catch (Throwable e) {
                 AvaritiaMod.LOGGER.info("Avaritia doesn't see the beauty of the nature");
             }
-        }
+
+         */
     }
 }

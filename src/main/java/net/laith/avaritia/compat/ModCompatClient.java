@@ -18,6 +18,7 @@ public class ModCompatClient {
             }
 
         }
+        /*
         if(BooleanHelper.botania) {
             try {
                 BotaniaClient.init();
@@ -25,5 +26,6 @@ public class ModCompatClient {
                 AvaritiaMod.LOGGER.info("Avaritia doesn't see the beauty of the nature");
             }
         }
+         */
     }
 }
